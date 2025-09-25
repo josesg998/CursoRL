@@ -1,0 +1,429 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{listings}
+\usepackage{enumitem}
+\usepackage{geometry}
+\geometry{margin=2.5cm}
+\usepackage[utf8]{inputenc} % allow utf-8 input
+
+
+\setlength{\parindent}{0pt} % Eliminar sangría de primera línea en todos los párrafos
+% add space between paragraphs
+\setlength{\parskip}{1em}
+
+% Configuración para código
+\lstset{
+ language=Python,
+ basicstyle=\ttfamily\small,
+ keywordstyle=\color{blue},
+ commentstyle=\color{green},
+ stringstyle=\color{red},
+ numberstyle=\tiny,
+ breaklines=true,
+ frame=single
+}
+
+\title{Aprendizaje Reforzado: Guía 1: Multi-armed Bandits}
+\author{José Saint Germain}
+
+\begin{document}
+
+\maketitle
+
+\section{Ejercicio 1}
+
+Demostrar que,si conociéramos exactamente el valor de cada acción, es decir 
+si $greedy$ $A_t = \arg\max_a Q_t(a)$ en el sentido de que permite 
+maximizar las recompensas totales.
+
+\subsection{Respuesta}
+
+En primer lugar debemos definir qué es la recompensa total. Una forma
+de hacerlo es sumando las recompensas en cada instante de tiempo y 
+acumulándolas.
+
+Entonces definimos a la recompensa total $G_T$ como:
+
+$$G_T = \sum_{t=1}^T R_t$$
+
+¿Cuál es la recompensa total en promedio? Para saberlo
+calculamos el retorno esperado. Ese es el valor esperado
+$G_T$ dada una secuencia de acciones $T$:
+
+Retorno esperado: $E[G_T | A_1=a_1, A_2=a_2, ..., A_T=a_T]$
+
+Vamos a recurrir a las propiedades del valor esperado,
+dado que es una función lineal.
+
+$$ \quad \text{linealidad del } \mathbb{E}[\cdot] \left\{
+\begin{aligned}
+\mathbb{E}[X + Y] &= \mathbb{E}[X] + \mathbb{E}[Y] \\
+\mathbb{E}[\alpha \cdot X] &= \alpha \cdot \mathbb{E}[X]
+\end{aligned}
+\right.$$
+
+Aplicando esas propiedades obtenemos que:
+
+$$ Retorno esperado = \sum_{t=1}^T E[R_t | A_t=a_t] $$
+
+$$ Retorno esperado = E[R_1|A_1=a_1] + E[R_2|A_2=a_2] + ... + E[R_T|A_T=a_T] $$
+
+La esperanza de $R_1$ dada la secuencia de acciones depende solo de la acción $A_1$,
+porque la recompensa en el primer instante es independiente de la acción que se toma
+en instantes siguientes. Entonces esto hace que esta sumatoria
+equivalga a la sumatoria de las recompensas condicionadas solo
+a la acción tomada en el mismo instante de tiempo.
+
+Entonces, para maximizar la suma debo maximizar cada término. Esos términos
+se maximizan cuando elijo la acción que da la máxima recompensa en promedio. Eso es
+exactamente igual a elegir $ A_t = \arg\max_a Q_t(a) $, es decir la política Greedy.
+
+\section{Ejercicio 2}
+
+En una selección de acciones tipo $\epsilon$ - greedy con dos acciones posibles y $\epsilon$=0.1, ¿Cuál es la probabilidad de seleccionar la acción greedy?
+
+\subsection{Respuesta}
+
+La probabilidad de seleccionar la acción greedy es 1-$\epsilon$, por lo tanto es de 0.9.
+
+\section{Ejercicio 3}
+
+Demostrar que el valor de una acción después de haber sido seleccionada $n-1$ veces, definido como 
+$$Q_n = \frac{R_1 + R_2 + \ldots + R_{n-1}}{n-1}$$
+, puede calcularse incrementalmente con la siguiente fórmula:
+$$Q_n = Q_{n-1} + \frac{1}{n}[R_n - Q_{n-1}]$$
+Describa la ventaja de esta fórmula desde un punto de vista computacional.
+
+\subsection{Respuesta}
+
+Siguiendo la expresión del enunciado, podemos expresar $Q_{n+1}$ de la siguiente manera:
+$$Q_{n+1} = \frac{R_1 + R_2 + \ldots + R_{n-1} + R_n}{n}$$
+A su vez, esta expresión podemos separarla en:
+$$\frac{R_1 + R_2 + \ldots + R_{n-1}}{n} + \frac{R_n}{n}$$
+Adicionalmente, para tener $n-1$ en el denominador del primer sumando, podemos multiplicar y dividir por $n-1$:
+$$\frac{R_1 + R_2 + \ldots + R_{n-1}}{n-1} \cdot \frac{n-1}{n} + \frac{R_n}{n}$$
+Reescribimos $\frac{R_1 + R_2 + \ldots + R_{n-1}}{n-1}$ como $Q_n$:
+\begin{align}
+\tag{1} &= Q_n \cdot \frac{n-1}{n} + \frac{1}{n}R_n \\
+\tag{2} &= Q_n \cdot \frac{n}{n} - \frac{Q_n}{n} + \frac{1}{n}R_n \\
+\tag{3} &= Q_n - \frac{Q_n}{n} + \frac{1}{n}R_n \\
+\tag{4} &= Q_n + \frac{1}{n}[R_n - Q_n]
+\end{align}
+
+La ventaja de esta fórmula desde un punto de vista computacional es que no es necesario almacenar
+todas las recompensas obtenidas en cada paso, sino que solo es necesario almacenar el valor
+actual de $Q_n$ y el número de veces que se ha seleccionado la acción $n$. Esto reduce
+el uso de memoria y hace que el cálculo sea más eficiente.
+
+\section{Ejercicio 4}
+
+Considere un problema $k$ armedbandit con $k=4$ acciones. Considere la aplicación de 
+un algoritmo bandit usando selección de acciones $\epsilon$-greedy, estimación incremental de los valores 
+de cada acción y valores iniciales nulos $Q(a)= 0 \forall a$. Suponga la siguiente secuencia de acciones y 
+recompensas: $A_1=1,R_1=1, A_2=2,R_2=1, A_3=2,R_3=-2, A_4=2,R_4=2, A_5=3,R_5=0$. En algunos de estos pasos se ha 
+tomado una decisión aleatoria. 
+\begin{itemize}
+ \item ¿En qué pasos definitivamente se tomaron decisiones aleatorias?
+ \item ¿En qué pasos es posible que la decisión haya sido aleatoria?
+\end{itemize}
+
+\subsection{Respuesta}
+
+En el primer paso de la secuencia, todos los valores iniciales son nulos, por lo tanto se eligó una acción aleatoria
+$A_1=1$ con recompensa $R_1=1$.
+
+En el segundo paso, podemos calcular $Q(1)_2$ y $Q(2)_1$:
+$$ Q(1)_2 = Q(1)_1 + \frac{1}{1}[R_1 - Q(1)_1] = 0 + \frac{1}{1}[1 - 0] = 1 $$
+$$ Q(2)_1 = 0 \text{ (valor inicial)} $$
+
+Entonces sabemos que $Q(1)_2 > Q(2)_1$, por lo tanto la acción $A_2=2$ con recompensa $R_2=1$ fue tomada de forma aleatoria.
+
+En el tercer paso, podemos calcular $Q(1)_2$ y $Q(2)_2$:
+
+$$ Q(1)_2 = 1 \text{ (calculado en el paso anterior)} $$
+$$ Q(2)_2 = Q(2)_1 + \frac{1}{1}[R_2 - Q(2)_1] = 0 + \frac{1}{1}[1 - 0] = 1 $$
+
+En este caso $Q(1)_2 = Q(2)_2$, por lo tanto la acción $A_3=2$ con recompensa $R_3=-2$
+pudo haber sido tomada de forma aleatoria o greedy.
+
+En el cuarto paso, podemos calcular $Q(1)_2$ y $Q(2)_3$:
+
+$$ Q(1)_2 = 1 \text{ (calculado en el paso anterior)} $$
+$$ Q(2)_3 = Q(2)_2 + \frac{1}{2}[R_3 - Q(2)_2] = 1 + \frac{1}{2}[-2 - 1] = -0.5 $$
+
+En este caso $Q(1)_2 > Q(2)_3$, por lo tanto la acción $A_4=2$ con recompensa $R_4=2$
+fue tomada de forma aleatoria.
+
+En el quinto y último paso, podemos calcular $Q(1)_2$, $Q(2)_4$ y $Q(3)_1$:
+$$ Q(1)_2 = 1 \text{ (calculado en el paso anterior)} $$
+$$ Q(2)_4 = Q(2)_3 + \frac{1}{3}[R_4 - Q(2)_3] = -0.5 + \frac{1}{3}[2 - (-0.5)] = 0.33 $$
+$$ Q(3)_1 = 0 \text{ (valor inicial)} $$
+
+En este caso $Q(1)_2 > Q(2)_4 > Q(3)_1$, por lo tanto la acción $A_5=3$ con recompensa $R_5=0$
+fue tomada de forma aleatoria.
+
+\section{Ejercicio 5} % TODO
+
+[Programación] Aplique el algoritmo bandit $\epsilon - greedy$ con $\epsilon=0 $(greedy), 
+$\epsilon=0.01$ y $\epsilon=0.1$ a un problema $\kappa$ - armed bandit con $\kappa=10$ acciones. Considere recompensas con medias 
+aleatorias y desvío estándar constante $\sigma$. Analice experimentalmente el efecto de del desvío 
+estándar $\sigma$ evaluando tres casos: $\sigma =0$ (determinístico), 
+$\sigma =1$ y $\sigma =10$. ¿Qué conclusiones puede sacar?
+
+Con sigma = 0 los banded arm bandits van a dar siempre igual a cero,
+generando que el algoritmo nunca pueda mejorar su política y quede estancado
+en ese valor.
+
+Con sigma = 1 y sigma = 10, el algoritmo puede explorar y encontrar
+mejores políticas, pero con sigma = 10 la varianza es mucho mayor,
+por lo que el algoritmo logra aproximarse a las colas superiores de las
+distribuciones que son 10 veces más largas.
+
+
+\section{Ejercicio 6}
+
+Dada la fórmula adaptiva del valor $Q_(n+1) = Q_n + a[R_n - Q_n]$ con $a \in (0,1)$,
+demostrar que
+\begin{itemize}
+\item $Q_{n+1} = (1-a)^n Q_1 + \sum_{i=1}^{n} a(1-a)^{n-i}R_i$
+\item $(1-a)^n+ \sum_{i=1}^{n} a(1-a)^{n-i} = 1$
+\end{itemize}
+es decir $Q_{n+1}$ es un promedio pesado de $Q_n,R_1,R_2,...,R_n$.
+
+\subsection{Respuesta}
+
+\subsubsection{Demostración 1}
+
+Demostraremos que $ Q_{n+1} = (1-a)^n Q_1 + \sum_{i=1}^{n} a(1-a)^{n-i}R_i $
+
+\begin{align}
+\tag{1} & Q_{n+1} = Q_n + \alpha[R_n - Q_n] \\
+\tag{2} & Q_{n+1} = Q_n + \alpha R_n - \alpha Q_n \\
+\tag{3} & Q_{n+1} = \alpha R_n + (1-\alpha) Q_n \\
+\tag{4} & Q_{n+1} = \alpha R_n + (1-\alpha) [\alpha R_{n-1} + (1-\alpha) Q_{n-1}] \\
+\tag{5} & Q_{n+1} = \alpha R_n + (1-\alpha) \alpha R_{n-1} + (1-\alpha)^2 Q_{n-1} \\
+\tag{6} & Q_{n+1} = \alpha R_n + (1-\alpha) \alpha R_{n-1} + (1-\alpha)^2 [\alpha R_{n-2} + (1-\alpha) Q_{n-2}] \\
+\tag{7} & Q_{n+1} = \alpha R_n + (1-\alpha) \alpha R_{n-1} + (1-\alpha)^2 \alpha R_{n-2}+\dots+(1-\alpha)^{n-1} \alpha R_1 + (1-\alpha)^n Q_1 \\
+\tag{8} & Q_{n+1} = (1-\alpha)^n Q_1 + \sum_{i=1}^{n} a(1-a)^{n-i}R_i
+\end{align}
+
+\subsubsection{Demostración 2}
+
+Demostraremos que $ (1-\alpha)^n Q_1 + \sum_{i=1}^{n} a(1-a)^{n-i} = 1 $
+
+Sabemos que $\sum_{i=1}^{n} a(1-a)^{n-i}$ se puede escribir de la siguiente
+manera: $\alpha [(1-\alpha)^{n-1} + (1-\alpha)^{n-2} + ... + 1]$.
+
+Como $(1-\alpha)<1$, podemos usar la fórmula de la serie geométrica:
+$$\alpha \frac{1-(1-\alpha)^{n}}{1-(1-\alpha)} = \alpha \frac{1-(1-\alpha)^{n}}{\alpha} = 1 - (1-\alpha)^{n}$$
+Remplazándolo en la ecuación inicial, obtenemos:
+$$(1-\alpha)^n + 1 - (1-\alpha)^{n} = 1$$
+
+\section{Ejercicio 7} % TODO
+
+Demostrar que la fórmula adaptativa para calcular el valor 
+$Q_{n+1} = Q_n + \alpha [R_n - Q_n]$ con step-size $\alpha in (0,1]$
+constante no verifica la hipótesis de convergencia y por lo tanto no
+está garantizada su convergencia.
+
+\subsection{Respuesta}
+
+Analicemos cada condición por separado cuando $\alpha_n = \alpha$ es constante para todo $n$.
+
+\textbf{Condición 1:} Verificación de $\sum_{n=1}^{\infty} \alpha_n = \infty$
+
+\begin{align}
+\sum_{n=1}^{\infty} \alpha_n &= \sum_{n=1}^{\infty} \alpha \\
+&= \alpha \sum_{n=1}^{\infty} 1 \\
+&= \alpha \cdot \infty = \infty
+\end{align}
+
+Dado que $\alpha > 0$, esta condición \textbf{SÍ se satisface}.
+
+\textbf{Condición 2:} Verificación de $\sum_{n=1}^{\infty} \alpha_n^2 < \infty$
+
+\begin{align}
+\sum_{n=1}^{\infty} \alpha_n^2 &= \sum_{n=1}^{\infty} \alpha^2 \\
+&= \alpha^2 \sum_{n=1}^{\infty} 1 \\
+&= \alpha^2 \cdot \infty = \infty
+\end{align}
+
+Dado que $\alpha^2 > 0$ es constante, esta condición \textbf{NO se satisface}.
+
+Puesto que no se verifica la condición 2, la fórmula adaptativa
+$Q_{n+1} = Q_n + \alpha [R_n - Q_n]$ con $\alpha \in (0,1]$ constante
+\textbf{NO garantiza su convergencia}.
+
+\section{Ejercicio 8}
+
+En la figura 2.3 del libro de Sutton \and Barto (2018), se observa un 
+\textit{spike} en el paso número 11 cuando se utiliza la inicialización
+optimista. Dé una explicación de este fenómeno.
+
+\subsection{Respuesta}
+
+La inicialización optimista hace que todas las acciones tengan un valor inicial
+alto, lo que incentiva la exploración de todas las acciones. Una vez
+que la acción óptima es seleccionada, su valor se actualiza con la recompensa
+real obtenida, que es menor que el valor inicial optimista. Esto provoca
+que el valor de esa acción disminuya, creando el \textit{spike}
+observado en la figura.
+
+\section{Ejercicio 9}
+
+Demuestre que la función SOFTMAX: $p(\alpha) = \frac{e^{H(\alpha)}}{\sum_{\alpha'=1}^{K} e^{H(\alpha')}}$
+define una distribución de probabilidades discreta válida.
+
+\subsection{Respuesta}
+
+Para que una función defina una distribución de probabilidades discreta válida,
+debe cumplir dos condiciones:
+
+\begin{enumerate}
+    \item Cada probabilidad debe ser mayor o igual a 0.
+    \item La suma de todas las probabilidades debe ser igual a 1.
+\end{enumerate}
+
+\subsubsection{Demostración 1: $0 \leq p_i(a) \leq 1$}
+
+Para cualquier acción $a$:
+\begin{itemize}
+    \item $e^{H_i(a)} > 0$ para todo valor de $H_i(a)$, ya que la función exponencial es siempre positiva
+    \item $\sum_{a'} e^{H_i(a')} > 0$, ya que es suma de términos estrictamente positivos
+\end{itemize}
+
+Por lo tanto:
+$$p(a) = \frac{e^{H_i(a)}}{\sum_{a'} e^{H_i(a')}} \geq 0$$
+
+A su vez, observemos que $e^{H_i(a)}$ es uno de los términos en la suma $\sum_{a'} e^{H_i(a')}$.
+
+Por definición de suma:
+$$e^{H_i(a)} \leq \sum_{a'} e^{H_i(a')}$$
+
+Dividiendo ambos lados por $\sum_{a'} e^{H_i(a')} > 0$:
+$$\frac{e^{H_i(a)}}{\sum_{a'} e^{H_i(a')}} \leq 1$$
+
+Entonces, combinando ambas desigualdades:
+$$0 \leq p_i(a) = \frac{e^{H_i(a)}}{\sum_{a'} e^{H_i(a')}} \leq 1$$
+
+\subsection{Demostración 2: $\sum_{a} p_i(a) = 1$}
+
+Calculemos la suma sobre todas las acciones:
+$$\sum_{a} p_i(a) = \sum_{a} \frac{e^{H_i(a)}}{\sum_{a'} e^{H_i(a')}}$$
+
+Factorizando el denominador común:
+$$= \frac{1}{\sum_{a'} e^{H_i(a')}} \cdot \sum_{a} e^{H_i(a)}$$
+
+Como estamos sumando sobre todas las acciones posibles, ambas sumas recorren el mismo conjunto:
+$$\sum_{a} e^{H_i(a)} = \sum_{a'} e^{H_i(a')}$$
+
+Sustituyendo:
+$$\sum_{a} p_i(a) = \frac{1}{\sum_{a'} e^{H_i(a')}} \cdot \sum_{a'} e^{H_i(a')} = 1$$
+
+Por lo tanto, la suma de todas las probabilidades es igual a 1.
+
+\section{Ejercicio 10}
+
+Demostrar que las derivadas de la función SOFTMAX p(x) respecto a sus parámetros
+$H(\alpha), \alpha = 1,2,...,K$ son iguales a:
+
+$$\frac{\partial p(x)}{\partial H(\alpha)} = \begin{cases}
+p(x)(1 - p(x)) & \text{si } a = \alpha \\
+-p(x)p(\alpha) & \text{si } a \neq \alpha 
+\end{cases} $$
+
+\subsection{Respuesta}
+
+Para simplificar la notación, definamos:
+\begin{itemize}
+    \item $S = \sum_{k=1}^{K} e^{H(k)}$ (denominador común)
+    \item $p(x) = \frac{e^{H(x)}}{S}$
+\end{itemize}
+
+\subsubsection{Caso 1: $\alpha = x$}
+
+Aplicamos la derivada del numerador.
+$$\frac{\partial}{\partial H(x)}[e^{H(x)}] = e^{H(x)}$$
+
+Aplicamos la derivada del denominador. Recordemos que $S = \sum_{k=1}^{K} e^{H(k)} = e^{H(1)} + e^{H(2)} + ... + e^{H(K)}$
+
+$$\frac{\partial S}{\partial H(x)} = \frac{\partial}{\partial H(x)}\left[e^{H(1)} + e^{H(2)} + ... + e^{H(K)}\right]$$
+
+Aplicando la derivada término por término:
+\begin{itemize}
+    \item $\frac{\partial}{\partial H(x)}[e^{H(1)}] = 0$ si $1 \neq x$, pero $= e^{H(1)}$ si $1 = x$
+    \item $\frac{\partial}{\partial H(x)}[e^{H(2)}] = 0$ si $2 \neq x$, pero $= e^{H(2)}$ si $2 = x$
+    \item ...
+    \item $\frac{\partial}{\partial H(x)}[e^{H(x)}] = e^{H(x)}$ (este término siempre contribuye)
+    \item ...
+\end{itemize}
+
+\textbf{Solo el término $e^{H(x)}$ tiene derivada no-cero}, por lo tanto:
+$$\frac{\partial S}{\partial H(x)} = e^{H(x)}$$
+
+Aplicamos la regla del cociente:
+$$\frac{\partial p(x)}{\partial H(x)} = \frac{e^{H(x)} \cdot S - e^{H(x)} \cdot e^{H(x)}}{S^2}$$
+
+$$= \frac{e^{H(x)}(S - e^{H(x)})}{S^2}$$
+
+$$= \frac{e^{H(x)}}{S} \cdot \frac{S - e^{H(x)}}{S}$$
+
+$$= p(x) \cdot \left(1 - \frac{e^{H(x)}}{S}\right)$$
+
+$$= p(x)(1 - p(x))$$
+
+\subsubsection{Caso 2: $\alpha \neq x$}
+
+Cuando $\alpha \neq x$, calculamos $\frac{\partial p(x)}{\partial H(\alpha)}$.
+
+Aplicamos derivada del numerador:
+$$\frac{\partial}{\partial H(\alpha)}[e^{H(x)}] = 0$$
+(ya que $e^{H(x)}$ no depende de $H(\alpha)$ cuando $\alpha \neq x$)
+
+Aplicamos derivada del denominador:
+Recordemos que $S = \sum_{k=1}^{K} e^{H(k)} = e^{H(1)} + e^{H(2)} + ... + e^{H(K)}$
+
+$$\frac{\partial S}{\partial H(\alpha)} = \frac{\partial}{\partial H(\alpha)}\left[e^{H(1)} + e^{H(2)} + ... + e^{H(K)}\right]$$
+
+Aplicando la derivada término por término:
+\begin{itemize}
+    \item $\frac{\partial}{\partial H(\alpha)}[e^{H(1)}] = 0$ si $1 \neq \alpha$, pero $= e^{H(1)}$ si $1 = \alpha$
+    \item $\frac{\partial}{\partial H(\alpha)}[e^{H(2)}] = 0$ si $2 \neq \alpha$, pero $= e^{H(2)}$ si $2 = \alpha$
+    \item ...
+    \item $\frac{\partial}{\partial H(\alpha)}[e^{H(\alpha)}] = e^{H(\alpha)}$ (este término siempre contribuye)
+    \item ...
+\end{itemize}
+
+\textbf{Solo el término $e^{H(\alpha)}$ tiene derivada no-cero}, por lo tanto:
+$$\frac{\partial S}{\partial H(\alpha)} = e^{H(\alpha)}$$
+
+Aplicamos regla del cociente:
+$$\frac{\partial p(x)}{\partial H(\alpha)} = \frac{0 \cdot S - e^{H(x)} \cdot e^{H(\alpha)}}{S^2}$$
+
+$$= \frac{-e^{H(x)} \cdot e^{H(\alpha)}}{S^2}$$
+
+$$= -\frac{e^{H(x)}}{S} \cdot \frac{e^{H(\alpha)}}{S}$$
+
+$$= -p(x) \cdot p(\alpha)$$
+
+\section{Ejercicio 11}
+
+Demostrar que la regla de actualización por gradiente ascendiente
+estocástico:
+
+$$ H_{t+1}(\alpha) = H_t(\alpha) + \alpha \frac{\partial E[R_t]}{\partial H_t(\alpha)'}$$
+
+con $E[R_t] = \sum_{x=1}^{K} p_t(x)q_*(x)$ puede escribirse de la siguiente manera:
+
+$$ H_{t+1}(\alpha) = 
+\begin{cases} 
+    H_t(\alpha) + \alpha (R_t - C)(1 - p_t(\alpha)) & \text{ si } a = \alpha \\
+    H_t(\alpha) - \alpha (R_t - C)p_t(\alpha) & \text{ si } a \neq \alpha \\
+\end{cases} $$
+
+donde C es una constante cualquiera (usualmente se usa $C = \bar{R_t}$,
+el promedio de recompensas anteriores).
+\end{document}

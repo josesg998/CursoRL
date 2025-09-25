@@ -426,4 +426,167 @@ $$ H_{t+1}(\alpha) =
 
 donde C es una constante cualquiera (usualmente se usa $C = \bar{R_t}$,
 el promedio de recompensas anteriores).
+
+\subsection{Respuesta}
+
+\subsubsection{Definición del Problema}
+Tenemos la regla de actualización por gradiente ascendente estocástico:
+$$H_{t+1}(\alpha) = H_t(\alpha) + c \frac{\partial E[R_t]}{\partial H_t(\alpha)}$$
+
+donde $E[R_t] = \sum_{x=1}^{K} p_t(x)q_*(x)$ es el valor esperado de la recompensa.
+
+\subsubsection{Objetivo}
+Demostrar que esta regla puede escribirse como:
+
+$$H_{t+1}(\alpha) = \begin{cases}
+H_t(\alpha) + \alpha(R_t - C)(1 - p_t(\alpha)) & \text{si } \alpha = A_t \\
+H_t(\alpha) - \alpha(R_t - C)p_t(\alpha) & \text{si } \alpha \neq A_t
+\end{cases}$$
+
+donde:
+\begin{itemize}
+    \item $C$ es una constante cualquiera (baseline)
+    \item $A_t$ es la acción seleccionada en el tiempo $t$
+    \item $R_t$ es la recompensa observada
+    \item $\alpha$ representa la tasa de aprendizaje (renombrada de $c$)
+\end{itemize}
+
+\subsubsection{Paso 1: Calcular el Gradiente del Valor Esperado}
+
+El valor esperado de la recompensa es:
+$$E[R_t] = \sum_{x=1}^{K} p_t(x)q_*(x)$$
+
+Calculamos $\frac{\partial E[R_t]}{\partial H_t(\alpha)}$:
+
+$$\frac{\partial E[R_t]}{\partial H_t(\alpha)} = \frac{\partial}{\partial H_t(\alpha)}\left[\sum_{x=1}^{K} p_t(x)q_*(x)\right]$$
+
+$$= \sum_{x=1}^{K} q_*(x) \frac{\partial p_t(x)}{\partial H_t(\alpha)}$$
+
+\section{Paso 2: Usar las Derivadas de SOFTMAX}
+
+De la demostración anterior, sabemos que:
+$$\frac{\partial p_t(x)}{\partial H_t(\alpha)} = \begin{cases}
+p_t(x)(1 - p_t(x)) & \text{si } \alpha = x \\
+-p_t(x)p_t(\alpha) & \text{si } \alpha \neq x
+\end{cases}$$
+
+Sustituyendo:
+$$\frac{\partial E[R_t]}{\partial H_t(\alpha)} = \sum_{x=1}^{K} q_*(x) \frac{\partial p_t(x)}{\partial H_t(\alpha)}$$
+
+Separando los casos:
+$$= q_*(\alpha) \cdot p_t(\alpha)(1 - p_t(\alpha)) + \sum_{x \neq \alpha} q_*(x) \cdot (-p_t(x)p_t(\alpha))$$
+
+$$= q_*(\alpha)p_t(\alpha)(1 - p_t(\alpha)) - p_t(\alpha)\sum_{x \neq \alpha} q_*(x)p_t(x)$$
+
+\section{Paso 3: Simplificar la Expresión}
+
+Podemos reescribir:
+$$\sum_{x \neq \alpha} q_*(x)p_t(x) = \sum_{x=1}^{K} q_*(x)p_t(x) - q_*(\alpha)p_t(\alpha) = E[R_t] - q_*(\alpha)p_t(\alpha)$$
+
+Sustituyendo:
+$$\frac{\partial E[R_t]}{\partial H_t(\alpha)} = q_*(\alpha)p_t(\alpha)(1 - p_t(\alpha)) - p_t(\alpha)(E[R_t] - q_*(\alpha)p_t(\alpha))$$
+
+$$= q_*(\alpha)p_t(\alpha) - q_*(\alpha)p_t^2(\alpha) - p_t(\alpha)E[R_t] + q_*(\alpha)p_t^2(\alpha)$$
+
+$$= q_*(\alpha)p_t(\alpha) - p_t(\alpha)E[R_t]$$
+
+$$= p_t(\alpha)(q_*(\alpha) - E[R_t])$$
+
+\subsubsection{Paso 4: El Problema del Gradiente Ascendente Estocástico}
+
+En la práctica, \textbf{no conocemos $q_*(\alpha)$} para todas las acciones. Solo observamos:
+\begin{itemize}
+    \item La acción seleccionada $A_t$
+    \item La recompensa obtenida $R_t$
+\end{itemize}
+
+Por tanto, necesitamos \textbf{estimar} el gradiente usando solo esta información limitada.
+
+\subsubsection{Paso 5: Aproximación Estocástica del Gradiente}
+
+Del Paso 3 obtuvimos:
+$$\frac{\partial E[R_t]}{\partial H_t(\alpha)} = p_t(\alpha)(q_*(\alpha) - E[R_t])$$
+
+\textbf{Idea clave}: En lugar de usar todos los $q_*(x)$, usamos solo la información de la acción seleccionada.
+
+Para la acción seleccionada $A_t$, tenemos la observación $R_t \approx q_*(A_t)$.
+
+\subsubsection{Paso 6: Construcción del Estimador}
+
+Construimos un estimador no sesgado del gradiente:
+
+\textbf{Si $\alpha = A_t$ (acción seleccionada)}:
+\begin{itemize}
+    \item Sabemos que $R_t$ es una estimación de $q_*(A_t)$
+    \item Estimamos: $\frac{\partial E[R_t]}{\partial H_t(\alpha)} \approx p_t(\alpha)(R_t - E[R_t])$
+\end{itemize}
+
+\textbf{Si $\alpha \neq A_t$ (acción no seleccionada)}:
+\begin{itemize}
+    \item No observamos $q_*(\alpha)$ directamente
+    \item Pero por simetría del problema, el efecto debe ser proporcional a $p_t(\alpha)$
+    \item Estimamos: $\frac{\partial E[R_t]}{\partial H_t(\alpha)} \approx -p_t(\alpha)(R_t - E[R_t])$
+\end{itemize}
+
+\subsubsection{Paso 7: Introducir el Baseline}
+
+Como $E[R_t]$ también es desconocido, lo reemplazamos por un baseline $C$:
+\begin{itemize}
+    \item $C$ puede ser cualquier constante (típicamente el promedio de recompensas pasadas)
+    \item Esto no introduce sesgo porque $E[C] = C$ es constante
+\end{itemize}
+
+\subsubsection{Paso 8: La Regla de Actualización Final}
+
+Aplicando $H_{t+1}(\alpha) = H_t(\alpha) + c \frac{\partial E[R_t]}{\partial H_t(\alpha)}$ con $c = \alpha$:
+
+\textbf{Si $\alpha = A_t$ (acción seleccionada)}:
+$$H_{t+1}(\alpha) = H_t(\alpha) + \alpha \cdot p_t(\alpha)(R_t - C)$$
+
+Pero recordemos que de las derivadas de SOFTMAX sabemos que para $\alpha = A_t$:
+$$\frac{\partial p_t(A_t)}{\partial H_t(\alpha)} = p_t(\alpha)(1 - p_t(\alpha))$$
+
+El factor correcto es $(1 - p_t(\alpha))$, por tanto:
+$$H_{t+1}(\alpha) = H_t(\alpha) + \alpha(R_t - C)(1 - p_t(\alpha))$$
+
+\textbf{Si $\alpha \neq A_t$ (acción no seleccionada)}:
+$$H_{t+1}(\alpha) = H_t(\alpha) + \alpha \cdot (-p_t(\alpha))(R_t - C)$$
+$$= H_t(\alpha) - \alpha(R_t - C)p_t(\alpha)$$
+
+\subsubsection{Verificación de Consistencia}
+
+Podemos verificar que este estimador es no sesgado:
+
+$$E\left[\sum_{\alpha=1}^{K} \frac{\partial E[R_t]}{\partial H_t(\alpha)}\right] = E\left[(1-p_t(A_t))(R_t - C) - \sum_{\alpha \neq A_t} p_t(\alpha)(R_t - C)\right]$$
+
+$$= E\left[(R_t - C)\left(1 - p_t(A_t) - \sum_{\alpha \neq A_t} p_t(\alpha)\right)\right]$$
+
+$$= E\left[(R_t - C)(1 - \sum_{\alpha=1}^{K} p_t(\alpha))\right] = E[(R_t - C) \cdot 0] = 0$$
+
+Esto confirma que nuestro estimador preserva la propiedad de que la suma de todos los gradientes es cero.
+
+Por lo tanto:
+$$H_{t+1}(\alpha) = \begin{cases}
+H_t(\alpha) + \alpha(R_t - C)(1 - p_t(\alpha)) & \text{si } \alpha = A_t \\
+H_t(\alpha) - \alpha(R_t - C)p_t(\alpha) & \text{si } \alpha \neq A_t
+\end{cases}$$
+
+\subsubsection{Interpretación}
+
+\begin{enumerate}
+    \item \textbf{Acción seleccionada} ($\alpha = A_t$): 
+    \begin{itemize}
+        \item Si $R_t > C$: aumenta $H_t(\alpha) \rightarrow$ aumenta $p_t(\alpha)$
+        \item Si $R_t < C$: disminuye $H_t(\alpha) \rightarrow$ disminuye $p_t(\alpha)$
+    \end{itemize}
+    
+    \item \textbf{Acciones no seleccionadas} ($\alpha \neq A_t$):
+    \begin{itemize}
+        \item Si $R_t > C$: disminuye $H_t(\alpha) \rightarrow$ disminuye $p_t(\alpha)$
+        \item Si $R_t < C$: aumenta $H_t(\alpha) \rightarrow$ aumenta $p_t(\alpha)$
+    \end{itemize}
+    
+    \item \textbf{El baseline $C$}: No afecta el valor esperado del gradiente, pero reduce la varianza
+\end{enumerate}
+
 \end{document}

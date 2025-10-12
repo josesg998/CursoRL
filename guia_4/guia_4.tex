@@ -1,0 +1,353 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{listings}
+\usepackage{enumitem}
+\usepackage{geometry}
+\geometry{margin=2.5cm}
+\usepackage[utf8]{inputenc} % allow utf-8 input
+
+\usepackage{listings}
+\usepackage{xcolor}
+
+% Define colors
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+% Configure listings
+\lstdefinestyle{mystyle}{
+  backgroundcolor=\color{backcolour}, 
+  commentstyle=\color{codegreen},
+  keywordstyle=\color{magenta},
+  numberstyle=\tiny\color{codegray},
+  stringstyle=\color{codepurple},
+  basicstyle=\ttfamily\footnotesize,
+  breakatwhitespace=false,   
+  breaklines=true,       
+  captionpos=b,        
+  keepspaces=true,       
+  numbers=left,        
+  numbersep=5pt,      
+  showspaces=false,      
+  showstringspaces=false,
+  showtabs=false,      
+  tabsize=2
+}
+
+\lstset{style=mystyle}
+
+
+\setlength{\parindent}{0pt} % Eliminar sangría de primera línea en todos los párrafos
+% add space between paragraphs
+\setlength{\parskip}{1em}
+
+% agregar carpeta imagenes
+\usepackage{graphicx}
+\graphicspath{ {../imagenes/} }
+
+\title{Aprendizaje Reforzado: Guía 4: Métodos Monte Carlo}
+\author{José Saint Germain}
+
+\begin{document}
+
+\maketitle
+
+\section{Ejercicio 1} % TODO
+
+Considere un proceso de decisión de Markov (MDP) con dos estados: uno terminal y otro no-terminal.
+Existe sólo una acción que lleva del estado no-terminal al estado terminal con probabilidad 1-p y 
+del estado no-terminal a sí mismo con probabilidad p. La recompensa es +1 en todas las
+transiciones y el factor de descuento es $\gamma = 1$. Suponga que observa un episodio con
+10 iteraciones y un retorno de 10.
+
+\begin{enumerate}
+    \item ¿Cuáles son las estimaciones Monte Carlo de primer-visita y de cada-visita
+    del valor del estado no-terminal basadas en ese episodio?
+    \item Compare los valores de estado obtenidos con el teórico p=0.9. Saque conclusiones.
+\end{enumerate}
+
+\subsection{Resolución}
+
+\subsubsection{Parte 1}
+
+En el método de primera visita, solo consideramos la primera vez que visitamos el estado no-terminal.
+
+\begin{itemize}
+    \item \textbf{Primera visita al estado no-terminal:} tiempo $t=0$
+    \item \textbf{Retorno desde $t=0$:} Como $\gamma = 1$, el retorno es la suma de todas las recompensas futuras:
+    
+    $$G_0 = r_1 + r_2 + r_3 + \cdots + r_{10} = 1 + 1 + 1 + \cdots + 1 = 10$$
+\end{itemize}
+
+En el método de cada visita, consideramos todas las veces que visitamos el estado no-terminal.
+
+\begin{itemize}
+    \item \textbf{Visita en $t=0$:} $G_0 = 10$
+    \item \textbf{Visita en $t=1$:} $G_1 = 9$
+    \item \textbf{Visita en $t=2$:} $G_2 = 8$
+    \item \textbf{Visita en $t=3$:} $G_3 = 7$
+    \item \textbf{Visita en $t=4$:} $G_4 = 6$
+    \item \textbf{Visita en $t=5$:} $G_5 = 5$
+    \item \textbf{Visita en $t=6$:} $G_6 = 4$
+    \item \textbf{Visita en $t=7$:} $G_7 = 3$
+    \item \textbf{Visita en $t=8$:} $G_8 = 2$
+    \item \textbf{Visita en $t=9$:} $G_9 = 1$
+\end{itemize}
+
+\textbf{Estimación de cada visita:}
+$$V_{\text{every}}(S_0) = \frac{1}{10}\sum_{i=0}^{9} G_i = \frac{10 + 9 + 8 + 7 + 6 + 5 + 4 + 3 + 2 + 1}{10} = \frac{55}{10} = 5.5$$
+
+\subsubsection{Parte 2}
+
+Para calcular el valor teórico del estado no-terminal con $p = 0.9$, usamos la ecuación de Bellman:
+
+$$V(S_0) = \mathbb{E}[R + \gamma V(S')]$$
+
+donde:
+\begin{itemize}
+    \item Con probabilidad $p = 0.9$: transición a terminal, $R=1$, $V(S_T) = 0$
+    \item Con probabilidad $1-p = 0.1$: transición a sí mismo, $R=1$, $V(S_0)$
+\end{itemize}
+
+La ecuación queda:
+$$V(S_0) = p \cdot (1 + \gamma \cdot 0) + (1-p) \cdot (1 + \gamma \cdot V(S_0))$$
+$$= p \cdot 1 + (1-p) \cdot (1 + 1 \cdot V(S_0))$$
+$$= p + (1-p) + (1-p)V(S_0)$$
+
+Resolviendo para $V(S_0)$:
+$$V(S_0) = 1 + (1-p)V(S_0)$$
+$$V(S_0) - (1-p)V(S_0) = 1$$
+$$pV(S_0) = 1$$
+$$V(S_0) = \frac{1}{p}$$
+
+Para $p = 0.9$:
+$$V_{\text{teórico}}(S_0) = \frac{1}{0.9} = \frac{10}{9} \approx 1.111$$
+
+En conclusión, con una sola visita la estimación Monte Carlo es muy sesgada, mientras
+que con varias visitas se acerca más al valor teórico, pero sigue siendo una
+estimación alta. Esto se debe a que con $p=0.9$, el agente tiende a permanecer
+mucho tiempo en el estado no-terminal y acumula muchas recompensas antes de
+transicionar al estado terminal. % TODO CHEQUEAR
+
+\section{Ejercicio 2}
+
+Demostrar que la política $\epsilon-Greedy$, definida de la siguiente manera
+
+\begin{equation*}
+    \pi(a|s) = 
+    \begin{cases} 
+      1 - \epsilon + \frac{\epsilon}{|A(s)|} & \text{si } a = a^* \\
+      \frac{\epsilon}{|A(s)|} & \text{si } a \neq a^*
+    \end{cases}
+\end{equation*}
+
+es una distribución de probabilidad válida, donde $|A(s)|$ es el número de acciones
+posibles para el estado $s,\epsilon<1$ es un número positivo pequeño, y $a^*$ es la
+acción óptima (decisión greedy) para el estado s ¿Hay que pedir alguna condición sobre
+$\epsilon$?
+
+\subsection{Resolución}
+
+Para que $\pi(a|s)$ sea una distribución de probabilidad válida, debe cumplir dos condiciones:
+\begin{enumerate}
+    \item Normalización: La suma de las probabilidades de todas las acciones posibles debe ser igual a 1, es decir, $\sum_{a \in A(s)} \pi(a|s) = 1$.
+    \item No negatividad: $\pi(a|s) \geq 0$ para todas las acciones $a$ en el conjunto de acciones $A(s)$.
+\end{enumerate}
+
+\subsubsection{No negatividad}
+
+Para $A\neq a^* \pi(a|s) = \frac{\epsilon}{|A(s)|} \geq 0$.
+Esto se puede demostrar que es mayor o igual a 0 si $\epsilon \geq 0$.
+
+Si $A=a^* \pi(a|s) = 1-\epsilon + \frac{\epsilon}{|A(s)|} \geq 0$
+
+Se puede reescribir como $1-\epsilon(1-\frac{1}{|A(s)|})$
+
+$1-\epsilon(1-\frac{1}{|A(s)|}) \geq 0$, entonces la expresión va a ser mayor o
+igual a 0 si $1\geq \epsilon(1-\frac{1}{|A(s)|})$.
+
+De aquí surge una condición necesaria para $\epsilon$: $\epsilon \leq \frac{1}{|A(s)|-1}$.
+
+\subsubsection{Normalización}
+
+$$\sum_a \pi(a|s) = \pi(a^*|s) + \sum_{a\neq a^*} \pi(a|s)$$
+
+Remplazando los valores de $\pi(a|s)$:
+
+$$= 1 - \epsilon + \frac{\epsilon}{|A(s)|} + \sum_{a\neq a^*} \frac{\epsilon}{|A(s)|}$$
+
+Remplazamos por el número de acciones menos 1 (la acción óptima):
+
+$$= 1 - \epsilon + \frac{\epsilon}{|A(s)|} + (|A(s)|-1) \frac{\epsilon}{|A(s)|}$$
+
+$$= 1 - \epsilon + \frac{\epsilon}{|A(s)|} + \epsilon - \frac{\epsilon}{|A(s)|}$$
+
+$$= 1 - \epsilon + \epsilon = 1$$
+
+Por lo tanto, se cumple la condición de normalización.
+
+\section{Ejercicio 3}
+
+Se dice que una política $\pi$ es $\epsilon-soft$ si 
+$\pi(a|s) \geq \frac{\epsilon}{|A(s)|} \forall a \neq a^* y \forall s$.
+Demostrar que la política $\epsilon-Greedy \pi'(a|s)\geq\frac{\epsilon}{|A(s)|}$
+(definida en el ejercicio 1) es igual o mejor que cualquier política 
+$\epsilon-soft$, es decir, $v_{\pi'}(s) \geq v_{\pi}(s) \forall s$.
+
+\subsection{Resolución}
+
+Con la información recibida, tenemos que demostrar (por el teorema de la 
+mejora de la política) que:
+$$q_\pi(s,\pi'(s)) \geq \nu_\pi(s)$$
+
+Sabemos que:
+$$q_{\pi}(s,\pi'(s)) = E[G_t|S_t=s,A_t=\pi'(s)]$$
+como $A_t=\pi'(s)$ es determinístico, lo podemos reescribir:
+$$ q_{\pi}(s,\pi'(s)) = E_\pi[G_t|S_t=s] = \sum_g gp(g|s)$$
+hacemos la probabilidad marginal:
+$$= \sum_g \sum_a p(g,a|s)$$
+aplicamos el teorema de Bayes:
+$$= \sum_g \sum_a p(g|s,a)p(a|s)$$
+sabiendo que $p(a|s) = \pi'(a|s)$ y $\sum_g p(g|s,a) = q(s,a)$:
+$$q_{\pi}(s,\pi'(s))= \sum_a \pi'(a|s)q(s,a)$$
+
+esta sumatoria se puede separar en la acción óptima y las demás:
+$$= \pi'(a^*|s)q(s,a^*) + \sum_{a\neq a^*} \pi'(a|s)q(s,a)$$
+remplazamos los valores de $\pi'(a|s)$:
+$$= (1-\epsilon + \frac{\epsilon}{|A(s)|})q_\pi(s,a^*) + \sum_{a\neq a^*} \frac{\epsilon}{|A(s)|}q_\pi(s,a)$$
+$$= (1-\epsilon)q_\pi(s,a^*) + \frac{\epsilon}{|A(s)|} \sum_{a} q_\pi(s,a)$$
+distribuyendo $q_\pi(s,a^*)$:
+$$ q_\pi(s,a^*) (1-\epsilon) + q_\pi(s,a^*) \frac{\epsilon}{|A(s)|} + \frac{\epsilon}{|A(s)|} \sum_{a\neq a^*} q_\pi(s,a)$$
+junto las sumatorias $\forall a$:
+$$= q_\pi(s,a^*) (1-\epsilon) + \frac{\epsilon}{|A(s)|} \sum_{a} q_\pi(s,a)$$
+remplazo $q_\pi(s,a)$ por:
+$$= q_\pi(s,a^*) = \sum_a c(a) q_\pi(s,a) \text{ si} \sum_a c(a) = 1 $$
+
+Asumimos que $q \sum_a c(a) q_\pi(s,a) \leq q_\pi(s,a^*)$
+
+$$ q_\pi(s,a^*) \geq \frac{\epsilon}{|A(s)|}\sum_{|A(s)|}q_\pi(s,a)+(1-\epsilon)\sum_a c(a) q_\pi(s,a)$$
+
+Elijo unos codifienctes definidos como:
+$$ c(a) = \frac{\pi(a|s) - \frac{\epsilon}{|A(s)}}{1-\epsilon}$$
+sabiendo que la sumatoria de todos los coeficientes es 1:
+$$ \sum_a c(a) = \sum_a \frac{\pi(a|s) - \frac{\epsilon}{|A(s)}}{1-\epsilon} = \frac{1 - \epsilon}{1-\epsilon} = 1$$
+remplazando c(a) en la desigualdad:
+
+$$ q_\pi(s,a^*) \geq \frac{\epsilon}{|A(s)|}\sum_{|A(s)|}q_\pi(s,a)+\sum_a \pi(a|s)q_\pi(s,a) - \frac{\epsilon}{|A(s)|} \sum_a q_\pi(s,a)$$
+cancelo los términos semejantes:
+$$ q_\pi(s,a^*) \geq \sum_a \pi(a|s)q_\pi(s,a) \stackrel{\text{definición}}{=} v_\pi(s)$$
+entonces,
+$$ q_\pi(s,\pi'(s)) \geq v_\pi(s)$$
+que es equivalente (por teorema de la mejora de la política) a:
+$$ \nu_{\pi'}(s) \geq \nu_\pi(s)$$
+
+\section{Ejercicio 4}
+
+Dada una trayectoria de acciones y estados $A_t,S_{t+1},A_{t+1},\dots,S_T$ en un
+proceso de decisión markoviano (MDP) con política $\pi(a|s)$, demostrar que la 
+probabilidad conjunta de esa trayectoria se puede escribir como:
+
+$$P[S_t,A_t,S_{t+1},A_{t+1},\dots,S_T] = \prod_{k=t}^{T-1} \pi(A_k|S_k)p(S_{k+1}|S_k,A_k)$$
+
+Nota: considere $P[S_t]=1$.
+
+\subsection{Resolución}
+
+Por la regla de la cadena:
+\begin{align*}
+P[S_t, A_t, S_{t+1}, A_{t+1}, \ldots, S_T] = P[S_t] &\cdot P[A_t|S_t] \\
+&\cdot P[S_{t+1}|S_t, A_t] \\
+&\cdot P[A_{t+1}|S_t, A_t, S_{t+1}] \\
+&\cdot P[S_{t+2}|S_t, A_t, S_{t+1}, A_{t+1}] \\
+&\cdots
+\end{align*}
+
+En un MDP el siguiente estado depende solo del estado y acción actuales:
+$$P[S_{k+1}|S_t, A_t, \ldots, S_k, A_k] = P(S_{k+1}|S_k, A_k)$$
+    
+Y por política estocástica, la acción depende solo del estado actual:
+$$P[A_k|S_t, A_t, \ldots, S_k] = \pi(A_k|S_k)$$
+
+Aplicando estas propiedades:
+$$P[S_t, A_t, S_{t+1}, \ldots, S_T] = P[S_t] \prod_{k=t}^{T-1} \pi(A_k|S_k) \cdot P(S_{k+1}|S_k, A_k)$$
+
+Dado que $P[S_t] = 1$, obtenemos:
+
+$$P[S_t, A_t, S_{t+1}, A_{t+1}, \ldots, S_T] = \prod_{k=t}^{T-1} \pi(A_k|S_k)P(S_{k+1}|S_k, A_k)$$
+
+
+\section{Ejercicio 5}
+
+Usando el resultado del ejercicio 4, demostrar que el importance-sampling ratio 
+correspondiente a la aplicación del método off-policy es:
+
+$$ \rho_{t:T-1} = \prod_{k=t}^{T-1} \frac{\pi(A_k|S_k)}{b(A_k|S_k)} $$
+
+\subsection{Resolución}
+
+Sabiendo que:
+$$P_{\pi}[S_t, A_t, S_{t+1}, A_{t+1}, \ldots, S_T] = \prod_{k=t}^{T-1} \pi(A_k|S_k)P(S_{k+1}|S_k, A_k)
+$$
+
+De manera análoga, la probabilidad de la misma trayectoria bajo la política de comportamiento $b$ es:
+$$P_{b}[S_t, A_t, S_{t+1}, A_{t+1}, \ldots, S_T] = \prod_{k=t}^{T-1} b(A_k|S_k)P(S_{k+1}|S_k, A_k)$$
+
+El \textit{importance-sampling ratio} se define como el cociente entre la probabilidad de la trayectoria bajo la política objetivo y la probabilidad bajo la política de comportamiento:
+
+$$\rho_{t:T-1} = \frac{P_{\pi}[S_t, A_t, S_{t+1}, A_{t+1}, \ldots, S_T]}{P_{b}[S_t, A_t, S_{t+1}, A_{t+1}, \ldots, S_T]} \\[10pt]$$
+$$= \frac{\prod_{k=t}^{T-1} \pi(A_k|S_k)P(S_{k+1}|S_k, A_k)}{\prod_{k=t}^{T-1} b(A_k|S_k)P(S_{k+1}|S_k, A_k)} \\[10pt]$$
+$$= \frac{\prod_{k=t}^{T-1} \pi(A_k|S_k) \cdot \prod_{k=t}^{T-1} P(S_{k+1}|S_k, A_k)}{\prod_{k=t}^{T-1} b(A_k|S_k) \cdot \prod_{k=t}^{T-1} P(S_{k+1}|S_k, A_k)}$$
+
+simplificamos la fracción:
+
+$$= \prod_{k=t}^{T-1} \frac{\pi(A_k|S_k)}{b(A_k|S_k)}$$
+
+\section{Ejercicio 6}
+
+Demostrar que la fórmula de la implementación incremental de un promedio ponderado, es decir,
+el promedio ponderado
+
+$$ V_n = \frac{\sum_{k=1}^{n-1} W_k G_k}{\sum_{k=1}^{n-1} W_k} $$
+
+puede calcularse incrementalmente con la fórmula:
+
+$$ V_{n+1} = V_n + \frac{W_n}{C_n}[G_n - V_n] $$
+
+con $C_{n+1} = C_n + W_{n+1}$.
+
+\subsection{Resolución}
+
+Sea $C_n = \sum_{k=1}^{n} W_k$ el acumulador de pesos hasta el paso $n$. Entonces:
+$$V_n = \frac{\sum_{k=1}^{n} W_k G_k}{C_n}$$
+
+Por definición:
+$$V_{n+1} = \frac{\sum_{k=1}^{n+1} W_k G_k}{C_{n+1}} = \frac{\sum_{k=1}^{n+1} W_k G_k}{C_n + W_{n+1}}$$
+
+Podemos escribir:
+$$V_{n+1} = \frac{\sum_{k=1}^{n} W_k G_k + W_{n+1}G_{n+1}}{C_n + W_{n+1}}$$
+
+Sabemos que $\sum_{k=1}^{n} W_k G_k = V_n \cdot C_n$, entonces:
+$$V_{n+1} = \frac{V_n C_n + W_{n+1}G_{n+1}}{C_n + W_{n+1}}$$
+
+Como $C_{n+1} = C_n + W_{n+1}$:
+$$V_{n+1} = \frac{V_n C_n + W_{n+1}G_{n+1}}{C_{n+1}} \\[8pt]$$
+$$= \frac{V_n C_n}{C_{n+1}} + \frac{W_{n+1}G_{n+1}}{C_{n+1}}$$
+
+Podemos reescribir el primer término:
+$$V_{n+1} = \frac{V_n C_n}{C_{n+1}} + \frac{W_{n+1}G_{n+1}}{C_{n+1}} \\[8pt]$$
+$$= \frac{V_n(C_{n+1} - W_{n+1})}{C_{n+1}} + \frac{W_{n+1}G_{n+1}}{C_{n+1}} \\[8pt]$$
+$$= \frac{V_n C_{n+1} - V_n W_{n+1}}{C_{n+1}} + \frac{W_{n+1}G_{n+1}}{C_{n+1}} \\[8pt]$$
+$$= V_n - \frac{V_n W_{n+1}}{C_{n+1}} + \frac{W_{n+1}G_{n+1}}{C_{n+1}}$$
+
+$$V_{n+1} = V_n + \frac{W_{n+1}G_{n+1} - V_n W_{n+1}}{C_{n+1}} \\$$
+$$= V_n + \frac{W_{n+1}}{C_{n+1}}(G_{n+1} - V_n)$$
+
+Si reemplazamos $n+1$ por $n$ en la fórmula final (es decir, consideramos la actualización del paso $n-1$ al paso $n$), obtenemos:
+
+$$V_{n+1} = V_n + \frac{W_n}{C_n}[G_n - V_n]$$
+
+\end{document}

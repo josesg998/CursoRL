@@ -1,0 +1,468 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{listings}
+\usepackage{enumitem}
+\usepackage{geometry}
+\geometry{margin=2.5cm}
+\usepackage[utf8]{inputenc} % allow utf-8 input
+
+\usepackage{listings}
+\usepackage{xcolor}
+
+% Define colors
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+% Configure listings
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+
+\lstset{style=mystyle}
+
+
+\setlength{\parindent}{0pt} % Eliminar sangría de primera línea en todos los párrafos
+% add space between paragraphs
+\setlength{\parskip}{1em}
+
+% agregar carpeta imagenes
+\usepackage{graphicx}
+\graphicspath{ {../imagenes/} }
+
+
+\title{Aprendizaje Reforzado: Guía 2: Procesos de decisión Markovianos}
+\author{José Saint Germain}
+
+\begin{document}
+
+\maketitle
+
+\section{Ejercicio 1}
+
+Para un proceso de Markov donde $P_{ss'} = P[S_{t+1} = s' | S_t = s]$ 
+son las probabilidades de transición, demostrar que la probabilidad de un
+episodio se puede escribir como el producto de las probabilidades de transición
+y la condición inicial, es decir:
+$$P[S_0=s_0, S_1=s_1, ..., S_t=s_t] = P_{s_{t}s_{t+1}} P_{s_{t}s_{t-1}s_t} \dots P_{s_1 s_2}P_{s_0 s_1}P_{s_{0'}}$$
+
+Es decir, demostrar que la probabilidad conjunta de un episodio (serie de estados)
+se puede calcular por el producto de las transiciones multiplicado por la probabildad
+del estado inicial.
+
+\subsection{Resolución}
+
+Empezamos demostrándolo con la probabilidad conjunta de tres estados:
+
+Por teorema de Bayes sabemos que:
+$$ P(S_0,S_1,S_2) = P(S_2|S_1,S_0)P(S_1,S_0) $$
+
+Sin embargo $P(S_2|S_1,S_0) = P(S_2|S_1)$ por la propiedad de Markov, por lo que:
+
+$$ P(S_0,S_1,S_2) = P(S_2|S_1)P(S_1,S_0) $$
+
+Luego, volvemos a descomponer $P(S_1,S_0)$ con el teorema de Bayes:
+
+$$ P(S_0,S_1,S_2) = P(S_2|S_1)P(S_1|S_0)P(S_0) $$
+
+Realizando una inducción, podemos ver que para $n$ estados se cumple:
+$$ P(S_0,S_1,...,S_n) = P(S_n|S_{n-1})P(S_{n-1}|S_{n-2})...P(S_1|S_0)P(S_0) $$
+
+\section{Ejercicio 2}
+
+Para el proceso de Markov de la figura, calcular la probabilidad de
+cada uno de los siguientes episodios condicionados al estado inicial C1:
+
+\begin{enumerate}
+    \item C1, C2, C3, Pass, Sleep
+    \item C1, FB, FB, C1, C2, Sleep
+    \item C1, C2, C3, Pub, C2, C3, Pass, Sleep
+    \item C1, FB, FB, C1, C2, C3, Pub, C1, FB, FB, FB, C1, C2, C3, Pub, C2, Sleep
+\end{enumerate}
+
+\subsection{Resolución}
+
+\subsubsection{Inciso 1}
+
+\begin{align}
+    \tag{1} &= P(C1,C2,C3,Pass,Sleep|C1) \\
+    \tag{2} &= P(C2|C1)P(C3|C2)P(Pass|C3)P(Sleep|Pass)\\
+    \tag{4} &= 0.5 * 0.8 * 0.6 * 1 = 0.24
+\end{align}
+
+\subsubsection{Inciso 2}
+
+\begin{align}
+\tag{1} &= P(C1,FB,FB,C1,C2,Sleep|C1) \\
+\tag{2} &= P(FB|C1)P(FB|FB)P(C1|FB)P(C2|C1)P(Sleep|C2) \\
+\tag{4} &= 0.5 * 0.9 * 0.1 * 0.5 * 0.2 = 0.0045 
+\end{align}
+
+\subsubsection{Inciso 3}
+
+\begin{align}
+\tag{1} &= P(C1,C2,C3,Pub,C2,C3,Pass,Sleep|C1) \\
+\tag{2} &= P(C2|C1)P(C3|C2)P(Pub|C3)P(C2|Pub)P(C3|C2)P(Pass|C3)P(Sleep|Pass) \\
+\tag{4} &= 0.5 * 0.8 * 0.4 * 0.4 * 0.8 * 0.6 * 1 = 0.03073
+\end{align}
+
+\subsection{Inciso 4}
+
+\begin{align}
+\tag{1} &= P(C1,FB,FB,C1,C2,C3,\dots ,Sleep|C1) \\
+\tag{2} &= P(FB|C1)P(FB|FB)P(C1|FB)P(C2|C1)P(C3|C2),\dots,P(Sleep|C2) \\
+\tag{4} &= .5 * .9 * .1 * .5 * .8 * .4 * .2 * .5 * .9 * .9 * .1 * .5 * .8 * .4 * .4 * .2 = 7.46e^{-07}
+\end{align}
+
+\section{Ejercicio 3}
+
+Demostrar que si la recompensa es constante $R_t = R \forall t$, 
+y el factor de descuento es $\gamma<1$, entonces $$G_t = \frac{R}{1-\gamma}$$
+
+\subsection{Resolución}
+
+Para resolver el ejercicio recordamos la definición de una serie geométrica:
+$$ S= \sum_{i=0}^n q^n = \frac{1-q^{n+1}}{1-q} $$
+y que si $|q|<1$ entonces:
+$$ S= \sum_{i=0}^\infty q^n = \frac{1}{1-q} $$
+
+Entonces, si el retorno es:
+$$ G_t = \sum_{k=0}^\infty \gamma^k R_{t+k+1} $$
+y $R_t$ es constante, podemos reescribir y utilizar la serie geométrica:
+$$ G_t = \sum_{k=0}^\infty \gamma^k R = R \sum_{k=0}^\infty \gamma^k \stackrel{\text{serie geom}}{=} R \frac{1}{1-\gamma} = \frac{R}{1-\gamma} $$
+
+\section{Ejercicio 4}
+
+Para el proceso de Recompensas Markoviano (MRP) de la figura,
+calcular el retorno $G_0$ de los episodios del ejercicio 2
+con estado inicial C1 y $\gamma=0.5$.
+
+\subsection{Resolución}
+
+\subsubsection{Inciso 1}
+
+\begin{align}
+\tag{1} &= R_{C1} + \gamma R_{C2} + \gamma^2 R_{C3} + \gamma^3 R_{PASS}  + \gamma^4 R_{SLEEP} \\
+\tag{2} &= -2     + 0.5 * -2      + 0.5^2 * -2      + 0.5^3 * 10         + 0.5^4 * 0 \\
+\tag{3} &= -2 + -1 + -0.5 + 1.25 + 0 = -2.25
+\end{align}
+
+\subsubsection{Inciso 2}
+\begin{align}
+\tag{1} &= R_{C1} + \gamma R_{FB} + \gamma^2 R_{FB} + \gamma^3 R_{C1} + \gamma^4 R_{C2} + \gamma^5 R_{SLEEP} \\
+\tag{2} &= -2     + 0.5 * -1      + 0.5^2 * -1      + 0.5^3 * -2      + 0.5^4 * -2      + 0.5^5 * 0 \\
+\tag{3} &= -2 + -0.5 + -0.25 + -0.25 + -0.125 + 0 = -3.125
+\end{align}
+
+\subsubsection{Inciso 3}
+\begin{align}
+\tag{1} &= R_{C1} + \gamma R_{C2} + \gamma^2 R_{C3} + \gamma^3 R_{PUB} + \gamma^4 R_{C2} + \gamma^5 R_{C3} + \gamma^6 R_{PASS} + \gamma^7 R_{SLEEP} \\
+\tag{2} &= -2     + 0.5 * -2      + 0.5^2 * -2      + 0.5^3 * 1      + 0.5^4 * -2      + 0.5^5 * -2      + 0.5^6 * 10         + 0.5^7 * 0 \\
+\tag{3} &= -2     + -1            + -0.5            + 0.125            + -0.125           + -0.0625          + 0.15625            + 0  = 3.40625
+\end{align}
+
+\subsubsection{Inciso 4}
+\begin{align}
+\tag{1} &= R_{C1} + \gamma R_{FB} + \gamma^2 R_{FB} + \gamma^3 R_{C1} + \dots + \gamma^{16} R_{SLEEP} \\
+\tag{2} &= -2     + 0.5 * -1      + 0.5^2 * -1      + 0.5^3 * -2      + \dots + 0.5^{16} * 0 \\
+\tag{3} &= -3.196044921875
+\end{align}
+
+\section{Ejercicio 5}
+
+Demostrar que si $\gamma = 0$ y $R_t = R(S_t)$ (la recompensa depende del estado), entonces
+$$ \nu(s) = \sum_{s' \in S} P(S_{t+1} = s'| S_t = s) R(S_{t+1})$$.
+
+\subsection{Resolución}
+
+Si $\gamma = 0$ entonces el retorno es:
+$$ G_t = R_{t+1} $$
+
+Luego, el valor de un estado es:
+$$ \nu(s) = E[G_t | S_t = s] = E[R_{t+1} | S_t = s] $$
+
+Y por definición de esperanza condicional:
+$$ \nu(s) = \sum_{s' \in S} P(S_{t+1} = s'| S_t = s) R(S_{t+1})$$
+
+\section{Ejercicio 6}
+
+Demostrar la ecuación de Bellman para MRPs con N estados
+$$ \nu = R + \gamma P \nu $$
+
+donde $v \in \mathbb{R}^N$ es el vector de valores de los estados, $r \in \mathbb{R}^N$ es el vector de recompensas medias 
+partiendo de cada estado, $P \in \mathbb{R}^{N \times N}$ es la matriz de probabilidades de transiciones y 
+$\gamma$ es el factor de descuento.
+
+\subsection{Resolución}
+
+Recordando la definición de valor de un estado:
+$$ \nu(s) = E[G_t | S_t = s] $$
+
+Si $\gamma \neq 0$ se puede reescribir como:
+$$ \nu(s) = E[R_{t+1} + \gamma G_{t+1} | S_t = s] $$
+
+Distribuyendo la esperanza:
+$$ \nu(s) = E[R_{t+1} | S_t = s] + \gamma E[G_{t+1} | S_t = s] $$
+
+para un estado $s$ específico:
+$$ E[R_{t+1} | S_t = s] = \sum_{s'} P_{ss'} r_{s'} $$
+donde $r_{s'}$ es la recompensa media al transicionar al estado $s'$.
+
+A su vez, expresamos $\gamma E[G_{t+1} | S_t = s]$ como:
+$$ \gamma E[G_{t+1} | S_t = s] = \gamma \sum_{s'} P_{ss'} \nu(s') $$
+
+Finalmente, juntando todo:
+$$ \nu(s) = \sum_{s'} P_{ss'} r_{s'} + \gamma \sum_{s'} P_{ss'} \nu(s') $$
+
+factorizamos:
+$$ \nu(s) = \sum_{s'} P_{ss'} (r_{s'} + \gamma \nu(s')) $$
+
+Si expresamos esto en forma matricial, obtenemos:
+$$ \nu = R + \gamma P \nu $$
+
+\section{Ejercicio 7} % TODO
+
+[Programación] Resuelva la ecuación de Bellman para el MRP del ejercicio 4 por los siguientes métodos
+para $\gamma = 0,0.5,0.9$:
+
+\begin{enumerate}
+    \item Iterando $\nu_{n+1} = r + \gamma P \nu_n$
+    \item Usando algún método iterativo para resolver sistemas lineales, por ejemplo, usando eliminación Gaussiana (via numpy.linalg.solve())
+    \item Calculando la inversa de la matriz $ (I - \gamma P)$
+\end{enumerate}
+
+\subsection{Resolución}
+
+% python code
+% python code
+\begin{lstlisting}[language=Python]
+import numpy as np
+
+# matriz de transicion
+MATRIZ = np.array(    
+    [[0,.5,0 ,0,0,.5,0], # C1
+    [0,0 ,.8,0,0,0 ,.2], # C2
+    [0,0 ,0 ,.6,.4,0 ,0], # C3
+    [0,0 ,0 ,0,0 ,0 ,1], # PASS
+    [.2,.4,.4,0,0 ,0 ,0], # Pub
+    [.1,0 ,0,0 ,0,.9,0], # FB
+    [0,0 ,0,0 ,1,0 ,0]] # Sleep
+)
+
+# recompensas de cada estado
+R_C1 = -2
+R_C2 = -2
+R_C3 = -2
+R_PASS = 10
+R_SLEEP = 0
+R_FB = -1
+R_PUB = 1
+GAMMA = .5
+
+for gamma in [0,0.5,0.9]:
+    I = np.eye(7)
+    R = np.array([R_C1,R_C2,R_C3,R_PASS,R_PUB,R_FB,R_SLEEP])
+    
+    print("gamma =", gamma)
+    # Iterando
+    v = np.zeros(7)
+    for _ in range(100):
+        v = R + gamma * MATRIZ @ v
+    print("\tIterando", np.round(v,2))
+    
+    # Eliminacion Gaussiana
+    A = I - gamma * MATRIZ
+    v = np.linalg.solve(A,R)
+    print("\tGauss\t", np.round(v,2))
+    
+    # Inversa
+    A = I - gamma * MATRIZ
+    A_inv = np.linalg.inv(A)
+    v = A_inv @ R
+    print("\tInversa\t", np.round(v,2))
+\end{lstlisting}
+
+% output
+\begin{lstlisting}[language=Python]
+gamma = 0
+	Iterando [-2. -2. -2. 10.  1. -1.  0.]
+	Gauss	   [-2. -2. -2. 10.  1. -1.  0.]
+	Inversa	 [-2. -2. -2. 10.  1. -1.  0.]
+gamma = 0.5
+	Iterando [-2.89 -1.5   1.18 10.16  0.65 -2.08  0.32]
+	Gauss	   [-2.89 -1.5   1.18 10.16  0.65 -2.08  0.32]
+	Inversa	 [-2.89 -1.5   1.18 10.16  0.65 -2.08  0.32]
+gamma = 0.9
+	Iterando [-3.68  3.28  6.47 13.12  3.85 -7.    3.46]
+	Gauss	   [-3.68  3.28  6.47 13.12  3.85 -7.    3.46]
+	Inversa	 [-3.68  3.28  6.47 13.12  3.85 -7.    3.46]
+\end{lstlisting}
+
+\section{Ejercicio 8}
+
+Demostrar que, dada una política estocástica $\pi(a|s)$, la función de valor del par
+estado-acción puede escribirse como
+$$ \nu_\pi(s) = \sum_{s',r} p(s',r|s,a)[r + \gamma \nu_\pi(s')] $$
+
+\subsection{Resolución}
+
+Recordando la definición de la función de valor del par estado-acción:
+$$ \nu_\pi(s) = E[G_t | S_t = s] $$
+
+Si $\gamma \neq 0$ se puede reescribir como:
+
+$$ \nu_\pi(s) = E[R_{t+1} + \gamma G_{t+1} | S_t = s] $$
+
+Descomponemos la esperanza condicionando en todas las posibles acciones:
+
+$$ \nu_\pi(s) = \sum_a E_\pi[G_t|S_t = s,A_t = a] * P(A_t = a|S_t = s) $$
+
+Sabemos que $P(A_t = a|S_t = s) = \pi(a|s)$, y que $E_\pi[G_t|S_t = s,A_t = a] = q_\pi(a|s)$, por lo que:
+$$ \nu_\pi(s) = \sum_a \pi(a|s) q_\pi(a|s) $$
+
+\section{Ejercicio 9}
+
+Demostrar que, dada una política estocástica $\pi(a|s)$, la función de valor del par
+estado-acción puede escribirse como
+$$ q_\pi(s,a) = \sum_{s',r} p(s',r|s,a)[r + \gamma \nu_\pi(s')] $$
+
+\subsection{Resolución}
+
+Sabemos que la función de valor del par estado-acción es:
+$$ q_\pi(s,a) = E[G_t | S_t = s, A_t = a] $$
+
+Remplazamos $G_t$ por $R_{t+1} + \gamma G_{t+1}$:
+$$ q_\pi(s,a) = E[R_{t+1} + \gamma G_{t+1} | S_t = s, A_t = a] $$
+
+Distribuyendo la esperanza:
+$$ q_\pi(s,a) = E[R_{t+1} | S_t = s, A_t = a] + \gamma E[G_{t+1} | S_t = s, A_t = a] $$
+
+Descomponemos la esperanza en todas las posibles recompensas y estados para
+el primer término:
+$$ E[R_{t+1} | S_t = s, A_t = a] = \sum_r p(r|s,a)   \stackrel{\text{bayes}}{=} \sum_{s',r} p(s',r|s,a) r $$
+
+En el segundo término:
+$$ E[G_{t+1} | S_t = s, A_t = a] = \sum_g g p(g|s,a)$$
+
+Descomponemos $p(g|s,a)$ en todos los posibles estados siguientes:
+$$ p(g|s,a) = \sum_{s'} p(g|s',s,a) p(s'|s,a) $$
+Entonces queda:
+$$ \sum_g g \sum_{s'} p(g|s',s,a) p(s'|s,a) $$
+Sabemos que por la propiedad de Markov $p(g|s',s,a) = p(g|s')$:
+$$ \sum_g g \sum_{s'} p(g|s') p(s'|s,a) $$
+Además, $\nu_\pi(s') = \sum_g g p(g|s')$, por lo que:
+$$ \sum_{s'} \nu_\pi(s') p(s'|s,a) $$
+
+Remplazamos ambos términos en la ecuación final:
+$$ q_\pi(s,a) = \sum_{s',r} p(s',r|s,a) r + \gamma \sum_{s'} \nu_\pi(s') p(s'|s,a) $$
+Tomamos factor común:
+$$ q_\pi(s,a) = \sum_{s',r} p(s',r|s,a) [r + \gamma \nu_\pi(s')] $$
+
+\section{Ejercicio 10}
+
+Demostrar que la función de valor de estado óptima es:
+$$ \nu_*(s) = \max_a q_*(s,a) = \max_a \sum_{s',r} p(s',r|s,a)[r + \gamma \nu_*(s')] $$
+
+\subsection{Resolución}
+
+Recordamos que:
+
+$$ \nu(s) = E_\pi[G_t | S_t = s] $$
+$$ q_\pi(s,a) = E_\pi[G_t | S_t = s, A_t = a] $$
+
+y por el ejercicio 9:
+$$ q_\pi(s,a) = \sum_{s',r} p(s',r|s,a)[r + \gamma \nu_\pi(s')] $$
+
+A $q_*(s,a)$ la podemos expresar como:
+
+$$ q_*(s,a) = \max_\pi q_\pi(s,a) = \max_\pi \sum_{s',r} p(s',r|s,a)[r + \gamma \nu_\pi(s')] $$
+
+$$ = \sum_{s',r} p(s',r|s,a)[r + \gamma \max_\pi \nu_\pi(s')] $$
+$$ = \sum_{s',r} p(s',r|s,a)[r + \gamma \nu_*(s')] $$
+
+Luego, la función de valor de estado óptima es:
+$$ \nu_*(s) = \max_a q_*(s,a) = \max_a \sum_{s',r} p(s',r|s,a)[r + \gamma \nu_*(s')] $$
+
+\section{Ejercicio 11}
+
+Demostrar que la función de valor estado-acción verifica la siguiente ecuación:
+
+$$ q_\pi(s,a) = \sum_{s',r} p(s',r|s,a)[r + \gamma \sum_{a'} \pi(a'|s') q_\pi(s',a')] $$
+
+\subsection{Resolución}
+
+Recordamos la definición de la función de valor del par estado-acción:
+$$ q_\pi(s,a) = E[G_t | S_t = s, A_t = a]  = E_\pi[R_{t+1}+\gamma \sum_{k=0}^{\infty} \gamma^k R_{t+k+2}|s,a]$$
+
+Distribuyendo la esperanza:
+
+$$ q_\pi(s,a) = E[R_{t+1}|s,a] + \gamma E_\pi[\sum_{k=0}^{\infty} \gamma^k R_{t+k+2}|s,a] $$
+
+Reformulamos el primer término:
+$$ E[R_{t+1}|s,a] = \sum_{s',r} p(s',r|s,a) r $$
+
+Reformulando el segundo término, tomando $G_{t+1} = \sum_{k=0}^{\infty} \gamma^k R_{t+k+2}$:
+$$ E_\pi[G_{t+1}|s,a] = \sum_{g'} g' p(g'|s,a) $$
+Descomponemos $p(g'|s,a)$ en todos los posibles estados siguientes:
+$$ = \sum_{g'} g' \sum_{s',a'} p(g',s',a'|s,a) $$
+por teorema de Bayes:
+$$ = \sum_{g'} g' \sum_{s',a'} p(g'|s',a',s,a) p(s',a'|s,a) $$
+por la propiedad de Markov $p(g'|s',a',s,a) = p(g'|s',a')$:
+$$ = \sum_{g'} g' \sum_{s',a'} p(g'|s',a') p(s',a'|s,a) $$
+y por teorema de Bayes:
+$$ = \sum_{g'} g' \sum_{s',a'} p(g'|s',a') p(s'|s,a) \pi(a'|s') $$
+lo reescribimos como:
+$$ = \sum_{s',a'} \pi(a'|s') p(s'|s,a) \sum_{g'} g' p(g'|s',a') $$
+Sabemos que $q_\pi(s',a') = \sum_{g'} g' p(g'|s',a')$, por lo que:
+$$ = \sum_{s',a'} \pi(a'|s') p(s'|s,a) q_\pi(s',a') $$
+Separamos las sumatorias:
+$$ = \sum_{s'} p(s'|s,a) \sum_{a'} \pi(a'|s') q_\pi(s',a') $$
+introducimos la variable r:
+$$ = \sum_{s',r} p(s',r|s,a) \sum_{a'} \pi(a'|s') q_\pi(s',a') $$
+
+Finalmente, juntando todo:
+$$ q_\pi(s,a) = \sum_{s',r} p(s',r|s,a) r + \gamma \sum_{s',r} p(s',r|s,a) \sum_{a'} \pi(a'|s') q_\pi(s',a') $$
+
+Tomamos factor común:
+$$ q_\pi(s,a) = \sum_{s',r} p(s',r|s,a) [r + \gamma \sum_{a'} \pi(a'|s') q_\pi(s',a')] $$
+
+\section{Ejercicio 12}
+
+Demostrar que la función de valor de estado-acción óptima es:
+
+$$ q_*(s,a) = \sum_{s',r} p(s',r|s,a) [r + \gamma \max_{a'} q_*(s',a')] $$
+
+\subsection{Resolución}
+
+Definimos $q_*(s,a)$ como:
+$$ q_*(s,a) = \max_\pi q_\pi(s,a)$$
+
+Entonces queremos demostrar que:
+$$ \max_\pi [\sum_{a'}q_\pi(s',a') \pi(a'|s')] $$
+
+El máximo se obtiene con la política greedy, es decir, eligiendo la acción que maximiza $q_\pi(s',a')$:
+$$ \max_\pi [\sum_{a'}q_\pi(s',a') \pi(a'|s')] = \max_{a'} q_\pi(s',a') $$
+
+Luego, por el ejercicio 11:
+$$ q_*(s,a) = \sum_{s',r} p(s',r|s,a) [r + \gamma \max_{a'} q_*(s',a')] $$
+
+\end{document}

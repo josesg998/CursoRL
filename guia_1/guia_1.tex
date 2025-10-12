@@ -91,7 +91,12 @@ En una selección de acciones tipo $\epsilon$ - greedy con dos acciones posibles
 
 \subsection{Respuesta}
 
-La probabilidad de seleccionar la acción greedy es 1-$\epsilon$, por lo tanto es de 0.9.
+La probabilidad de seleccionar la acción greedy con dos acciones es
+
+$$ 1-\epsilon + \frac{\epsilon}{2}  = 1-0.1 + \frac{0.1}{2} = 0.95$$
+
+puesto que al explorar debemos elegir entre las dos acciones con igual probabilidad, 
+entonces dividimos la probabilidad de exploración por 2.
 
 \section{Ejercicio 3}
 
@@ -338,7 +343,6 @@ $$0 \leq p_i(a) = \frac{e^{H_i(a)}}{\sum_{a'} e^{H_i(a')}} \leq 1$$
 Calculemos la suma sobre todas las acciones:
 $$\sum_{a} p_i(a) = \sum_{a} \frac{e^{H_i(a)}}{\sum_{a'} e^{H_i(a')}}$$
 
-Factorizando el denominador común:
 $$= \frac{1}{\sum_{a'} e^{H_i(a')}} \cdot \sum_{a} e^{H_i(a)}$$
 
 Como estamos sumando sobre todas las acciones posibles, ambas sumas recorren el mismo conjunto:
@@ -453,116 +457,57 @@ el promedio de recompensas anteriores).
 
 \subsection{Respuesta}
 
-\subsubsection{Planteo del problema}
+Sabemos que:
 
-Sabemos que el esperado de la recompensa es:
-$$E[R_t] = \sum_{x=1}^{K} p_t(x)q_*(x)$$
+$$ E[R_t] = \sum_{x=1}^{K} p_t(x)q_*(x) $$
 
-Calculamos $\frac{\partial E[R_t]}{\partial H_t(\alpha)}$:
+y la derivada de $E[R_t]$ respecto a $H_t(\alpha)$ es:
 
-$$\frac{\partial E[R_t]}{\partial H_t(\alpha)} = \frac{\partial}{\partial H_t(\alpha)}\left[\sum_{x=1}^{K} p_t(x)q_*(x)\right]$$
+aunque hay que retener que $q_*(x)$ es deconocido.
 
-$$= \sum_{x=1}^{K} q_*(x) \frac{\partial p_t(x)}{\partial H_t(\alpha)}$$
+Ahora calculamos la derivada de $E[R_t]$ respecto a $H_t(\alpha)$:
 
-Además, de la demostración anterior, sabemos que:
-$$\frac{\partial p_t(x)}{\partial H_t(\alpha)} = \begin{cases}
-p_t(x)(1 - p_t(x)) & \text{si } \alpha = x \\
--p_t(x)p_t(\alpha) & \text{si } \alpha \neq x
-\end{cases}$$
+$$ \frac{\partial E[R_t]}{\partial H_t(\alpha)} = \sum_{x=1}^{K} q_*(x) \frac{\partial p_t(x)}{\partial H_t(\alpha)} $$
 
-Sustituyendo:
-$$\frac{\partial E[R_t]}{\partial H_t(\alpha)} = \sum_{x=1}^{K} q_*(x) \frac{\partial p_t(x)}{\partial H_t(\alpha)}$$
+A esta expresión le podemos aplicar una constante $C$, 
+puesto que $\sum_x \frac{\partial p_t(x)}{\partial H_t(\alpha)} = 0$, dado que 
+$\sum_x p_t(x) = 1$, por lo tanto no afecta al gradiente.
 
-Separando los casos:
-$$= q_*(\alpha) \cdot p_t(\alpha)(1 - p_t(\alpha)) + \sum_{x \neq \alpha} q_*(x) \cdot (-p_t(x)p_t(\alpha))$$
+$$ = \sum_x [q_* -C] \frac{\partial p_t(x)}{\partial H_t(\alpha)} $$
 
-$$= q_*(\alpha)p_t(\alpha)(1 - p_t(\alpha)) - p_t(\alpha)\sum_{x \neq \alpha} q_*(x)p_t(x)$$
+luego multiplicamos por $p_t(x)$ y dividimos por $p_t(x)$:
 
-Podemos reescribir:
-$$\sum_{x \neq \alpha} q_*(x)p_t(x) = \sum_{x=1}^{K} q_*(x)p_t(x) - q_*(\alpha)p_t(\alpha) = E[R_t] - q_*(\alpha)p_t(\alpha)$$
+$$ = \sum_x [q_* -C] \frac{\partial p_t(x)}{\partial H_t(\alpha)} \cdot \frac{p_t(x)}{p_t(x)} $$
 
-Sustituyendo:
-$$\frac{\partial E[R_t]}{\partial H_t(\alpha)} = q_*(\alpha)p_t(\alpha)[1 - p_t(\alpha)] - p_t(\alpha)[E[R_t] - q_*(\alpha)p_t(\alpha)]$$
+vamos a asumir que $x=A_t$, entonces podemos reescribir la expresión como:
 
-Distribuimos $q_*(\alpha)$ y $q_*(\alpha)p_t(\alpha)$:
+$$ = E[(q_* -C) \frac{1}{p_t(A_t)} \frac{\partial p_t(A_t)}{\partial H_t(\alpha)}] $$
 
-$$= q_*(\alpha)p_t(\alpha) - q_*(\alpha)p_t^2(\alpha) - p_t(\alpha)E[R_t] + q_*(\alpha)p_t^2(\alpha)$$
+también vamos a asumir que $q_* = E[R_t | A_t] = R_t$, en una suerte de stochastic gradient ascent con una sola observación:
 
-Cancelamos términos semejantes:
+$$ = E[(R_t -C) \frac{1}{p_t(A_t)} \frac{\partial p_t(A_t)}{\partial H_t(\alpha)}] $$
 
-$$= q_*(\alpha)p_t(\alpha) - p_t(\alpha)E[R_t]$$
+finalmente, usamos el resultado del ejercicio anterior para reemplazar la derivada de $p_t(A_t)$:
 
-Tomamos $p_t(\alpha)$ como factor común:
+$$ = 
+\begin{cases}
+E[p_t(A_t)(1 - p_t(A_t)) \frac{1}{p_t(A_t)}] & \text{ si } A_t = \alpha \\
+E[-p_t(A_t)p_t(\alpha) \frac{1}{p_t(A_t)}] & \text{ si } A_t \neq \alpha
+\end{cases} $$
 
-$$= p_t(\alpha)(q_*(\alpha) - E[R_t])$$
+simplificamos en ambos casos:
 
-\subsubsection{Construcción de estimadores no sesgados}
+$$ = 
+\begin{cases}
+E[(R_t -C)(1 - p_t(\alpha))] & \text{ si } A_t = \alpha \\
+-E[(R_t -C)p_t(\alpha)] & \text{ si } A_t \neq \alpha
+\end{cases} $$
 
-En la práctica, \textbf{no conocemos $q_*(\alpha)$} para todas las acciones. Solo observamos:
-\begin{itemize}
-    \item La acción seleccionada $A_t$
-    \item La recompensa obtenida $R_t$
-\end{itemize}
-
-Por tanto, necesitamos \textbf{construir un estimador no sesgado} del gradiente usando solo esta información limitada.
-
-Del paso anterior obtuvimos:
-$$\frac{\partial E[R_t]}{\partial H_t(\alpha)} = p_t(\alpha)(q_*(\alpha) - E[R_t])$$
-
-Para construir estimadores no sesgados, necesitamos que $E[\text{estimador}] = \text{valor real}$.
-
-\textbf{Caso 1: $\alpha = A_t$ (acción seleccionada)}
-
-Cuando seleccionamos la acción $\alpha$, observamos $R_t$ que es una muestra de $q_*(\alpha)$, es decir:
-$E[R_t | A_t = \alpha] = q_*(\alpha)$
-
-Para obtener un estimador no sesgado del gradiente, aplicamos la identidad fundamental de \textbf{policy gradients}:
-
-$E\left[\frac{R_t - C}{p_t(A_t)} \cdot \frac{\partial p_t(A_t)}{\partial H_t(\alpha)}\right] = \frac{\partial E[R_t]}{\partial H_t(\alpha)}$
-
-Cuando $A_t = \alpha$:
-\begin{itemize}
-\item $\frac{\partial p_t(\alpha)}{\partial H_t(\alpha)} = p_t(\alpha)(1 - p_t(\alpha))$
-\item Por tanto: $\frac{R_t - C}{p_t(\alpha)} \cdot p_t(\alpha)(1 - p_t(\alpha)) = (R_t - C)(1 - p_t(\alpha))$
-\end{itemize}
-
-Nuestro estimador es:
-$\widehat{\nabla}_\alpha = (R_t - C)(1 - p_t(\alpha))$
-
-\textbf{Caso 2: $\alpha \neq A_t$ (acción no seleccionada)}
-
-Cuando no seleccionamos la acción $\alpha$, no observamos $q_*(\alpha)$ directamente. Sin embargo, podemos construir un estimador no sesgado usando la restricción fundamental de las probabilidades.
-
-Dado que $\sum_{x=1}^K p_t(x) = 1$, tenemos que:
-$\sum_{x=1}^K \frac{\partial p_t(x)}{\partial H_t(\alpha)} = 0$
-
-Esto significa que los estimadores deben sumar cero. Como el estimador para la acción seleccionada es $(R_t - C)(1 - p_t(A_t))$, los estimadores para las acciones no seleccionadas deben compensar:
-
-$\widehat{\nabla}_\alpha = -(R_t - C)p_t(\alpha)$
-
-\subsubsection{Introducción del baseline}
-
-Como $E[R_t]$ es desconocido, lo reemplazamos por un baseline $C$:
-\begin{itemize}
-    \item $C$ puede ser cualquier constante (típicamente el promedio de recompensas pasadas)
-    \item Esto no introduce sesgo porque $E[C] = C$ es constante
-    \item El baseline reduce la varianza del estimador sin afectar el valor esperado
-\end{itemize}
-
-\subsubsection{La Regla de Actualización Final}
-
-Aplicando $H_{t+1}(\alpha) = H_t(\alpha) + \alpha \cdot \widehat{\nabla}_\alpha$:
-
-\textbf{Si $\alpha = A_t$ (acción seleccionada)}:
-$$H_{t+1}(\alpha) = H_t(\alpha) + \alpha(R_t - C)(1 - p_t(\alpha))$$
-
-\textbf{Si $\alpha \neq A_t$ (acción no seleccionada)}:
-$$H_{t+1}(\alpha) = H_t(\alpha) - \alpha(R_t - C)p_t(\alpha)$$
-
-\textbf{Resultado final:}
-$$H_{t+1}(\alpha) = \begin{cases}
-H_t(\alpha) + \alpha(R_t - C)(1 - p_t(\alpha)) & \text{si } \alpha = A_t \\
-H_t(\alpha) - \alpha(R_t - C)p_t(\alpha) & \text{si } \alpha \neq A_t
-\end{cases}$$
+entonces, la regla de actualización queda (remplazando el valor esperado por la evaluación en el instante $t$):
+$$ H_{t+1}(\alpha) =
+\begin{cases} 
+    H_t(\alpha) + \alpha (R_t - C)(1 - p_t(\alpha)) & \text{ si } A_t = \alpha \\
+    H_t(\alpha) - \alpha (R_t - C)p_t(\alpha) & \text{ si } A_t \neq \alpha \\
+\end{cases} $$
 
 \end{document}

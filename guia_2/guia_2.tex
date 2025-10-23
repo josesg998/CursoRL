@@ -161,30 +161,30 @@ con estado inicial C1 y $\gamma=0.5$.
 \subsubsection{Inciso 1}
 
 \begin{align}
-\tag{1} &= R_{C1} + \gamma R_{C2} + \gamma^2 R_{C3} + \gamma^3 R_{PASS}  + \gamma^4 R_{SLEEP} \\
-\tag{2} &= -2     + 0.5 * -2      + 0.5^2 * -2      + 0.5^3 * 10         + 0.5^4 * 0 \\
-\tag{3} &= -2 + -1 + -0.5 + 1.25 + 0 = -2.25
+\tag{1} &= R_{C2} + \gamma^1 R_{C3} + \gamma^2 R_{PASS}  + \gamma^3 R_{SLEEP} \\
+\tag{2} &= -2      + 0.5 * -2      + 0.5^2 * 10         + 0.5^3 * 0 \\
+\tag{3} &= -2      -1       + 2.5            + 0 = -0.5
 \end{align}
 
 \subsubsection{Inciso 2}
 \begin{align}
-\tag{1} &= R_{C1} + \gamma R_{FB} + \gamma^2 R_{FB} + \gamma^3 R_{C1} + \gamma^4 R_{C2} + \gamma^5 R_{SLEEP} \\
-\tag{2} &= -2     + 0.5 * -1      + 0.5^2 * -1      + 0.5^3 * -2      + 0.5^4 * -2      + 0.5^5 * 0 \\
-\tag{3} &= -2 + -0.5 + -0.25 + -0.25 + -0.125 + 0 = -3.125
+\tag{1} &= R_{FB} + \gamma R_{FB} + \gamma^2 R_{C1} + \gamma^3 R_{C2} + \gamma^4 R_{SLEEP} \\
+\tag{2} &= -1      + 0.5 * -1      + 0.5^2 * -2      + 0.5^3 * -2      + 0.5^4 * 0 \\
+\tag{3} &= -1      -0.5            -0.5              -0.25             + 0 = -2.25
 \end{align}
 
 \subsubsection{Inciso 3}
 \begin{align}
-\tag{1} &= R_{C1} + \gamma R_{C2} + \gamma^2 R_{C3} + \gamma^3 R_{PUB} + \gamma^4 R_{C2} + \gamma^5 R_{C3} + \gamma^6 R_{PASS} + \gamma^7 R_{SLEEP} \\
-\tag{2} &= -2     + 0.5 * -2      + 0.5^2 * -2      + 0.5^3 * 1      + 0.5^4 * -2      + 0.5^5 * -2      + 0.5^6 * 10         + 0.5^7 * 0 \\
-\tag{3} &= -2     + -1            + -0.5            + 0.125            + -0.125           + -0.0625          + 0.15625            + 0  = 3.40625
+\tag{1} &= R_{C2} + \gamma R_{C3} + \gamma^2 R_{PUB} + \gamma^3 R_{C2} + \gamma^4 R_{C3} + \gamma^5 R_{PASS} + \gamma^6 R_{SLEEP} \\
+\tag{2} &= -2      + 0.5 * -2      + 0.5^2 * 1      + 0.5^3 * -2      + 0.5^4 * -2      + 0.5^5 * 10         + 0.5^6 * 0 \\
+\tag{3} &= -2      -1              + 0.25           -0.25             -0.125            + 0.3125          + 0 = -2.8125
 \end{align}
 
 \subsubsection{Inciso 4}
 \begin{align}
-\tag{1} &= R_{C1} + \gamma R_{FB} + \gamma^2 R_{FB} + \gamma^3 R_{C1} + \dots + \gamma^{16} R_{SLEEP} \\
-\tag{2} &= -2     + 0.5 * -1      + 0.5^2 * -1      + 0.5^3 * -2      + \dots + 0.5^{16} * 0 \\
-\tag{3} &= -3.196044921875
+\tag{1} &= R_{FB} + \gamma R_{FB} + \gamma^2 R_{C1} + \dots + \gamma^{15} R_{SLEEP} \\
+\tag{2} &= -1      + 0.5 * -1      + 0.5^2 * -2      + \dots + 0.5^{15} * 0 \\
+\tag{3} &= -1      -0.5            -0.5              + \dots + 0 = -2.39208984375
 \end{align}
 
 \section{Ejercicio 5}
@@ -265,7 +265,7 @@ MATRIZ = np.array(
     [0,0 ,0 ,0,0 ,0 ,1], # PASS
     [.2,.4,.4,0,0 ,0 ,0], # Pub
     [.1,0 ,0,0 ,0,.9,0], # FB
-    [0,0 ,0,0 ,1,0 ,0]] # Sleep
+    [0,0 ,0,0 ,0,0 ,1]] # Sleep
 )
 
 # recompensas de cada estado
@@ -305,16 +305,16 @@ for gamma in [0,0.5,0.9]:
 \begin{lstlisting}[language=Python]
 gamma = 0
 	Iterando [-2. -2. -2. 10.  1. -1.  0.]
-	Gauss	   [-2. -2. -2. 10.  1. -1.  0.]
+	Gauss  	 [-2. -2. -2. 10.  1. -1.  0.]
 	Inversa	 [-2. -2. -2. 10.  1. -1.  0.]
 gamma = 0.5
-	Iterando [-2.89 -1.5   1.18 10.16  0.65 -2.08  0.32]
-	Gauss	   [-2.89 -1.5   1.18 10.16  0.65 -2.08  0.32]
-	Inversa	 [-2.89 -1.5   1.18 10.16  0.65 -2.08  0.32]
+	Iterando [-2.91 -1.55  1.12 10.    0.62 -2.08  0.  ]
+	Gauss  	 [-2.91 -1.55  1.12 10.    0.62 -2.08  0.  ]
+	Inversa	 [-2.91 -1.55  1.12 10.    0.62 -2.08  0.  ]
 gamma = 0.9
-	Iterando [-3.68  3.28  6.47 13.12  3.85 -7.    3.46]
-	Gauss	   [-3.68  3.28  6.47 13.12  3.85 -7.    3.46]
-	Inversa	 [-3.68  3.28  6.47 13.12  3.85 -7.    3.46]
+	Iterando [-5.01  0.94  4.09 10.    1.91 -7.64  0.  ]
+	Gauss  	 [-5.01  0.94  4.09 10.    1.91 -7.64  0.  ]
+	Inversa	 [-5.01  0.94  4.09 10.    1.91 -7.64  0.  ]
 \end{lstlisting}
 
 \section{Ejercicio 8}

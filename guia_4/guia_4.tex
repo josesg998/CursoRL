@@ -72,7 +72,7 @@ transiciones y el factor de descuento es $\gamma = 1$. Suponga que observa un ep
 
 \subsection{Resolución}
 
-\subsubsection{Parte 1}
+\subsubsection{Parte 1} % TODO corregir
 
 En el método de primera visita, solo consideramos la primera vez que visitamos el estado no-terminal.
 
@@ -231,7 +231,7 @@ Asumimos que $q \sum_a c(a) q_\pi(s,a) \leq q_\pi(s,a^*)$
 
 $$ q_\pi(s,a^*) \geq \frac{\epsilon}{|A(s)|}\sum_{|A(s)|}q_\pi(s,a)+(1-\epsilon)\sum_a c(a) q_\pi(s,a)$$
 
-Elijo unos codifienctes definidos como:
+Elijo unos coeficientes definidos como:
 $$ c(a) = \frac{\pi(a|s) - \frac{\epsilon}{|A(s)}}{1-\epsilon}$$
 sabiendo que la sumatoria de todos los coeficientes es 1:
 $$ \sum_a c(a) = \sum_a \frac{\pi(a|s) - \frac{\epsilon}{|A(s)}}{1-\epsilon} = \frac{1 - \epsilon}{1-\epsilon} = 1$$

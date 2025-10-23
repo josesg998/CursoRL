@@ -57,7 +57,7 @@
 
 \maketitle
 
-\section{Ejercicio 1} % TODO no entendí
+\section{Ejercicio 1}
 
 [Programación] Para el proceso de Markov de recompensas (MRP) de la figura,
 calcular los valores de los estados  de  forma  iterativa  con  los siguientes 
@@ -84,26 +84,22 @@ P = np.array([
     [1,0]  # S2
 ])
 
-def value_iteration(P, R, gamma, theta=1e-6, max_iterations=1000):
+
+def iteracion_sincronica(P, R, gamma, theta=1e-6, max_iterations=1000):
     n_states = P.shape[0]
     V = np.zeros(n_states)
     
-    for i in range(max_iterations):
-        delta = 0
-        V_new = np.copy(V)
-        
-        for s in range(n_states):
-            V_new[s] = R[s] + gamma * np.sum(P[s] * V)
-            delta = max(delta, abs(V_new[s] - V[s]))
-        
-        V = V_new
-        
-        if delta < theta:
+    for _ in range(max_iterations):
+
+        V_new = R+gamma * P @ V
+
+        if np.max(np.abs(V_new - V)) < theta:
             break
-            
+        V = V_new
+
     return V
 
-def value_iteration_in_place(P, R, gamma, theta=1e-6, max_iterations=1000):
+def iteracion_asincronica(P, R, gamma, theta=1e-6, max_iterations=1000):
     n_states = P.shape[0]
     V = np.zeros(n_states)
     
@@ -121,10 +117,10 @@ def value_iteration_in_place(P, R, gamma, theta=1e-6, max_iterations=1000):
     return V
 
 R = np.array([R_S1_S2, R_S2_S1])  # Recompensas para S1 y S2
-gamma = 0.9
+gamma = 0.8
 
-V1 = value_iteration(P, R, gamma)
-V2 = value_iteration_in_place(P, R, gamma)
+V1 = iteracion_sincronica(P, R, gamma)
+V2 = iteracion_asincronica(P, R, gamma)
 print("Valores de estados (actualizacion simultanea):", V1)
 print("Valores de estados (actualizacion in place):", V2)
 
@@ -135,7 +131,7 @@ print("Valores de estados (actualizacion in place):", V2)
   Valores de estados (actualizacion in place): [7.22222062 7.7777765 ]
 \end{lstlisting}
 
-\section{Ejercicio 2}
+\section{Ejercicio 2} % TODO justificar
 
 En el ejemplo 4.1 (GridWorld, Sutton \& Barto, 2018), donde la política $\pi$ es aleatoria y equiprobable,
 
@@ -159,7 +155,7 @@ $$ q_\pi(11,\text{down}) = -1 + \nu_\pi(15) = -1 + 0 = -1 $$
 
 $$ q_\pi(7,\text{down}) = -1 + \nu_\pi(11) = -1 - 14 = -15 $$
 
-\section{Ejercicio 3}
+\section{Ejercicio 3}  % TODO justificar
 
 En el ejemplo 4.1 (GridWorld, Sutton \& Barto, 2018), suponga que se agrega un nuevo estado 15 debajo
 del estado 13 y sus acciones: left, up, right y down, lleva al agente a los estados 12,13,14,15, respectivamente.

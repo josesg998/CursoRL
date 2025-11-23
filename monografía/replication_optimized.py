@@ -1,9 +1,7 @@
-# %%
 import numpy as np
-import matplotlib.pyplot as plt
 from numba import njit
+import json
 
-# %%
 @njit
 def juego_completo_numba(W_NOR_POS, W_NOR_NEG, W_EMP_POS, W_EMP_NEG, 
                         PHI=1, Q=2,rondas=100,N=1000):
@@ -108,7 +106,7 @@ def juego_completo_numba(W_NOR_POS, W_NOR_NEG, W_EMP_POS, W_EMP_NEG,
                 aspiracion_alfa[idx_receptor] += aspiracion_alfa[idx_receptor] * suscept[idx_receptor] * estimulo_emp
     return suscept, dinero_donado_delta
 
-# %%
+
 RANGOS = [0,1/3,2/3,1]
 
 resultados = []
@@ -128,7 +126,10 @@ for W_NOR_POS in RANGOS:
                         "W_NOR_NEG": W_NOR_NEG,
                         "W_EMP_POS": W_EMP_POS,
                         "W_EMP_NEG": W_EMP_NEG,
-                        'susceptibilidaes': suscept,
-                        'donaciones_delta': dinero_donado_delta
+                        'susceptibilidaes': list(suscept),
+                        'donaciones_delta': list(dinero_donado_delta)
                     }
                 )
+print("Guardando resultados en 'resultados_simulacion_optimizada.json'")
+with open("resultados_simulacion_optimizada.json", "w") as f:
+    json.dump(resultados, f)

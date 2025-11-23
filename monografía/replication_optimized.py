@@ -3,9 +3,10 @@ from numba import njit
 import json
 
 @njit
-def juego_completo_numba(W_NOR_POS, W_NOR_NEG, W_EMP_POS, W_EMP_NEG, 
+def juego_completo_numba(W_NOR_POS, W_NOR_NEG, W_EMP_POS, W_EMP_NEG,seed,
                         PHI=1, Q=2,rondas=100,N=1000):
     
+    np.random.seed(seed)
     aspiracion_alfa = np.random.uniform(PHI/2, PHI, N)
     suscept = np.random.uniform(0, 0.5, N)
     dinero_donado_delta = np.zeros(N)
@@ -111,25 +112,38 @@ RANGOS = [0,1/3,2/3,1]
 
 resultados = []
 
+seeds = [17,19,23,43,53,87,91,101,103,113]
+
 for W_NOR_POS in RANGOS:
     for W_NOR_NEG in RANGOS:
         for W_EMP_POS in RANGOS:
             for W_EMP_NEG in RANGOS:
-                print(f"Corriendo simulación con W_NOR_POS={W_NOR_POS}, W_NOR_NEG={W_NOR_NEG}, W_EMP_POS={W_EMP_POS}, W_EMP_NEG={W_EMP_NEG}")
-                suscept, dinero_donado_delta = juego_completo_numba(W_NOR_POS=W_NOR_POS, 
-                                                                    W_NOR_NEG=W_NOR_NEG, 
-                                                                    W_EMP_POS=W_EMP_POS, 
-                                                                    W_EMP_NEG=W_EMP_NEG)
+                dineros_donados = []
+                susceptibilidades = []
+                for seed in seeds:
+                    print(f"Corriendo simulación con W_NOR_POS={W_NOR_POS}, W_NOR_NEG={W_NOR_NEG}, W_EMP_POS={W_EMP_POS}, W_EMP_NEG={W_EMP_NEG} semilla {seed}")
+                    suscept, dinero_donado_delta = juego_completo_numba(W_NOR_POS=W_NOR_POS, 
+                                                                        W_NOR_NEG=W_NOR_NEG, 
+                                                                        W_EMP_POS=W_EMP_POS, 
+                                                                        W_EMP_NEG=W_EMP_NEG,
+                                                                        seed=seed)
+                    
+                    dineros_donados.append(np.sort(dinero_donado_delta))
+                    susceptibilidades.append(np.sort(suscept))
+                
+                dinero_donado_theta_final = np.mean(dineros_donados,axis=0)
+                suscept_final = np.mean(susceptibilidades,axis=0)
+                    
                 resultados.append(
                     {
                         "W_NOR_POS": W_NOR_POS,
                         "W_NOR_NEG": W_NOR_NEG,
                         "W_EMP_POS": W_EMP_POS,
                         "W_EMP_NEG": W_EMP_NEG,
-                        'susceptibilidaes': list(suscept),
-                        'donaciones_delta': list(dinero_donado_delta)
+                        'susceptibilidaes': list(suscept_final),
+                        'donaciones_delta': list(dinero_donado_theta_final),
                     }
                 )
-print("Guardando resultados en 'resultados_simulacion_optimizada.json'")
-with open("resultados_simulacion_optimizada.json", "w") as f:
+print("Guardando resultados en 'resultados_simulacion_optimizada_10_seeds.json'")
+with open("CursoRL/monografía/resultados_simulacion_optimizada_10_seeds.json", "w") as f:
     json.dump(resultados, f)

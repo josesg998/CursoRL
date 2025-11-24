@@ -56,7 +56,7 @@
 
 \maketitle
 
-\section{Ejercicio 1} % TODO
+\section{Ejercicio 1}
 
 Considere un proceso de decisión de Markov (MDP) con dos estados: uno terminal y otro no-terminal.
 Existe sólo una acción que lleva del estado no-terminal al estado terminal con probabilidad 1-p y 
@@ -72,7 +72,7 @@ transiciones y el factor de descuento es $\gamma = 1$. Suponga que observa un ep
 
 \subsection{Resolución}
 
-\subsubsection{Parte 1} % TODO corregir
+\subsubsection{Parte 1}
 
 En el método de primera visita, solo consideramos la primera vez que visitamos el estado no-terminal.
 
@@ -109,29 +109,30 @@ $$V(S_0) = \mathbb{E}[R + \gamma V(S')]$$
 
 donde:
 \begin{itemize}
-    \item Con probabilidad $p = 0.9$: transición a terminal, $R=1$, $V(S_T) = 0$
-    \item Con probabilidad $1-p = 0.1$: transición a sí mismo, $R=1$, $V(S_0)$
+    \item Con probabilidad $1-p = 0.1$: transición al terminal, $R=1$, $V(S_T) = 0$
+    \item Con probabilidad $p = 0.9$: transición a sí mismo, $R=1$, $V(S_0)$
 \end{itemize}
 
 La ecuación queda:
-$$V(S_0) = p \cdot (1 + \gamma \cdot 0) + (1-p) \cdot (1 + \gamma \cdot V(S_0))$$
-$$= p \cdot 1 + (1-p) \cdot (1 + 1 \cdot V(S_0))$$
-$$= p + (1-p) + (1-p)V(S_0)$$
+$$V(S_0) = (1-p) \cdot (1 + \gamma \cdot 0) + p \cdot (1 + \gamma \cdot V(S_0))$$
+$$= (1-p) \cdot 1 + p \cdot (1 + 1 \cdot V(S_0))$$
+$$= (1-p) + p + pV(S_0)$$
 
 Resolviendo para $V(S_0)$:
-$$V(S_0) = 1 + (1-p)V(S_0)$$
-$$V(S_0) - (1-p)V(S_0) = 1$$
-$$pV(S_0) = 1$$
-$$V(S_0) = \frac{1}{p}$$
+$$V(S_0) = 1 + pV(S_0)$$
+$$V(S_0) - pV(S_0) = 1$$
+$$(1-p)V(S_0) = 1$$
+$$V(S_0) = \frac{1}{1-p}$$
 
 Para $p = 0.9$:
-$$V_{\text{teórico}}(S_0) = \frac{1}{0.9} = \frac{10}{9} \approx 1.111$$
+$$V_{\text{teórico}}(S_0) = \frac{1}{1-0.9} = \frac{1}{0.1} = 10$$
 
-En conclusión, con una sola visita la estimación Monte Carlo es muy sesgada, mientras
-que con varias visitas se acerca más al valor teórico, pero sigue siendo una
-estimación alta. Esto se debe a que con $p=0.9$, el agente tiende a permanecer
-mucho tiempo en el estado no-terminal y acumula muchas recompensas antes de
-transicionar al estado terminal. % TODO CHEQUEAR
+
+En este episodio particular, la estimación de \textit{primera-visita} coincide 
+exactamente con el valor verdadero (10). Esto tiene sentido: con $\gamma = 1$ y 
+recompensa $+1$ en cada transición, el retorno desde la primera visita es simplemente 
+el número total de pasos del episodio, que fue 10. La estimación de \textit{cada-visita} 
+es menor (5.5) porque promedia retornos decrecientes a lo largo del episodio.
 
 \section{Ejercicio 2}
 

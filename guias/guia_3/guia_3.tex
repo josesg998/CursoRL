@@ -85,9 +85,12 @@ P = np.array([
 ])
 
 
+
 def iteracion_sincronica(P, R, gamma, theta=1e-6, max_iterations=1000):
     n_states = P.shape[0]
     V = np.zeros(n_states)
+    
+    lista_final = []
     
     for _ in range(max_iterations):
 
@@ -97,11 +100,15 @@ def iteracion_sincronica(P, R, gamma, theta=1e-6, max_iterations=1000):
             break
         V = V_new
 
-    return V
+        lista_final.append(V)
 
-def iteracion_asincronica(P, R, gamma, theta=1e-6, max_iterations=1000):
+    return lista_final
+
+def iteracion_asincronica(P, R, gamma, theta=1e-6, max_iterations=1000):# in place
     n_states = P.shape[0]
     V = np.zeros(n_states)
+
+    lista_final = []
     
     for i in range(max_iterations):
         delta = 0
@@ -113,16 +120,18 @@ def iteracion_asincronica(P, R, gamma, theta=1e-6, max_iterations=1000):
         
         if delta < theta:
             break
+        
+        lista_final.append(V)
             
-    return V
+    return lista_final
 
 R = np.array([R_S1_S2, R_S2_S1])  # Recompensas para S1 y S2
 gamma = 0.8
 
 V1 = iteracion_sincronica(P, R, gamma)
 V2 = iteracion_asincronica(P, R, gamma)
-print("Valores de estados (actualizacion simultanea):", V1)
-print("Valores de estados (actualizacion in place):", V2)
+print("Valores de estados (actualizacion simultanea):", V1[-1])
+print("Valores de estados (actualizacion in place):", V2[-1])
 
 \end{lstlisting}
 
@@ -131,7 +140,19 @@ print("Valores de estados (actualizacion in place):", V2)
   Valores de estados (actualizacion in place): [7.22222062 7.7777765 ]
 \end{lstlisting}
 
-\section{Ejercicio 2} % TODO justificar
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=.8\textwidth]{figure_1.png}
+  \caption{Convergencia de ambos algoritmos}
+  \label{fig:convergencia}
+\end{figure}
+
+Ambos algoritmos convergen a los mismos valores de los estados, aunque según
+la figura \ref{fig:convergencia}, el algoritmo de actualización in place
+converge mucho más rápido que el de actualización simultánea.
+
+
+\section{Ejercicio 2}
 
 En el ejemplo 4.1 (GridWorld, Sutton \& Barto, 2018), donde la política $\pi$ es aleatoria y equiprobable,
 
@@ -155,7 +176,12 @@ $$ q_\pi(11,\text{down}) = -1 + \nu_\pi(15) = -1 + 0 = -1 $$
 
 $$ q_\pi(7,\text{down}) = -1 + \nu_\pi(11) = -1 - 14 = -15 $$
 
-\section{Ejercicio 3}  % TODO justificar
+Mientras que para $q_\pi(11,\text{down})$ se le agrega el nodo terminal,
+el cual es cero, en el caso de $q_\pi(7,\text{down})$ se le agrega el valor
+del estado 11, que proviene de la resolución del modelo en el libro
+de Sutton y Barto.
+
+\section{Ejercicio 3}
 
 En el ejemplo 4.1 (GridWorld, Sutton \& Barto, 2018), suponga que se agrega un nuevo estado 15 debajo
 del estado 13 y sus acciones: left, up, right y down, lleva al agente a los estados 12,13,14,15, respectivamente.
@@ -195,6 +221,10 @@ $$ \nu_\pi(15) = -1 + \frac{1}{4} [-56 + \nu_\pi(15)] $$
 $$ \nu_\pi(15) - \frac{1}{4}\nu_\pi(15) = -1 - 14 $$
 $$ \frac{3}{4}\nu_\pi(15) = -15 $$
 $$ \nu_\pi(15) = -20 $$
+
+Tiene sentido que el valor de $\nu_\pi(15)$ sea -20, igual al de
+$\nu_\pi(13)$, ya que desde ambos estados se puede mover a
+casilleros con los mismos valores (-22, -20, -14).
 
 \section{Ejercicio 4}
 

@@ -80,5 +80,8 @@
     <requires type="dynamic">
       <file>monografia.bcf</file>
     </requires>
+    <requires type="editable">
+      <file>../bibliography.bib</file>
+    </requires>
   </external>
 </requests>

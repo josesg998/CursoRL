@@ -3067,8 +3067,15 @@
   <!-- CITATION DATA -->
   <!-- SECTION 0 -->
   <bcf:bibdata section="0">
+    <bcf:datasource type="file" datatype="bibtex" glob="false">../bibliography.bib</bcf:datasource>
   </bcf:bibdata>
   <bcf:section number="0">
+    <bcf:citekey order="1" intorder="1">castanon2023reinforcement</bcf:citekey>
+    <bcf:citekey order="2" intorder="1">bichieri2006</bcf:citekey>
+    <bcf:citekey order="3" intorder="1">engel2011dictator</bcf:citekey>
+    <bcf:citekey order="4" intorder="1">BECHLER2015149</bcf:citekey>
+    <bcf:citekey order="5" intorder="1">pereda2017emergence</bcf:citekey>
+    <bcf:citekey order="6" intorder="1">bush1951mathematical</bcf:citekey>
   </bcf:section>
   <!-- SORTING TEMPLATES -->
   <bcf:sortingtemplate name="ynt">
@@ -3102,6 +3109,16 @@
                 type="entry"
                 sortingtemplatename="ynt"
                 sortingnamekeytemplatename="apasortcite"
+                labelprefix=""
+                uniquenametemplatename="global"
+                labelalphanametemplatename="global"
+                namehashtemplatename="global">
+  </bcf:datalist>
+  <bcf:datalist section="0"
+                name="ynt/global//global/global/global"
+                type="entry"
+                sortingtemplatename="ynt"
+                sortingnamekeytemplatename="global"
                 labelprefix=""
                 uniquenametemplatename="global"
                 labelalphanametemplatename="global"

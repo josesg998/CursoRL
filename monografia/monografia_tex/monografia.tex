@@ -18,7 +18,7 @@
 \usepackage{booktabs}    % professional-quality tables
 \usepackage{amsfonts}    % blackboard math symbols
 \usepackage{nicefrac}    % compact symbols for 1/2, etc.
-\usepackage{microtype}   % microtypography
+\usepackage[expansion=false]{microtype}   % microtypography
 \usepackage{xcolor}     % colors
 \usepackage{graphicx}
 \usepackage{subcaption} % Para subfiguras
@@ -33,6 +33,8 @@
 % agregar carpeta imagenes
 \usepackage{graphicx}
 \graphicspath{ {../imagenes/} }
+
+\addbibresource{../bibliography.bib}
 
 % Configuración para código
 \lstset{
@@ -55,6 +57,227 @@
 
 \section{Introducción}
 
-El objetivo de este trabajo es revisar y discutir el trabajo 
+El objetivo de este trabajo es realizar generar un análisis y discusión sobre el artículo \textit{A 
+reinforcement learning approach to explore the role of social expectations in altruistic behavior} 
+\citeyear{castanon2023reinforcement}. En el mismo se realizará un resumen del artículo citado, 
+ampliando brevemente sobre los algoritmos en los que se basa, así como en la teoría con la que busca 
+discutir.
+Adicionalmente, se replicará su trabajo en lenguaje Python para validar sus resultados. Finalmente, se 
+generará una discusión sobre las conclusiones a las que arriba, así como posibles extensiones del 
+trabajo.
+
+\section{Resumen del artículo}
+
+\subsection{Introducción y Motivación}
+
+El objetivo general del artículo es lograr modelar el comportamiento altruista de individuos. En 
+particular, busca llevar al campo computacional la teoría de normas sociales propuesta por Cristina 
+Bicchieri (\citeyear{bichieri2006}). Anteriormente, las teorías económicas y psicológicas tenían un 
+mayor foco en comportamientos puramente egoístas, es decir, comportamientos que buscan maximizar la 
+utilidad individual. Según esta autora, las normas sociales incluyen:
+
+\begin{enumerate}
+\item expectativas empíricas: las creencias sobre lo que los demás hacen
+\item expectativas normativas: las creencias sobre lo que los demás piensan que se debe hacer
+\item preferencias condicionales: la disposición a actuar de acuerdo a sus expectativas
+\end{enumerate}
+
+Para llevar a cabo este modelado, los autores recuren a un marco de teoría de juegos, los cuales han 
+sido utilizados largamente para capturar comportamiento colaborativo y comportamiento altruista a 
+partir de la formación de expectativas de los jugadores. El \textit{Juego del Dictador} resulta 
+adecuado para modelar este tipo de comportamiento. Sus reglas básicas son las siguientes:
+
+\begin{itemize}
+    \item Dos jugadores: un \textbf{Dictador} y un \textbf{Receptor}.
+    \item El Dictador recibe una dotación fija y debe decidir qué fracción donar al Receptor.
+    \item El Receptor no tiene poder de decisión; simplemente recibe lo que el Dictador decide donar.
+\end{itemize}
+
+Engel (\citeyear{engel2011dictator}) mediante un meta-análisis realizó una revisión literaria de juegos 
+del dictador y encontró que, en promedio, los dictadores donan alrededor del 30\% de su dotación, 
+entrando en abierta contradicción con la predicción del equilibrio de Nash del juego clásico, que 
+indica que los dictadores deberían donar 0\%. Según Bechler y otros (\citeyear{BECHLER2015149}), este 
+comportamiento surge de la influencia que tiene la distancia social entre los miembros de este juego.
+
+Finalmente, para encontrar una manera de actualizar las expectativas de los agentes en un juego de
+múltiples rondas los autores recurren al aprendizaje por refuerzo, dada la robustez que provee para 
+predecir comportamiento prosocial en grandes poblaciones. Este artículo replicará en buena medida
+el trabajo realizado por Pereda y otros (\citeyear{pereda2017emergence}) en el cual presenta un modelo 
+basado en agentes gobernados por las expectativas generadas por el Juego del Dictador, en las cuales 
+los agentes reaccionan a estímulos empíricos basados en la dinámica de aprendizaje reforzado de 
+Bush-Mosteller (\citeyear{bush1951mathematical}). La diferencia radica en resolver las siguientes limitaciones encontradas al artículo de Pereda y otros:
+
+\begin{itemize}
+\item La ausencia de expectativas normativas.
+\item La falta de variabilidad y de dinámicas en la caracterización de los agentes (la susceptibilidad
+a estímulos, lo cual puede ser interpretado como la tasa de aprendizajes).
+\item El mismo peso asignado a interacciones positivas y negativas.
+\end{itemize}
+
+El artículo, entonces, buscará mejorar el modelo para lograr representar los siguientes comportamientos 
+humanos observados en el Juego del Dictador: (i) donaciones promedio del 30\%, (ii) la alta 
+heterogeneidad en el perfil de los donantes y (iii) la existencia de un número no trivial de humanos 
+con un comportamiento no colaborativo.
+
+\subsection{Juego del Dictador}
+
+Dadas las condiciones iniciales y las diferencias establecidas con el trabajo de Pereda y otros, el
+Juego del Dictador modelado consta de los siguientes pasos:
+
+\subsubsection{Asignación de aspiraciones}
+
+Todos los agentes (aun no están divididos en dictadores y receptores) comienzan con los siguientes
+atributos iniciales:
+
+\textbf{1. Aspiración inicial ($a_{i,t}=0$)}: ubicada aleatoriamente en el rango [0,$\phi$], donde $\phi$ es 
+la dotación inicial fija que reciben los dictadores en cada ronda del juego. Este atributo refleja
+la cantidad de dinero que esperan obtener en la primera ronda del juego.
+
+\textbf{2. Susceptibilidad ($l_i$)}: representa la sensibilidad del agente a los estímulos sociales. Se 
+asigna aleatoriamente en el rango [0,1]. Teóricamente los autores distinguen entre susceptibilidad
+normativa y empírica, pero en esta versión del modelo se utiliza una única susceptibilidad.
+
+\subsubsection{Asignación de roles}
+
+Los agentes son catalogados durante esta ronda como dictador (j) o receptor (k) de manera aleatoria. La
+cantidad de dictadores y recipientes deben ser la misma para que puedan ser apareados.
+
+\subsubsection{Interacción normativa entre dictadores}
+
+Cada dictador comunica honestamente el porcentaje de la dotación $\theta_{j,t}$ que planea donar al receptor 
+a una cantidad $Q$ de otros dictadores. El parámetro $\theta_{j,t}$ no solo toma en cuenta las
+aspiraciones originales del dictador sino también un parámetro ruido $\delta_{j,t}^nor$ que toma en
+cuenta el efecto de una "mano temblorosa" a la hora de la comunicación. La donación comunicada tiene
+la siguiente forma:
+
+$$ \theta_{j,t} = max(0,min(\phi,a_{j,t} * (1 + \delta_{j,t}^{nor}))) $$
+
+La interacción normativa se conforma por la diferencia entre las aspiraciones del dictador y la donación
+comunicada a otros dictadores, normalizado por la dotación inicial para obtener un valor entre 0 y 1.
+
+$$ I_{j,t}^{nor} = \frac{\theta_{j,t} - a_{j,t}}{\phi} $$
+
+Con $Q$ cantidad de interacciones, la totalidad de la interacción normativa recibida por el dictador $j$ en la ronda $t$ es:
+
+$$ s_{j,t}^{nor} = \frac{\sum_{m=1}^{Q} I_{m,t}^{nor}}{Q}  = \frac{\sum_{j'}\theta_{j',t}-a_{j,t}\sum_{j'}1}{\phi*Q} = \frac{\sum_{j'}\phi_{j',t}}{\phi*Q}-\frac{a_{j,t}}{\phi}$$
+
+De esta forma, se puede destacar varias cuestiones. Primero, que solo el dictador
+que busca consejo actualiza sus aspiraciones en base a la interacción normativa. Segundo,
+que el dictador consultado no actualiza las suyas. Tercer, que la interacción $s_{j,t}^{nor}$ 
+puede tomar valores entre -1 y 1, siendo positivo cuando la donación comunicada es mayor a la 
+aspiración del dictador, y negativo en el caso contrario.
+
+\subsubsection{Los dictadores actualizan sus aspiraciones}
+
+Tanto la susceptibilidad como las aspiraciones de los dictadores se actualizan en base a la interacción normativa 
+recibida. Primero, la susceptibilidad se actualiza de la siguiente forma:
+
+% write an if else statement in latex
+$$ l_{j,t}^{nor} = 
+\begin{cases}
+l_{j,t-1}^{nor} * (1+W^{nor,pos} * s_{j,t}^{nor}) & \text{si } s_{j,t}^{nor} \geq 0 \\
+l_{j,t-1}^{nor} * (1+W^{nor,neg} * s_{j,t}^{nor}) & \text{si } s_{j,t}^{nor} < 0 \\
+\end{cases}
+$$
+
+siendo $W^{nor,pos}$ y $W^{nor,neg}$ hiperparámetros (entre 0 y 1) representando los pesos 
+asignados a las interacciones normativas positivas y negativas respectivamente.
+
+luego, las aspiraciones se actualizan de la siguiente forma:
+
+$$ a_{j-t} =
+\begin{cases}
+a_{j,t-1} + (\phi - a_{j,t-1}) * l_{j,1}^{nor} \geq 0 \\
+a_{j,t-1} + a_{j,t-1} * l_{j,1}^{nor} < 0 \\
+\end{cases}
+$$
+
+De estas fórmulas podemos interpretar que el estímulo positivo incrementa la susceptibilidad del agente y,
+secuencialmente, sus aspiraciones. Por el contrario, un estímulo negativo reduce la susceptibilidad y las
+aspiraciones del agente. Ampliando la interpretación, las interacciones positivas implican que la aspiración
+promedio de otros dictadores es mayor a la del agente, llevando al dictadora a aumentar sus aspiraciones 
+personales. Lo contrario ocurre en el caso de interacciones negativas.
+
+\subsubsection{Los dictadores proceden a donar}
+
+Cada dictador dona a su respectivo receptor una cantidad $\delta_{j,t}$ con la siguiente fórmula, incorporando
+una variable ruido $\delta_{j,t}^{emp}$, que representa la "mano temblorosa" al momento de donar:
+
+$$ \delta_{j,t} = max(0,min(\phi,(\phi-a_{j,t}) * (1 + \delta_{j,t}^{emp}))) $$
+
+Esta donación $\delta_{j,t}$ se convierte en la donación $\pi_{k,t}$ recibida por el receptor $k$ en la ronda $t$.
+
+\subsubsection{Interacción empírica entre receptores}
+
+Como resultado de la donación recibida, cada receptor reacciona al estímulo empírico generado por la misma:
+
+$$ s_{k,t}^{emp} = \frac{\pi_{k,t} - a_{k,t}}{\phi} $$
+
+lo cual se traduce a que, si la donación recibida es mayor a la aspiración del receptor, el estímulo empírico
+será positivo, y negativo en el caso contrario.
+
+\subsubsection{Los receptores actualizan sus aspiraciones}
+
+Similar a los dictadores, los receptores actualizan su susceptibilidad y sus aspiraciones en base al estímulo
+empírico recibido:
+
+$$ l_{k,t}^{emp} = 
+\begin{cases}
+l_{k,t-1}^{emp} * (1+W^{emp,pos} * s_{k,t}^{emp}) & \text{si } s_{k,t}^{emp} \geq 0 \\
+l_{k,t-1}^{emp} * (1+W^{emp,neg} * s_{k,t}^{emp}) & \text{si } s_{k,t}^{emp} < 0 \\
+\end{cases}
+$$
+
+$$ a_{k-t} =
+\begin{cases}
+a_{k,t-1} + (\phi - a_{k,t-1}) * l_{k,1}^{emp} \geq 0 \\
+a_{k,t-1} + a_{k,t-1} * l_{k,1}^{emp} < 0 \\
+\end{cases}
+$$
+
+\subsubsection{Repetir hasta finalizar iteraciones}
+
+Se repiten los pasos anteriores por una cantidad $T$ de rondas, donde en cada ronda se reasignan
+los roles de dictador y receptor de manera aleatoria, así como se actualizan las aspiraciones y
+susceptibilidades de los agentes.
+
+\subsection{Supuestos de la implementación computacional}
+
+Adicional a las fórmulas y dinámicas presentadas en el artículo, los autores realizan ciertos supuestos
+para la implementación computacional del modelo:
+
+\begin{itemize}
+    \item La dotación inicial fija $\phi$ es igual a 100.
+    \item La variable ruido tanto en la comunicación normativa como en la donación empírica sigue una 
+    distribución normal con media 0 y desviación estándar 0.1.
+    \item La cantidad de interacciones normativas $Q$ es igual a 5.
+    \item La cantidad de rondas $T$ es igual a 5000.
+\end{itemize}
+
+\subsection{Resultados Principales}
+
+Las simulaciones muestran que el comportamiento altruista es una propiedad emergente que depende críticamente de la configuración de los pesos de influencia social ($W$).
+
+\begin{itemize}
+    \item \textbf{Emergencia de la Norma de Equidad:} Cuando los agentes son sensibles a los estímulos normativos positivos ($W^{nor, pos} > 0$), es decir, cuando aumentan sus aspiraciones al ver que otros son generosos, la población tiende a converger hacia un comportamiento de \textbf{donación alta (cercana al 50\%)}. La norma de equidad se "contagia" y se estabiliza.
+    \item \textbf{Colapso hacia el Egoísmo:} Si la influencia normativa es débil o si los agentes pesan desproporcionadamente los estímulos negativos (ej. "si otros dan poco, yo bajo mi estándar"), la población converge hacia el equilibrio de Nash del juego clásico: donaciones cercanas a cero.
+    \item \textbf{Dinámica de la Susceptibilidad:} Un hallazgo interesante es que la susceptibilidad ($s$) no necesita ser fija. El modelo permite que $s$ evolucione, mostrando que los agentes pueden volverse más o menos conformistas dependiendo de su historia de interacciones. En escenarios donde la norma es fuerte, la susceptibilidad tiende a mantenerse, reforzando la cohesión del grupo.
+    \item \textbf{Papel de las Expectativas Empíricas:} Las expectativas de los receptores actúan como un mecanismo de retroalimentación. Si los receptores se "acostumbran" a recibir poco (sus aspiraciones bajan), esto valida indirectamente el comportamiento egoísta de los dictadores cuando los roles se invierten en rondas futuras.
+\end{itemize}
+
+\subsection{Discusión y Conclusiones}
+
+El trabajo concluye que el altruismo en el Juego del Dictador puede explicarse satisfactoriamente mediante un mecanismo de aprendizaje social adaptativo, sin necesidad de asumir preferencias altruistas innatas fijas.
+
+\begin{itemize}
+    \item \textbf{Validación de la Teoría de Bicchieri:} Los resultados apoyan computacionalmente la teoría de que las normas sociales son equilibrios sostenidos por expectativas mutuas. El comportamiento prosocial surge de la interacción dinámica entre lo que observamos (normativo) y lo que experimentamos (empírico).
+    \item \textbf{Plasticidad del Comportamiento:} El modelo destaca la plasticidad de la moralidad humana. El mismo grupo de agentes puede volverse egoísta o altruista dependiendo simplemente de cómo procesan la información social (los parámetros $W$), lo que tiene implicaciones para el diseño de políticas o intervenciones sociales: para fomentar el altruismo, es crucial visibilizar los comportamientos positivos (reforzar el estímulo normativo positivo).
+    \item \textbf{Aporte Metodológico:} El artículo demuestra la utilidad del Aprendizaje por Refuerzo tipo Bush-Mosteller para modelar fenómenos sociológicos complejos, ofreciendo un puente entre la psicología del aprendizaje individual y la dinámica de poblaciones.
+\end{itemize}
+
+
+
+
+\printbibliography
 
 \end{document}

@@ -1,0 +1,597 @@
+% $ biblatex auxiliary file $
+% $ biblatex bbl format version 3.3 $
+% Do not modify the above lines!
+%
+% This is an auxiliary file used by the 'biblatex' package.
+% This file may safely be deleted. It will be recreated by
+% biber as required.
+%
+\begingroup
+\makeatletter
+\@ifundefined{ver@biblatex.sty}
+  {\@latex@error
+     {Missing 'biblatex' package}
+     {The bibliography requires the 'biblatex' package.}
+      \aftergroup\endinput}
+  {}
+\endgroup
+
+
+\refsection{0}
+  \datalist[entry]{ynt/apasortcite//global/global/global}
+    \entry{bush1951mathematical}{article}{}{}
+      \name{author}{2}{}{%
+        {{un=0,uniquepart=base,hash=40a8093cbc004d4ca6bb72f1fbcb0410}{%
+           family={Bush},
+           familyi={B\bibinitperiod},
+           given={Robert\bibnamedelima R},
+           giveni={R\bibinitperiod\bibinitdelim R\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=fc73c2b06b97e5d0cdd9cc9ab8a840d4}{%
+           family={Mosteller},
+           familyi={M\bibinitperiod},
+           given={Frederick},
+           giveni={F\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{publisher}{1}{%
+        {American Psychological Association}%
+      }
+      \strng{namehash}{8d4a6fbc38c97302bfb36bc4b31f96d9}
+      \strng{fullhash}{8d4a6fbc38c97302bfb36bc4b31f96d9}
+      \strng{fullhashraw}{8d4a6fbc38c97302bfb36bc4b31f96d9}
+      \strng{bibnamehash}{8d4a6fbc38c97302bfb36bc4b31f96d9}
+      \strng{authorbibnamehash}{8d4a6fbc38c97302bfb36bc4b31f96d9}
+      \strng{authornamehash}{8d4a6fbc38c97302bfb36bc4b31f96d9}
+      \strng{authorfullhash}{8d4a6fbc38c97302bfb36bc4b31f96d9}
+      \strng{authorfullhashraw}{8d4a6fbc38c97302bfb36bc4b31f96d9}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Psychological review}
+      \field{number}{5}
+      \field{title}{A mathematical model for simple learning.}
+      \field{volume}{58}
+      \field{year}{1951}
+      \field{pages}{313}
+      \range{pages}{1}
+    \endentry
+    \entry{bichieri2006}{book}{}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=2c350cbf8fa66d670de4d71135326545}{%
+           family={Bicchieri},
+           familyi={B\bibinitperiod},
+           given={Cristina},
+           giveni={C\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{publisher}{1}{%
+        {Cambridge University Press}%
+      }
+      \strng{namehash}{2c350cbf8fa66d670de4d71135326545}
+      \strng{fullhash}{2c350cbf8fa66d670de4d71135326545}
+      \strng{fullhashraw}{2c350cbf8fa66d670de4d71135326545}
+      \strng{bibnamehash}{2c350cbf8fa66d670de4d71135326545}
+      \strng{authorbibnamehash}{2c350cbf8fa66d670de4d71135326545}
+      \strng{authornamehash}{2c350cbf8fa66d670de4d71135326545}
+      \strng{authorfullhash}{2c350cbf8fa66d670de4d71135326545}
+      \strng{authorfullhashraw}{2c350cbf8fa66d670de4d71135326545}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{In The Grammar of Society, first published in 2006, Cristina Bicchieri examines social norms, such as fairness, cooperation, and reciprocity, in an effort to understand their nature and dynamics, the expectations that they generate, and how they evolve and change. Drawing on several intellectual traditions and methods, including those of social psychology, experimental economics and evolutionary game theory, Bicchieri provides an integrated account of how social norms emerge, why and when we follow them, and the situations where we are most likely to focus on relevant norms. Examining the existence and survival of inefficient norms, she demonstrates how norms evolve in ways that depend upon the psychological dispositions of the individual and how such dispositions may impair social efficiency. By contrast, she also shows how certain psychological propensities may naturally lead individuals to evolve fairness norms that closely resemble those we follow in most modern societies.}
+      \field{edition}{None}
+      \field{month}{11}
+      \field{number}{9780521573726}
+      \field{series}{Cambridge Books}
+      \field{title}{The Grammar of Society}
+      \field{volume}{None}
+      \field{year}{2006}
+      \verb{doi}
+      \verb None
+      \endverb
+      \verb{urlraw}
+      \verb https://ideas.repec.org/b/cup/cbooks/9780521573726.html
+      \endverb
+      \verb{url}
+      \verb https://ideas.repec.org/b/cup/cbooks/9780521573726.html
+      \endverb
+    \endentry
+    \entry{engel2011dictator}{article}{}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=201c20947d295a96f85361a3bf61e6bc}{%
+           family={Engel},
+           familyi={E\bibinitperiod},
+           given={Christoph},
+           giveni={C\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{publisher}{1}{%
+        {Cambridge University Press \& Assessment}%
+      }
+      \strng{namehash}{201c20947d295a96f85361a3bf61e6bc}
+      \strng{fullhash}{201c20947d295a96f85361a3bf61e6bc}
+      \strng{fullhashraw}{201c20947d295a96f85361a3bf61e6bc}
+      \strng{bibnamehash}{201c20947d295a96f85361a3bf61e6bc}
+      \strng{authorbibnamehash}{201c20947d295a96f85361a3bf61e6bc}
+      \strng{authornamehash}{201c20947d295a96f85361a3bf61e6bc}
+      \strng{authorfullhash}{201c20947d295a96f85361a3bf61e6bc}
+      \strng{authorfullhashraw}{201c20947d295a96f85361a3bf61e6bc}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Experimental economics}
+      \field{number}{4}
+      \field{title}{Dictator games: A meta study}
+      \field{volume}{14}
+      \field{year}{2011}
+      \field{pages}{583\bibrangedash 610}
+      \range{pages}{28}
+    \endentry
+    \entry{BECHLER2015149}{article}{}{}
+      \name{author}{3}{}{%
+        {{un=0,uniquepart=base,hash=475dbbf35ca349b3c9720db6359848d9}{%
+           family={Bechler},
+           familyi={B\bibinitperiod},
+           given={Christopher},
+           giveni={C\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=c2f3f0e24c16d43b6dbbcd25e1dfd84d}{%
+           family={Green},
+           familyi={G\bibinitperiod},
+           given={Leonard},
+           giveni={L\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=fb499f633eafd20e2ebbd184081c11c1}{%
+           family={Myerson},
+           familyi={M\bibinitperiod},
+           given={Joel},
+           giveni={J\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{6be4aabf4a34e3dfb50296b01942a927}
+      \strng{fullhash}{15354a3fac1e1bc84195bba21339a3e6}
+      \strng{fullhashraw}{15354a3fac1e1bc84195bba21339a3e6}
+      \strng{bibnamehash}{15354a3fac1e1bc84195bba21339a3e6}
+      \strng{authorbibnamehash}{15354a3fac1e1bc84195bba21339a3e6}
+      \strng{authornamehash}{6be4aabf4a34e3dfb50296b01942a927}
+      \strng{authorfullhash}{15354a3fac1e1bc84195bba21339a3e6}
+      \strng{authorfullhashraw}{15354a3fac1e1bc84195bba21339a3e6}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{Behavior in both the Dictator Game and the Ultimatum Game is of special interest because proposers often violate the predictions of normative economic theory: On average, offers in both games are higher than what would be considered income-maximizing. In the present study, the initial amount provided to the proposer and the social distance between the proposer and the respondent were both varied across a wide range, and the effects of these manipulations on offers in the Dictator Game and the Ultimatum Game were examined in a broad sample of participants recruited via MTurk. Although the amount offered was consistently higher in the Ultimatum Game, the proportion of the amount offered decreased as the size of the initial amount increased in both games. Moreover, the proportion offered also decreased as a function of the social distance between the proposer and the responder. The present results extend our knowledge of the determinants of proposers’ behavior in two-person economic games and emphasize the importance of social distance and the amount of money at stake as factors that affect people’s economic decisions.}
+      \field{issn}{0376-6357}
+      \field{journaltitle}{Behavioural Processes}
+      \field{title}{Proportion offered in the Dictator and Ultimatum Games decreases with amount and social distance}
+      \field{volume}{115}
+      \field{year}{2015}
+      \field{pages}{149\bibrangedash 155}
+      \range{pages}{7}
+      \verb{doi}
+      \verb https://doi.org/10.1016/j.beproc.2015.04.003
+      \endverb
+      \verb{urlraw}
+      \verb https://www.sciencedirect.com/science/article/pii/S0376635715001011
+      \endverb
+      \verb{url}
+      \verb https://www.sciencedirect.com/science/article/pii/S0376635715001011
+      \endverb
+      \keyw{Economic games,Dictator Game,Ultimatum Game,Initial amount,Social distance}
+    \endentry
+    \entry{pereda2017emergence}{article}{}{}
+      \name{author}{4}{}{%
+        {{un=0,uniquepart=base,hash=32ea3c2a125ff413e81a18ec95d9dff2}{%
+           family={Pereda},
+           familyi={P\bibinitperiod},
+           given={María},
+           giveni={M\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=707eb51e01fc77c9f8215ec9a3a5427b}{%
+           family={Brañas-Garza},
+           familyi={B\bibinithyphendelim G\bibinitperiod},
+           given={Pablo},
+           giveni={P\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=ffe26944e594a6e690ac8bee3f58b324}{%
+           family={Rodríguez-Lara},
+           familyi={R\bibinithyphendelim L\bibinitperiod},
+           given={Ismael},
+           giveni={I\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=b769cd699ef4e5de3345225237421d6c}{%
+           family={Sánchez},
+           familyi={S\bibinitperiod},
+           given={Angel},
+           giveni={A\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{publisher}{1}{%
+        {Nature Publishing Group UK London}%
+      }
+      \strng{namehash}{726a49d01c02871f093b4decaa78f1e4}
+      \strng{fullhash}{53e9403d06669bfc19defa922d4d4310}
+      \strng{fullhashraw}{53e9403d06669bfc19defa922d4d4310}
+      \strng{bibnamehash}{53e9403d06669bfc19defa922d4d4310}
+      \strng{authorbibnamehash}{53e9403d06669bfc19defa922d4d4310}
+      \strng{authornamehash}{726a49d01c02871f093b4decaa78f1e4}
+      \strng{authorfullhash}{53e9403d06669bfc19defa922d4d4310}
+      \strng{authorfullhashraw}{53e9403d06669bfc19defa922d4d4310}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Scientific reports}
+      \field{number}{1}
+      \field{title}{The emergence of altruism as a social norm}
+      \field{volume}{7}
+      \field{year}{2017}
+      \field{pages}{9684}
+      \range{pages}{1}
+    \endentry
+    \entry{castanon2023reinforcement}{article}{}{}
+      \name{author}{3}{}{%
+        {{un=0,uniquepart=base,hash=15824fcc3533a9e548898f40941e60dc}{%
+           family={Castañón},
+           familyi={C\bibinitperiod},
+           given={R.},
+           giveni={R\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=1e5e1fee0b6a063a794903a172293510}{%
+           family={Campos},
+           familyi={C\bibinitperiod},
+           given={F.\bibnamedelimi A.},
+           giveni={F\bibinitperiod\bibinitdelim A\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=afefacc75c472b63f3510b9ebe02a3f4}{%
+           family={Villar},
+           familyi={V\bibinitperiod},
+           given={J.},
+           giveni={J\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{publisher}{1}{%
+        {Nature Publishing Group}%
+      }
+      \strng{namehash}{a81925dc034d901411ff9ce9e7bc0bd6}
+      \strng{fullhash}{8739354039e2cfb94e3c9a630a35e83b}
+      \strng{fullhashraw}{8739354039e2cfb94e3c9a630a35e83b}
+      \strng{bibnamehash}{8739354039e2cfb94e3c9a630a35e83b}
+      \strng{authorbibnamehash}{8739354039e2cfb94e3c9a630a35e83b}
+      \strng{authornamehash}{a81925dc034d901411ff9ce9e7bc0bd6}
+      \strng{authorfullhash}{8739354039e2cfb94e3c9a630a35e83b}
+      \strng{authorfullhashraw}{8739354039e2cfb94e3c9a630a35e83b}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Scientific Reports}
+      \field{number}{1}
+      \field{title}{A reinforcement learning approach to explore the role of social expectations in altruistic behavior}
+      \field{volume}{13}
+      \field{year}{2023}
+      \field{pages}{1717}
+      \range{pages}{1}
+      \verb{doi}
+      \verb 10.1038/s41598-023-28659-0
+      \endverb
+      \verb{urlraw}
+      \verb https://doi.org/10.1038/s41598-023-28659-0
+      \endverb
+      \verb{url}
+      \verb https://doi.org/10.1038/s41598-023-28659-0
+      \endverb
+    \endentry
+  \enddatalist
+  \datalist[entry]{ynt/global//global/global/global}
+    \entry{bush1951mathematical}{article}{}{}
+      \name{author}{2}{}{%
+        {{un=0,uniquepart=base,hash=40a8093cbc004d4ca6bb72f1fbcb0410}{%
+           family={Bush},
+           familyi={B\bibinitperiod},
+           given={Robert\bibnamedelima R},
+           giveni={R\bibinitperiod\bibinitdelim R\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=fc73c2b06b97e5d0cdd9cc9ab8a840d4}{%
+           family={Mosteller},
+           familyi={M\bibinitperiod},
+           given={Frederick},
+           giveni={F\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{publisher}{1}{%
+        {American Psychological Association}%
+      }
+      \strng{namehash}{8d4a6fbc38c97302bfb36bc4b31f96d9}
+      \strng{fullhash}{8d4a6fbc38c97302bfb36bc4b31f96d9}
+      \strng{fullhashraw}{8d4a6fbc38c97302bfb36bc4b31f96d9}
+      \strng{bibnamehash}{8d4a6fbc38c97302bfb36bc4b31f96d9}
+      \strng{authorbibnamehash}{8d4a6fbc38c97302bfb36bc4b31f96d9}
+      \strng{authornamehash}{8d4a6fbc38c97302bfb36bc4b31f96d9}
+      \strng{authorfullhash}{8d4a6fbc38c97302bfb36bc4b31f96d9}
+      \strng{authorfullhashraw}{8d4a6fbc38c97302bfb36bc4b31f96d9}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Psychological review}
+      \field{number}{5}
+      \field{title}{A mathematical model for simple learning.}
+      \field{volume}{58}
+      \field{year}{1951}
+      \field{pages}{313}
+      \range{pages}{1}
+    \endentry
+    \entry{bichieri2006}{book}{}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=2c350cbf8fa66d670de4d71135326545}{%
+           family={Bicchieri},
+           familyi={B\bibinitperiod},
+           given={Cristina},
+           giveni={C\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{publisher}{1}{%
+        {Cambridge University Press}%
+      }
+      \strng{namehash}{2c350cbf8fa66d670de4d71135326545}
+      \strng{fullhash}{2c350cbf8fa66d670de4d71135326545}
+      \strng{fullhashraw}{2c350cbf8fa66d670de4d71135326545}
+      \strng{bibnamehash}{2c350cbf8fa66d670de4d71135326545}
+      \strng{authorbibnamehash}{2c350cbf8fa66d670de4d71135326545}
+      \strng{authornamehash}{2c350cbf8fa66d670de4d71135326545}
+      \strng{authorfullhash}{2c350cbf8fa66d670de4d71135326545}
+      \strng{authorfullhashraw}{2c350cbf8fa66d670de4d71135326545}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{In The Grammar of Society, first published in 2006, Cristina Bicchieri examines social norms, such as fairness, cooperation, and reciprocity, in an effort to understand their nature and dynamics, the expectations that they generate, and how they evolve and change. Drawing on several intellectual traditions and methods, including those of social psychology, experimental economics and evolutionary game theory, Bicchieri provides an integrated account of how social norms emerge, why and when we follow them, and the situations where we are most likely to focus on relevant norms. Examining the existence and survival of inefficient norms, she demonstrates how norms evolve in ways that depend upon the psychological dispositions of the individual and how such dispositions may impair social efficiency. By contrast, she also shows how certain psychological propensities may naturally lead individuals to evolve fairness norms that closely resemble those we follow in most modern societies.}
+      \field{edition}{None}
+      \field{month}{11}
+      \field{number}{9780521573726}
+      \field{series}{Cambridge Books}
+      \field{title}{The Grammar of Society}
+      \field{volume}{None}
+      \field{year}{2006}
+      \verb{doi}
+      \verb None
+      \endverb
+      \verb{urlraw}
+      \verb https://ideas.repec.org/b/cup/cbooks/9780521573726.html
+      \endverb
+      \verb{url}
+      \verb https://ideas.repec.org/b/cup/cbooks/9780521573726.html
+      \endverb
+    \endentry
+    \entry{engel2011dictator}{article}{}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=201c20947d295a96f85361a3bf61e6bc}{%
+           family={Engel},
+           familyi={E\bibinitperiod},
+           given={Christoph},
+           giveni={C\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{publisher}{1}{%
+        {Cambridge University Press \& Assessment}%
+      }
+      \strng{namehash}{201c20947d295a96f85361a3bf61e6bc}
+      \strng{fullhash}{201c20947d295a96f85361a3bf61e6bc}
+      \strng{fullhashraw}{201c20947d295a96f85361a3bf61e6bc}
+      \strng{bibnamehash}{201c20947d295a96f85361a3bf61e6bc}
+      \strng{authorbibnamehash}{201c20947d295a96f85361a3bf61e6bc}
+      \strng{authornamehash}{201c20947d295a96f85361a3bf61e6bc}
+      \strng{authorfullhash}{201c20947d295a96f85361a3bf61e6bc}
+      \strng{authorfullhashraw}{201c20947d295a96f85361a3bf61e6bc}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Experimental economics}
+      \field{number}{4}
+      \field{title}{Dictator games: A meta study}
+      \field{volume}{14}
+      \field{year}{2011}
+      \field{pages}{583\bibrangedash 610}
+      \range{pages}{28}
+    \endentry
+    \entry{BECHLER2015149}{article}{}{}
+      \name{author}{3}{}{%
+        {{un=0,uniquepart=base,hash=475dbbf35ca349b3c9720db6359848d9}{%
+           family={Bechler},
+           familyi={B\bibinitperiod},
+           given={Christopher},
+           giveni={C\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=c2f3f0e24c16d43b6dbbcd25e1dfd84d}{%
+           family={Green},
+           familyi={G\bibinitperiod},
+           given={Leonard},
+           giveni={L\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=fb499f633eafd20e2ebbd184081c11c1}{%
+           family={Myerson},
+           familyi={M\bibinitperiod},
+           given={Joel},
+           giveni={J\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{6be4aabf4a34e3dfb50296b01942a927}
+      \strng{fullhash}{15354a3fac1e1bc84195bba21339a3e6}
+      \strng{fullhashraw}{15354a3fac1e1bc84195bba21339a3e6}
+      \strng{bibnamehash}{15354a3fac1e1bc84195bba21339a3e6}
+      \strng{authorbibnamehash}{15354a3fac1e1bc84195bba21339a3e6}
+      \strng{authornamehash}{6be4aabf4a34e3dfb50296b01942a927}
+      \strng{authorfullhash}{15354a3fac1e1bc84195bba21339a3e6}
+      \strng{authorfullhashraw}{15354a3fac1e1bc84195bba21339a3e6}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{Behavior in both the Dictator Game and the Ultimatum Game is of special interest because proposers often violate the predictions of normative economic theory: On average, offers in both games are higher than what would be considered income-maximizing. In the present study, the initial amount provided to the proposer and the social distance between the proposer and the respondent were both varied across a wide range, and the effects of these manipulations on offers in the Dictator Game and the Ultimatum Game were examined in a broad sample of participants recruited via MTurk. Although the amount offered was consistently higher in the Ultimatum Game, the proportion of the amount offered decreased as the size of the initial amount increased in both games. Moreover, the proportion offered also decreased as a function of the social distance between the proposer and the responder. The present results extend our knowledge of the determinants of proposers’ behavior in two-person economic games and emphasize the importance of social distance and the amount of money at stake as factors that affect people’s economic decisions.}
+      \field{issn}{0376-6357}
+      \field{journaltitle}{Behavioural Processes}
+      \field{title}{Proportion offered in the Dictator and Ultimatum Games decreases with amount and social distance}
+      \field{volume}{115}
+      \field{year}{2015}
+      \field{pages}{149\bibrangedash 155}
+      \range{pages}{7}
+      \verb{doi}
+      \verb https://doi.org/10.1016/j.beproc.2015.04.003
+      \endverb
+      \verb{urlraw}
+      \verb https://www.sciencedirect.com/science/article/pii/S0376635715001011
+      \endverb
+      \verb{url}
+      \verb https://www.sciencedirect.com/science/article/pii/S0376635715001011
+      \endverb
+      \keyw{Economic games,Dictator Game,Ultimatum Game,Initial amount,Social distance}
+    \endentry
+    \entry{pereda2017emergence}{article}{}{}
+      \name{author}{4}{}{%
+        {{un=0,uniquepart=base,hash=32ea3c2a125ff413e81a18ec95d9dff2}{%
+           family={Pereda},
+           familyi={P\bibinitperiod},
+           given={María},
+           giveni={M\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=707eb51e01fc77c9f8215ec9a3a5427b}{%
+           family={Brañas-Garza},
+           familyi={B\bibinithyphendelim G\bibinitperiod},
+           given={Pablo},
+           giveni={P\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=ffe26944e594a6e690ac8bee3f58b324}{%
+           family={Rodríguez-Lara},
+           familyi={R\bibinithyphendelim L\bibinitperiod},
+           given={Ismael},
+           giveni={I\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=b769cd699ef4e5de3345225237421d6c}{%
+           family={Sánchez},
+           familyi={S\bibinitperiod},
+           given={Angel},
+           giveni={A\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{publisher}{1}{%
+        {Nature Publishing Group UK London}%
+      }
+      \strng{namehash}{726a49d01c02871f093b4decaa78f1e4}
+      \strng{fullhash}{53e9403d06669bfc19defa922d4d4310}
+      \strng{fullhashraw}{53e9403d06669bfc19defa922d4d4310}
+      \strng{bibnamehash}{53e9403d06669bfc19defa922d4d4310}
+      \strng{authorbibnamehash}{53e9403d06669bfc19defa922d4d4310}
+      \strng{authornamehash}{726a49d01c02871f093b4decaa78f1e4}
+      \strng{authorfullhash}{53e9403d06669bfc19defa922d4d4310}
+      \strng{authorfullhashraw}{53e9403d06669bfc19defa922d4d4310}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Scientific reports}
+      \field{number}{1}
+      \field{title}{The emergence of altruism as a social norm}
+      \field{volume}{7}
+      \field{year}{2017}
+      \field{pages}{9684}
+      \range{pages}{1}
+    \endentry
+    \entry{castanon2023reinforcement}{article}{}{}
+      \name{author}{3}{}{%
+        {{un=0,uniquepart=base,hash=15824fcc3533a9e548898f40941e60dc}{%
+           family={Castañón},
+           familyi={C\bibinitperiod},
+           given={R.},
+           giveni={R\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=1e5e1fee0b6a063a794903a172293510}{%
+           family={Campos},
+           familyi={C\bibinitperiod},
+           given={F.\bibnamedelimi A.},
+           giveni={F\bibinitperiod\bibinitdelim A\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=afefacc75c472b63f3510b9ebe02a3f4}{%
+           family={Villar},
+           familyi={V\bibinitperiod},
+           given={J.},
+           giveni={J\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{publisher}{1}{%
+        {Nature Publishing Group}%
+      }
+      \strng{namehash}{a81925dc034d901411ff9ce9e7bc0bd6}
+      \strng{fullhash}{8739354039e2cfb94e3c9a630a35e83b}
+      \strng{fullhashraw}{8739354039e2cfb94e3c9a630a35e83b}
+      \strng{bibnamehash}{8739354039e2cfb94e3c9a630a35e83b}
+      \strng{authorbibnamehash}{8739354039e2cfb94e3c9a630a35e83b}
+      \strng{authornamehash}{a81925dc034d901411ff9ce9e7bc0bd6}
+      \strng{authorfullhash}{8739354039e2cfb94e3c9a630a35e83b}
+      \strng{authorfullhashraw}{8739354039e2cfb94e3c9a630a35e83b}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Scientific Reports}
+      \field{number}{1}
+      \field{title}{A reinforcement learning approach to explore the role of social expectations in altruistic behavior}
+      \field{volume}{13}
+      \field{year}{2023}
+      \field{pages}{1717}
+      \range{pages}{1}
+      \verb{doi}
+      \verb 10.1038/s41598-023-28659-0
+      \endverb
+      \verb{urlraw}
+      \verb https://doi.org/10.1038/s41598-023-28659-0
+      \endverb
+      \verb{url}
+      \verb https://doi.org/10.1038/s41598-023-28659-0
+      \endverb
+    \endentry
+  \enddatalist
+\endrefsection
+\endinput
+

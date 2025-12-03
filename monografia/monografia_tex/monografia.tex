@@ -57,24 +57,25 @@
 
 \section{Introducción}
 
-El objetivo de este trabajo es realizar generar un análisis y discusión sobre el artículo \textit{A 
-reinforcement learning approach to explore the role of social expectations in altruistic behavior} 
-\citeyear{castanon2023reinforcement}. En el mismo se realizará un resumen del artículo citado, 
-ampliando brevemente sobre los algoritmos en los que se basa, así como en la teoría con la que busca 
-discutir.
-Adicionalmente, se replicará su trabajo en lenguaje Python para validar sus resultados. Finalmente, se 
-generará una discusión sobre las conclusiones a las que arriba, así como posibles extensiones del 
+El objetivo de este trabajo es realizar generar un análisis y discusión sobre el artículo 
+\textit{A reinforcement learning approach to explore the role of social expectations in 
+altruistic behavior} (\cite{castanon2023reinforcement}). En el mismo se realizará un resumen 
+del artículo citado, ampliando brevemente sobre los algoritmos en los que se basa, así como en 
+la teoría con la que busca discutir. Adicionalmente, se replicará su trabajo en lenguaje 
+Python para validar sus resultados. Finalmente, se generará una discusión sobre las 
+conclusiones a las que arriba, así como posibles extensiones del 
 trabajo.
 
 \section{Resumen del artículo}
 
 \subsection{Introducción y Motivación}
 
-El objetivo general del artículo es lograr modelar el comportamiento altruista de individuos. En 
-particular, busca llevar al campo computacional la teoría de normas sociales propuesta por Cristina 
-Bicchieri (\citeyear{bichieri2006}). Anteriormente, las teorías económicas y psicológicas tenían un 
-mayor foco en comportamientos puramente egoístas, es decir, comportamientos que buscan maximizar la 
-utilidad individual. Según esta autora, las normas sociales incluyen:
+El objetivo general del artículo es lograr modelar el comportamiento altruista de individuos. 
+En particular, busca llevar al campo computacional la teoría de normas sociales propuesta por 
+Cristina Bicchieri (\citeyear{bichieri2006}). Anteriormente, las teorías económicas y 
+psicológicas tenían un mayor foco en comportamientos puramente egoístas, es decir, 
+comportamientos que buscan maximizar la utilidad individual. Según esta autora, las normas 
+sociales incluyen:
 
 \begin{enumerate}
 \item expectativas empíricas: las creencias sobre lo que los demás hacen
@@ -94,10 +95,9 @@ adecuado para modelar este tipo de comportamiento. Sus reglas básicas son las s
 \end{itemize}
 
 Engel (\citeyear{engel2011dictator}) mediante un meta-análisis realizó una revisión literaria de juegos 
-del dictador y encontró que, en promedio, los dictadores donan alrededor del 30\% de su dotación, 
-entrando en abierta contradicción con la predicción del equilibrio de Nash del juego clásico, que 
-indica que los dictadores deberían donar 0\%. Según Bechler y otros (\citeyear{BECHLER2015149}), este 
-comportamiento surge de la influencia que tiene la distancia social entre los miembros de este juego.
+del dictador y encontró que, en promedio, los dictadores donan alrededor del 30\% de su dotación.
+Según Bechler y otros (\citeyear{BECHLER2015149}), este comportamiento surge de la influencia que 
+tiene la distancia social entre los miembros de este juego.
 
 Finalmente, para encontrar una manera de actualizar las expectativas de los agentes en un juego de
 múltiples rondas los autores recurren al aprendizaje por refuerzo, dada la robustez que provee para 
@@ -105,7 +105,8 @@ predecir comportamiento prosocial en grandes poblaciones. Este artículo replica
 el trabajo realizado por Pereda y otros (\citeyear{pereda2017emergence}) en el cual presenta un modelo 
 basado en agentes gobernados por las expectativas generadas por el Juego del Dictador, en las cuales 
 los agentes reaccionan a estímulos empíricos basados en la dinámica de aprendizaje reforzado de 
-Bush-Mosteller (\citeyear{bush1951mathematical}). La diferencia radica en resolver las siguientes limitaciones encontradas al artículo de Pereda y otros:
+Bush-Mosteller (\citeyear{bush1951mathematical}). La diferencia radica en resolver las siguientes 
+limitaciones encontradas al artículo de Pereda y otros:
 
 \begin{itemize}
 \item La ausencia de expectativas normativas.
@@ -150,16 +151,22 @@ aspiraciones originales del dictador sino también un parámetro ruido $\delta_{
 cuenta el efecto de una "mano temblorosa" a la hora de la comunicación. La donación comunicada tiene
 la siguiente forma:
 
-$$ \theta_{j,t} = max(0,min(\phi,a_{j,t} * (1 + \delta_{j,t}^{nor}))) $$
+\begin{equation}
+\theta_{j,t} = max(0,min(\phi,a_{j,t} * (1 + \delta_{j,t}^{nor})))
+\end{equation}
 
 La interacción normativa se conforma por la diferencia entre las aspiraciones del dictador y la donación
 comunicada a otros dictadores, normalizado por la dotación inicial para obtener un valor entre 0 y 1.
 
-$$ I_{j,t}^{nor} = \frac{\theta_{j,t} - a_{j,t}}{\phi} $$
+\begin{equation}
+I_{j,t}^{nor} = \frac{\theta_{j,t} - a_{j,t}}{\phi}
+\end{equation}
 
 Con $Q$ cantidad de interacciones, la totalidad de la interacción normativa recibida por el dictador $j$ en la ronda $t$ es:
 
-$$ s_{j,t}^{nor} = \frac{\sum_{m=1}^{Q} I_{m,t}^{nor}}{Q}  = \frac{\sum_{j'}\theta_{j',t}-a_{j,t}\sum_{j'}1}{\phi*Q} = \frac{\sum_{j'}\phi_{j',t}}{\phi*Q}-\frac{a_{j,t}}{\phi}$$
+\begin{equation}
+s_{j,t}^{nor} = \frac{\sum_{m=1}^{Q} I_{m,t}^{nor}}{Q}  = \frac{\sum_{j'}\theta_{j',t}-a_{j,t}\sum_{j'}1}{\phi*Q} = \frac{\sum_{j'}\phi_{j',t}}{\phi*Q}-\frac{a_{j,t}}{\phi}
+\end{equation}
 
 De esta forma, se puede destacar varias cuestiones. Primero, que solo el dictador
 que busca consejo actualiza sus aspiraciones en base a la interacción normativa. Segundo,
@@ -173,24 +180,27 @@ Tanto la susceptibilidad como las aspiraciones de los dictadores se actualizan e
 recibida. Primero, la susceptibilidad se actualiza de la siguiente forma:
 
 % write an if else statement in latex
-$$ l_{j,t}^{nor} = 
+\begin{equation}
+l_{j,t}^{nor} = 
 \begin{cases}
 l_{j,t-1}^{nor} * (1+W^{nor,pos} * s_{j,t}^{nor}) & \text{si } s_{j,t}^{nor} \geq 0 \\
 l_{j,t-1}^{nor} * (1+W^{nor,neg} * s_{j,t}^{nor}) & \text{si } s_{j,t}^{nor} < 0 \\
 \end{cases}
-$$
+\end{equation}
 
 siendo $W^{nor,pos}$ y $W^{nor,neg}$ hiperparámetros (entre 0 y 1) representando los pesos 
 asignados a las interacciones normativas positivas y negativas respectivamente.
 
 luego, las aspiraciones se actualizan de la siguiente forma:
 
-$$ a_{j-t} =
+\begin{equation}
+a_{j,t} =
 \begin{cases}
-a_{j,t-1} + (\phi - a_{j,t-1}) * l_{j,1}^{nor} \geq 0 \\
-a_{j,t-1} + a_{j,t-1} * l_{j,1}^{nor} < 0 \\
+a_{j,t-1} + (\phi - a_{j,t-1}) * l_{j,1}^{nor} \text{si } s_{j,t}^{nor} \geq 0 \\
+a_{j,t-1} + a_{j,t-1} * l_{j,1}^{nor} \text{si } s_{j,t}^{nor} < 0 \\
 \end{cases}
-$$
+\label{aspiracion_dictador}
+\end{equation}
 
 De estas fórmulas podemos interpretar que el estímulo positivo incrementa la susceptibilidad del agente y,
 secuencialmente, sus aspiraciones. Por el contrario, un estímulo negativo reduce la susceptibilidad y las
@@ -203,7 +213,9 @@ personales. Lo contrario ocurre en el caso de interacciones negativas.
 Cada dictador dona a su respectivo receptor una cantidad $\delta_{j,t}$ con la siguiente fórmula, incorporando
 una variable ruido $\delta_{j,t}^{emp}$, que representa la "mano temblorosa" al momento de donar:
 
-$$ \delta_{j,t} = max(0,min(\phi,(\phi-a_{j,t}) * (1 + \delta_{j,t}^{emp}))) $$
+\begin{equation}
+\delta_{j,t} = max(0,min(\phi,(\phi-a_{j,t}) * (1 + \delta_{j,t}^{emp})))
+\end{equation}
 
 Esta donación $\delta_{j,t}$ se convierte en la donación $\pi_{k,t}$ recibida por el receptor $k$ en la ronda $t$.
 
@@ -211,7 +223,9 @@ Esta donación $\delta_{j,t}$ se convierte en la donación $\pi_{k,t}$ recibida 
 
 Como resultado de la donación recibida, cada receptor reacciona al estímulo empírico generado por la misma:
 
-$$ s_{k,t}^{emp} = \frac{\pi_{k,t} - a_{k,t}}{\phi} $$
+\begin{equation}
+s_{k,t}^{emp} = \frac{\pi_{k,t} - a_{k,t}}{\phi}
+\end{equation}
 
 lo cual se traduce a que, si la donación recibida es mayor a la aspiración del receptor, el estímulo empírico
 será positivo, y negativo en el caso contrario.
@@ -221,19 +235,22 @@ será positivo, y negativo en el caso contrario.
 Similar a los dictadores, los receptores actualizan su susceptibilidad y sus aspiraciones en base al estímulo
 empírico recibido:
 
-$$ l_{k,t}^{emp} = 
+\begin{equation}
+l_{k,t}^{emp} = 
 \begin{cases}
 l_{k,t-1}^{emp} * (1+W^{emp,pos} * s_{k,t}^{emp}) & \text{si } s_{k,t}^{emp} \geq 0 \\
 l_{k,t-1}^{emp} * (1+W^{emp,neg} * s_{k,t}^{emp}) & \text{si } s_{k,t}^{emp} < 0 \\
 \end{cases}
-$$
+\end{equation}
 
-$$ a_{k-t} =
+\begin{equation}
+a_{k,t} =
 \begin{cases}
-a_{k,t-1} + (\phi - a_{k,t-1}) * l_{k,1}^{emp} \geq 0 \\
-a_{k,t-1} + a_{k,t-1} * l_{k,1}^{emp} < 0 \\
+a_{k,t-1} + (\phi - a_{k,t-1}) * l_{k,1}^{emp} \text{ si } s_{k,t}^{emp} \geq 0 \\
+a_{k,t-1} + a_{k,t-1} * l_{k,1}^{emp} \text{ si } s_{k,t}^{emp} < 0 \\
 \end{cases}
-$$
+\label{aspiracion_receptor}
+\end{equation}
 
 \subsubsection{Repetir hasta finalizar iteraciones}
 
@@ -243,40 +260,142 @@ susceptibilidades de los agentes.
 
 \subsection{Supuestos de la implementación computacional}
 
-Adicional a las fórmulas y dinámicas presentadas en el artículo, los autores realizan ciertos supuestos
-para la implementación computacional del modelo:
+Adicional a las fórmulas y dinámicas presentadas en el artículo, los autores realizan ciertos 
+supuestos para la implementación computacional del modelo:
 
 \begin{itemize}
-    \item La dotación inicial fija $\phi$ es igual a 100.
-    \item La variable ruido tanto en la comunicación normativa como en la donación empírica sigue una 
-    distribución normal con media 0 y desviación estándar 0.1.
-    \item La cantidad de interacciones normativas $Q$ es igual a 5.
-    \item La cantidad de rondas $T$ es igual a 5000.
+    \item Asumen cierta predisposición al egoísmo, por lo que la aspiración $a_{i,t=0}$ inicial de cada agente se toma de una 
+    distribución uniforme en el rango $[0.5\phi;\phi]$.
+    \item La susceptibilidad se toma de una distribución uniforme en el rango $[0;0.5]$.
+    \item Se asume que los agentes cuentan con una sola susceptibilidad (y no una empírica y otra normativa). Esto se 
+    justifica en que los autores esperan un comportamiento consistente
+    a ser igualmente reactivos a estímulos empíricos y normativos.
+    \item Se asume que las interacciones normativas son más frecuentes que las empíricas, por lo que se asume $Q=5$.
+    \item Respecto a las "manos temblorosas", se asume que los humanos son más susceptibles a comportarse consistentemente con 
+    sus creencias en ambientes empíricos que en los normativos, por lo que $\delta_{j,t}^{norm} \sim N(0;0.05)$ y $\delta_{j,t}
+    ^{nor} \sim N(0;0.1)$.
 \end{itemize}
 
 \subsection{Resultados Principales}
 
-Las simulaciones muestran que el comportamiento altruista es una propiedad emergente que depende críticamente de la configuración de los pesos de influencia social ($W$).
+Como comentarios finales de configuración, se realizaron 10 juegos de 100 rondas con 1000 agentes. Estos juegos
+se ejecutaron con semillas diferentes para luego promediarse. Si no se logra un régimen estable antes de las 100 rondas,
+se extiende 10 rondas más hasta lograrlo, aunque siempre se logra antes de las 100 rondas.
+
+Para evaluar los resultados, se visualizará la distribución de las últimas donaciones realizadas por los agentes, así
+como la distribución de las susceptibilidades finales de los mismos. Adicionalmente, se mostrarán estos resultados para
+diferentes valores de los pesos asignados a las interacciones positivas y negativas, tanto normativas como empíricas
+($W^{emp}_{pos}, W^{emp}_{neg}, W^{norm}_{pos}, W^{norm}_{neg}$).
+
+Primero se evalúan los resultados fijando $W^{emp}_{pos}=W^{emp}_{neg}=0$ y variando los pesos asignados a las interacciones 
+normativas. De los resultados de esta configuración se deriva que la variación en las interacciones normativas positivas
+no parecen generar una diferencia en la donación promedio, mientras que las negativas si logran correr el promedio donado
+hacia la izquierda. En el gráfico análogo, fijando $W^{norm}_{pos}=W^{norm}_{neg}=0$ y variando los pesos asignados a las 
+interacciones empíricas, también se observa una mayor influencia de los pesos asignados a las interacciones negativas, 
+visualizado también con fuerza en la evolución de las susceptibilidades. Los autores asignan mayor influencia a las 
+interacciones empíricas a que tienen una mayor frecuencia que las normativas, dando
+mayor lugar a casos extremos, si bien modificar el Q no modifica sensiblemente estas distribuciones.
+
+Moviéndonos a analizar escenarios donde se fijan los pesos normativos o empíricos en 1, y se varían los pesos del otro tipo de 
+interacción, se observa la misma tendencia: las interacciones empíricas son más relevantes para definir las donaciones finales.
+
+Otro resultado: niveles altos y positivos normativos ayudan a conservar altos niveles de susceptibilidad en las rondas finales.
+Por otro lado, los perfiles de donaciones que reflejan mejor los resultados experimentales (figura 4 o cuarta columna de la 
+figura 5), presentan niveles prácticamente nulos de susceptibilidad, sugiriendo que los agentes no son más susceptibles
+a cambios en sus conductas altruistas.
+
+\subsection{Discusión y conclusiones}
+
+Resumiendo resultados de la bibliografía que los autores discuten. % TODO agregar las citas
 
 \begin{itemize}
-    \item \textbf{Emergencia de la Norma de Equidad:} Cuando los agentes son sensibles a los estímulos normativos positivos ($W^{nor, pos} > 0$), es decir, cuando aumentan sus aspiraciones al ver que otros son generosos, la población tiende a converger hacia un comportamiento de \textbf{donación alta (cercana al 50\%)}. La norma de equidad se "contagia" y se estabiliza.
-    \item \textbf{Colapso hacia el Egoísmo:} Si la influencia normativa es débil o si los agentes pesan desproporcionadamente los estímulos negativos (ej. "si otros dan poco, yo bajo mi estándar"), la población converge hacia el equilibrio de Nash del juego clásico: donaciones cercanas a cero.
-    \item \textbf{Dinámica de la Susceptibilidad:} Un hallazgo interesante es que la susceptibilidad ($s$) no necesita ser fija. El modelo permite que $s$ evolucione, mostrando que los agentes pueden volverse más o menos conformistas dependiendo de su historia de interacciones. En escenarios donde la norma es fuerte, la susceptibilidad tiende a mantenerse, reforzando la cohesión del grupo.
-    \item \textbf{Papel de las Expectativas Empíricas:} Las expectativas de los receptores actúan como un mecanismo de retroalimentación. Si los receptores se "acostumbran" a recibir poco (sus aspiraciones bajan), esto valida indirectamente el comportamiento egoísta de los dictadores cuando los roles se invierten en rondas futuras.
+\item La donación promedio está cerca del 30 por ciento de la dotación inicia.
+\item La distribución est heterogénea. Si bien hay algunas donaciones por arriba del 50 por ciento, la decisión modal está 
+cerca de la donación equitativa.
+\item Hay un número no trivial de agentes (10 por cinto) que decide quedarse con toda la dotación, incluso mayor a los que
+deciden donar más de la mitad.
 \end{itemize}
 
-\subsection{Discusión y Conclusiones}
+Como primera observación, para los casos "socialmente consistentes", es decir con susceptibilidad nula y cero, el experimento
+captura estos resultados experimentales. Además se suman dos nuevos descubrimientos:
+Python para validar sus resultados. Finalmente, se generará una discusión sobre las conclusiones:
+\begin{enumerate}
+\item Las expectativas empíricas tienden a dominar las normativas: la creencia sobre lo que hacen otros actores son más fuertes
+que las creencias sobre lo que otros piensan que se debe hacer.
+\item El hecho de que las interacciones negativas tengan mayor peso tienen soporte en la literatura psicológica % TODO buscar referencias
+De hecho, los resultados que más coinciden con la literatura previa son los que le asignan tres veces más peso a las interacciones negativas que las positivas.
+\item Como se puede inferir que en los casos donde el estímulo converge a cero, no se requieren normas sociales que las mantengan, se puee inferir que agentes maduros pueden mantener comportamientos prosociales sin neceisdad de estímulos que
+redirijan su comportamiento.
+\item En consecuencia, el rol inicial de la susceptibilidad se vuelve muy relevante.
 
-El trabajo concluye que el altruismo en el Juego del Dictador puede explicarse satisfactoriamente mediante un mecanismo de aprendizaje social adaptativo, sin necesidad de asumir preferencias altruistas innatas fijas.
+\end{enumerate}
 
+Finalmente, los autores proponen líneas de investigación futuras enfocadas en: (1) complejizar 
+los perfiles psicológicos de los agentes incorporando creencias normativas personales; (2) 
+profundizar en cómo las interacciones generan cambios de fase en la susceptibilidad 
+poblacional; (3) explorar topologías de red distintas a la "totalmente conectada" para 
+estudiar efectos de homofilia y redes de referencia; y (4) aplicar el modelo al diseño de 
+políticas públicas prosociales (ej. subsidios) bajo escenarios de riesgo.
+
+\section{Discusión con la bibliografía}
+
+Para profundizar y comprender mejor el funcionamiento de este algoritmo, ampliaremos
+sobre el algoritmo de Bush-Mosteller (\citeyear{bush1951mathematical}) utilizado en el
+artículo, describiendo no solo su funcionamiento, sino la manera en que se inserta y dialoga
+con la bibliografía inicial sobre aprendizaje por refuerzo.
+
+En su recorrido por la historia del aprendizaje por refuerzo, Sutton y Barto 
+(\citeyear{sutton1998reinforcement}) describen los trabajos que investigaron el desarrollo
+de métodos para resolver problemas de aprendizaje no asociativos y puramente
+seleccionistas como el de k-armed bandits. % TODO ampliar
+
+La teoría estadística del aprendizaje desarrollada por Bush y Mosteller 
+(\citeyear{bush1955stochastic}) sirvió como basamento para investigaciones futuras en modelos 
+económicos clásicos, teniendo como objetivo estudiar agentes artificiales que actuasen más 
+como personas reales que como agentes económicos ideales. En este sentido, este enfoque de 
+investigación se expandió hacia la aplicación de aprendizaje reforzado en la teoría de juegos.
+
+Es dentro de este marco que Bush y Mosteller desarrollaron su algoritmo (\citeyear
+{bush1951mathematical}), el cual busca describir la estructura básica de situaciones
+de aprendizaje sencillas. El objetivo principal del algoritmo es describir el cambio en 
+la probabilidad (p) de que ocurra la respuesta que se está estudiando, después de la 
+ejecución de dicha respuesta. El algoritmo cuenta con la siguiente arquitectura:
+
+\begin{equation}
+Qp = p + a(1-p)-bp
+\end{equation}
+
+donde:
 \begin{itemize}
-    \item \textbf{Validación de la Teoría de Bicchieri:} Los resultados apoyan computacionalmente la teoría de que las normas sociales son equilibrios sostenidos por expectativas mutuas. El comportamiento prosocial surge de la interacción dinámica entre lo que observamos (normativo) y lo que experimentamos (empírico).
-    \item \textbf{Plasticidad del Comportamiento:} El modelo destaca la plasticidad de la moralidad humana. El mismo grupo de agentes puede volverse egoísta o altruista dependiendo simplemente de cómo procesan la información social (los parámetros $W$), lo que tiene implicaciones para el diseño de políticas o intervenciones sociales: para fomentar el altruismo, es crucial visibilizar los comportamientos positivos (reforzar el estímulo normativo positivo).
-    \item \textbf{Aporte Metodológico:} El artículo demuestra la utilidad del Aprendizaje por Refuerzo tipo Bush-Mosteller para modelar fenómenos sociológicos complejos, ofreciendo un puente entre la psicología del aprendizaje individual y la dinámica de poblaciones.
+\item Q: operador matemático. Cuando se aplica a una probabilidad p, se obtiene 
+un nuevo valor de probabilidad.
+\item a(1-p): término de refuerzo positivo. Si la respuesta es seguida por un
+refuerzo positivo, la probabilidad de que la respuesta se repita aumenta en
+proporción a (1-p), siendo a un parámetro entre 0 y 1 que representa la
+tasa de aprendizaje.
+\item -bp: término de refuerzo negativo. Si la respuesta es seguida por un
+refuerzo negativo, la probabilidad de que la respuesta se repita disminuye en
+proporción a p, siendo b un parámetro entre 0 y 1 que representa la
+tasa de aprendizaje.
 \end{itemize}
 
+Esta arquitectura se asemeja a la utilizada en el capítulo 2 de Sutton y Barto 
+(\citeyear{sutton1998reinforcement}), donde se describe el método de \textit{implementación
+incremental} para estimar el valor esperado de una acción en un problema de
+k-armed bandit.
 
+\begin{equation}
+\text{Nueva Estimación} \leftarrow \text{Vieja Estimación} + \text{Tamaño del Paso} \cdot [\text{Objetivo} - \text{Vieja Estimación}]
+\label{eq:incremental}
+\end{equation}
 
+Adaptando la ecuación \ref{eq:incremental}, la nueva estimación es $Qp$, la vieja estimación es $p$, el tamaño del paso es $a$ o $b$ dependiendo si el refuerzo es positivo o negativo, el error corresponde al término que decrementa p ($-bp$) y el objetivo al que se apunta es el término que lo incrementa ($a(1-p)$). % TODO chequear última parte
+
+Retomando el artículo de Castañón y otros, podemos observar que es la actualización en la 
+aspiración de los agentes (ecuaciones \ref{aspiracion_dictador} y \ref{aspiracion_receptor}) la que sigue la lógica del algoritmo de Bush-Mosteller. De esa manera, la probabilidad nueva $Qp$ es representada por la nueva aspiración
+$a_{i,t}$, la probabilidad vieja $p$ por la aspiración previa $a_{i,t-1}$ y el tamaño del paso $a$ o $b$ por la susceptibilidad $l_{i,1}^{nor}$ o $l_{i,1}^{emp}$. De esa manera, con las funciones partidas dependiendo de los
+estímulos normativos y empíricos, la ecuación contempla tanto el término de refuerzo positivo como el negativo.
+% TODO buscar sobre convergencia de LR
 
 \printbibliography
 

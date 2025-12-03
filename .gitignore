@@ -2,3 +2,8 @@
 *.log
 *.synctex.gz
 *.json
+*.bcf
+*.out
+*.run.xml
+*.bbl
+*.blg

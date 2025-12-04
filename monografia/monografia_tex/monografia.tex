@@ -148,7 +148,7 @@ cantidad de dictadores y recipientes deben ser la misma para que puedan ser apar
 Cada dictador comunica honestamente el porcentaje de la dotación $\theta_{j,t}$ que planea donar al receptor 
 a una cantidad $Q$ de otros dictadores. El parámetro $\theta_{j,t}$ no solo toma en cuenta las
 aspiraciones originales del dictador sino también un parámetro ruido $\delta_{j,t}^nor$ que toma en
-cuenta el efecto de una "mano temblorosa" a la hora de la comunicación. La donación comunicada tiene
+cuenta el efecto de una 'mano temblorosa' a la hora de la comunicación. La donación comunicada tiene
 la siguiente forma:
 
 \begin{equation}
@@ -211,7 +211,7 @@ personales. Lo contrario ocurre en el caso de interacciones negativas.
 \subsubsection{Los dictadores proceden a donar}
 
 Cada dictador dona a su respectivo receptor una cantidad $\delta_{j,t}$ con la siguiente fórmula, incorporando
-una variable ruido $\delta_{j,t}^{emp}$, que representa la "mano temblorosa" al momento de donar:
+una variable ruido $\delta_{j,t}^{emp}$, que representa la 'mano temblorosa' al momento de donar:
 
 \begin{equation}
 \delta_{j,t} = max(0,min(\phi,(\phi-a_{j,t}) * (1 + \delta_{j,t}^{emp})))
@@ -271,7 +271,7 @@ supuestos para la implementación computacional del modelo:
     justifica en que los autores esperan un comportamiento consistente
     a ser igualmente reactivos a estímulos empíricos y normativos.
     \item Se asume que las interacciones normativas son más frecuentes que las empíricas, por lo que se asume $Q=5$.
-    \item Respecto a las "manos temblorosas", se asume que los humanos son más susceptibles a comportarse consistentemente con 
+    \item Respecto a las 'manos temblorosas', se asume que los humanos son más susceptibles a comportarse consistentemente con 
     sus creencias en ambientes empíricos que en los normativos, por lo que $\delta_{j,t}^{norm} \sim N(0;0.05)$ y $\delta_{j,t}
     ^{nor} \sim N(0;0.1)$.
 \end{itemize}
@@ -288,56 +288,158 @@ diferentes valores de los pesos asignados a las interacciones positivas y negati
 ($W^{emp}_{pos}, W^{emp}_{neg}, W^{norm}_{pos}, W^{norm}_{neg}$).
 
 Primero se evalúan los resultados fijando $W^{emp}_{pos}=W^{emp}_{neg}=0$ y variando los pesos asignados a las interacciones 
-normativas. De los resultados de esta configuración se deriva que la variación en las interacciones normativas positivas
+normativas. De los resultados de esta configuración visualizados en la figura
+\ref{fig:emp_0} se deriva que la variación en las interacciones normativas positivas
 no parecen generar una diferencia en la donación promedio, mientras que las negativas si logran correr el promedio donado
-hacia la izquierda. En el gráfico análogo, fijando $W^{norm}_{pos}=W^{norm}_{neg}=0$ y variando los pesos asignados a las 
+hacia la izquierda. En la figura análoga \ref{fig:nor_0}, fijando $W^{norm}_{pos}=W^{norm}_{neg}=0$ y variando los pesos asignados a las 
 interacciones empíricas, también se observa una mayor influencia de los pesos asignados a las interacciones negativas, 
 visualizado también con fuerza en la evolución de las susceptibilidades. Los autores asignan mayor influencia a las 
 interacciones empíricas a que tienen una mayor frecuencia que las normativas, dando
 mayor lugar a casos extremos, si bien modificar el Q no modifica sensiblemente estas distribuciones.
 
-Moviéndonos a analizar escenarios donde se fijan los pesos normativos o empíricos en 1, y se varían los pesos del otro tipo de 
-interacción, se observa la misma tendencia: las interacciones empíricas son más relevantes para definir las donaciones finales.
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{donaciones_delta_emp_0.png}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{susceptibilidades_emp_0.png}
+    \end{subfigure}
+    \caption{Distribución de donaciones y susceptibilidades finales con $W^{emp}_{pos}=W^{emp}_{neg}=0$}
+    \label{fig:emp_0}
+\end{figure}
 
-Otro resultado: niveles altos y positivos normativos ayudan a conservar altos niveles de susceptibilidad en las rondas finales.
-Por otro lado, los perfiles de donaciones que reflejan mejor los resultados experimentales (figura 4 o cuarta columna de la 
-figura 5), presentan niveles prácticamente nulos de susceptibilidad, sugiriendo que los agentes no son más susceptibles
-a cambios en sus conductas altruistas.
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{donaciones_delta_nor_0.png}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{susceptibilidades_nor_0.png}
+    \end{subfigure}
+    \caption{Distribución de donaciones y susceptibilidades finales con $W^{nor}_{pos}=W^{nor}_{neg}=0$}
+    \label{fig:nor_0}
+\end{figure}
+
+
+Moviéndonos a analizar escenarios donde se fijan los pesos normativos o empíricos en 1 (figura \ref{fig:nor_1} y \ref{fig:emp_1}), 
+y se varían los pesos del otro tipo de interacción, se observa la misma tendencia: las interacciones empíricas son más 
+relevantes para definir las donaciones finales.
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{donaciones_delta_emp_1.png}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{susceptibilidades_emp_1.png}
+    \end{subfigure}
+    \caption{Distribución de donaciones y susceptibilidades finales con $W^{emp}_{pos}=W^{emp}_{neg}=1$}
+    \label{fig:emp_1}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{donaciones_delta_nor_1.png}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{susceptibilidades_nor_1.png}
+    \end{subfigure}
+    \caption{Distribución de donaciones y susceptibilidades finales con $W^{nor}_{pos}=W^{nor}_{neg}=1$}
+    \label{fig:nor_1}
+\end{figure}
+
+
+Finalmente, los autores destacan que niveles altos y positivos normativos ayudan a conservar altos niveles de susceptibilidad 
+en las rondas finales. Por otro lado, los perfiles de donaciones que reflejan mejor los resultados experimentales 
+(figura \ref{fig:emp_1} o cuarta columna de la figura \ref{fig:nor_1}), presentan niveles prácticamente nulos de susceptibilidad, 
+sugiriendo que los agentes no son más susceptibles a cambios en sus conductas altruistas.
 
 \subsection{Discusión y conclusiones}
 
-Resumiendo resultados de la bibliografía que los autores discuten. % TODO agregar las citas
+De los resultados obtenidos, los autores extraen tres conclusiones preliminares, poniendo foco 
+en entornos 'socialmente consistentes', es decir con susceptibilidad final nula
 
 \begin{itemize}
 \item La donación promedio está cerca del 30 por ciento de la dotación inicia.
-\item La distribución est heterogénea. Si bien hay algunas donaciones por arriba del 50 por ciento, la decisión modal está 
+\item La distribución es heterogénea. Si bien hay algunas donaciones por arriba del 50 por ciento, la decisión modal está 
 cerca de la donación equitativa.
 \item Hay un número no trivial de agentes (10 por cinto) que decide quedarse con toda la dotación, incluso mayor a los que
 deciden donar más de la mitad.
 \end{itemize}
 
-Como primera observación, para los casos "socialmente consistentes", es decir con susceptibilidad nula y cero, el experimento
-captura estos resultados experimentales. Además se suman dos nuevos descubrimientos:
-Python para validar sus resultados. Finalmente, se generará una discusión sobre las conclusiones:
-\begin{enumerate}
-\item Las expectativas empíricas tienden a dominar las normativas: la creencia sobre lo que hacen otros actores son más fuertes
-que las creencias sobre lo que otros piensan que se debe hacer.
-\item El hecho de que las interacciones negativas tengan mayor peso tienen soporte en la literatura psicológica % TODO buscar referencias
-De hecho, los resultados que más coinciden con la literatura previa son los que le asignan tres veces más peso a las interacciones negativas que las positivas.
-\item Como se puede inferir que en los casos donde el estímulo converge a cero, no se requieren normas sociales que las mantengan, se puee inferir que agentes maduros pueden mantener comportamientos prosociales sin neceisdad de estímulos que
-redirijan su comportamiento.
-\item En consecuencia, el rol inicial de la susceptibilidad se vuelve muy relevante.
+Adicionalmente, destacan las siguientes características coincidentes con la bibliografía:
 
+\begin{enumerate}
+\item Las expectativas empíricas tienden a dominar las normativas: la creencia sobre lo que hacen otros actores son 
+más fuertes que las creencias sobre lo que otros piensan que se debe hacer.
+\item Las interacciones negativas tienen mayor peso que las positivas.
+\item En los casos donde el estímulo converge a cero, se puede inferir que no se requieren normas sociales que 
+las mantengan: los agentes pueden mantener comportamientos prosociales sin necesidad de estímulos que redirijan su 
+comportamiento.
+\item En consecuencia, el rol inicial de la susceptibilidad se vuelve muy relevante.
 \end{enumerate}
+
+Habiendo llegado a estas conclusiones, los autores ponen foco en una configuración específica de pesos: 
+dejando los pesos negativos en 1. Recorriendo todos los pesos positivos encuentran que la configuración que más se 
+acerca al treinta por ciento relevado por Engel (\citeyear{engel2011dictator}) es el que le asigna 1/3 a los pesos 
+positivos (valor remarcado en la figura \ref{fig:plot_final}). Resulta interesante que esta relación entre pesos
+(negativos tres veces mayores que positivos) se refleja en la literatura psicológica sobre el tema, 
+en donde las dinámicas negativas tienen entre tres y cinco veces más peso que las positivas (\cite{coleman2021live,
+fredrickson2013updated}).
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{donaciones_delta_final_editado.png}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{susceptibilidades_final_editado.png}
+    \end{subfigure}
+    \caption{Distribución de donaciones y susceptibilidades finales con $W^{emp}_{neg}=W^{nor}_{neg}=1$}
+    \label{fig:plot_final}
+\end{figure}
+
+Como un último aspecto relevante de esta configuración de hiperparámetros, la evolución de la susceptibilidad
+promedio (algorítmicamente, la tasa de aprendizaje) muestra una forma exponencial decreciente (figura \ref
+{fig:evolucion_susceptibilidad}). Este coincide con lo observado por Westhoff y otros (\citeyear
+{westhoff2020developmental}) en su estudio de la adaptación de los agentes en ambientes cooperativos y no 
+cooperativos a partir del ajuste de expectativas empíricas a partir de mecanismos de aprendizaje por refuerzo. 
+Además, toma valores similares de tasa de aprendizaje (en el rango entre 0 y 0.25) que decae a su valor estacionario 
+en alrededor de 20 rondas.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{evolucion_susceptibilidad_promedio.png}
+    \caption{Evolución de la susceptibilidad promedio con $W^{emp}_{neg}=W^{nor}_{neg}=1$ y $W^{emp}_{pos}=W^{nor}_{pos}=0.33$}
+    \label{fig:evolucion_susceptibilidad}
+\end{figure}
+
 
 Finalmente, los autores proponen líneas de investigación futuras enfocadas en: (1) complejizar 
 los perfiles psicológicos de los agentes incorporando creencias normativas personales; (2) 
 profundizar en cómo las interacciones generan cambios de fase en la susceptibilidad 
-poblacional; (3) explorar topologías de red distintas a la "totalmente conectada" para 
+poblacional; (3) explorar topologías de red distintas a la 'totalmente conectada' para 
 estudiar efectos de homofilia y redes de referencia; y (4) aplicar el modelo al diseño de 
 políticas públicas prosociales (ej. subsidios) bajo escenarios de riesgo.
 
-\section{Discusión con la bibliografía}
+\section{Marco teórico del artículo}
 
 Para profundizar y comprender mejor el funcionamiento de este algoritmo, ampliaremos
 sobre el algoritmo de Bush-Mosteller (\citeyear{bush1951mathematical}) utilizado en el
@@ -345,9 +447,13 @@ artículo, describiendo no solo su funcionamiento, sino la manera en que se inse
 con la bibliografía inicial sobre aprendizaje por refuerzo.
 
 En su recorrido por la historia del aprendizaje por refuerzo, Sutton y Barto 
-(\citeyear{sutton1998reinforcement}) describen los trabajos que investigaron el desarrollo
-de métodos para resolver problemas de aprendizaje no asociativos y puramente
-seleccionistas como el de k-armed bandits. % TODO ampliar
+(\citeyear{sutton1998reinforcement}) describen los trabajos que investigaron 
+el desarrollo de autómatas aprendices, diseñados para resolver problemas de 
+aprendizaje no asociativos (es decir, que no implica aprender a actuar en más 
+de una situación) y puramente seleccionistas como el de k-armed bandits. Entre estos
+trabajos se destaca el de autómatas aprendices estocásticos, los cuales actualizan la 
+probabilidad de sus acciones en base a señales de recompensa. Este línea de investigación
+es la que derivaría en el desarrollo de una teoría estadística del aprendizaje (\cite{bush1955stochastic})
 
 La teoría estadística del aprendizaje desarrollada por Bush y Mosteller 
 (\citeyear{bush1955stochastic}) sirvió como basamento para investigaciones futuras en modelos 
@@ -389,13 +495,25 @@ k-armed bandit.
 \label{eq:incremental}
 \end{equation}
 
-Adaptando la ecuación \ref{eq:incremental}, la nueva estimación es $Qp$, la vieja estimación es $p$, el tamaño del paso es $a$ o $b$ dependiendo si el refuerzo es positivo o negativo, el error corresponde al término que decrementa p ($-bp$) y el objetivo al que se apunta es el término que lo incrementa ($a(1-p)$). % TODO chequear última parte
+Adaptando la ecuación \ref{eq:incremental}, la nueva estimación es $Qp$, la vieja estimación es $p$, el tamaño del 
+paso es $a$ o $b$ dependiendo si el refuerzo es positivo o negativo y el error corresponde al término que decrementa 
+p ($-bp$).
 
 Retomando el artículo de Castañón y otros, podemos observar que es la actualización en la 
-aspiración de los agentes (ecuaciones \ref{aspiracion_dictador} y \ref{aspiracion_receptor}) la que sigue la lógica del algoritmo de Bush-Mosteller. De esa manera, la probabilidad nueva $Qp$ es representada por la nueva aspiración
-$a_{i,t}$, la probabilidad vieja $p$ por la aspiración previa $a_{i,t-1}$ y el tamaño del paso $a$ o $b$ por la susceptibilidad $l_{i,1}^{nor}$ o $l_{i,1}^{emp}$. De esa manera, con las funciones partidas dependiendo de los
+aspiración de los agentes (ecuaciones \ref{aspiracion_dictador} y \ref{aspiracion_receptor}) la que sigue la lógica 
+del algoritmo de Bush-Mosteller. De esa manera, la probabilidad nueva $Qp$ es representada por la nueva aspiración
+$a_{i,t}$, la probabilidad vieja $p$ por la aspiración previa $a_{i,t-1}$ y el tamaño del paso $a$ o $b$ por la 
+susceptibilidad $l_{i,1}^{nor}$ o $l_{i,1}^{emp}$. De esa manera, con las funciones partidas dependiendo de los
 estímulos normativos y empíricos, la ecuación contempla tanto el término de refuerzo positivo como el negativo.
-% TODO buscar sobre convergencia de LR
+
+\section{Replicación del artículo}
+
+La totalidad del experimento realizado por los autores fue replicado utilizando el lenguaje Python 3.12.0,
+utilizando las librerías numpy para cálculos numéricos y numba para optimización de código. La totalidad de los
+gráficos de esta monografía fueron generados de los datos obtenidos de la replicación del experimento, los cuales
+coinciden con los presentados por los autores. El código para generar los resultados pueden encontrarse en el siguiente \href{https://github.com/josesg998/CursoRL/blob/master/monografia/replication_optimized.py}{repositorio de GitHub}. Adicional a la visualización estática de los resultados, se generaron visualizaciones interactivas en 
+(\href{https://observablehq.com/d/cf06ca99cc73fbd7}{Observable})
+para evaluar la variación en las distribuciones de donaciones y susceptibilidades al variar los pesos asignados a las interacciones así como la modificación en la evolución promedio de la susceptibilidad de los agentes.
 
 \printbibliography
 

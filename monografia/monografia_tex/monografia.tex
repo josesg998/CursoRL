@@ -57,14 +57,13 @@
 
 \section{Introducción}
 
-El objetivo de este trabajo es realizar generar un análisis y discusión sobre el artículo 
+El objetivo de este trabajo es realizar un análisis y discusión sobre el artículo 
 \textit{A reinforcement learning approach to explore the role of social expectations in 
 altruistic behavior} (\cite{castanon2023reinforcement}). En el mismo se realizará un resumen 
 del artículo citado, ampliando brevemente sobre los algoritmos en los que se basa, así como en 
 la teoría con la que busca discutir. Adicionalmente, se replicará su trabajo en lenguaje 
 Python para validar sus resultados. Finalmente, se generará una discusión sobre las 
-conclusiones a las que arriba, así como posibles extensiones del 
-trabajo.
+conclusiones a las que arriba, así como posibles extensiones del trabajo.
 
 \section{Resumen del artículo}
 
@@ -72,7 +71,7 @@ trabajo.
 
 El objetivo general del artículo es lograr modelar el comportamiento altruista de individuos. 
 En particular, busca llevar al campo computacional la teoría de normas sociales propuesta por 
-Cristina Bicchieri (\citeyear{bichieri2006}). Anteriormente, las teorías económicas y 
+Cristina Bicchieri (\citeyear{bichieri2006}), la cual se contrapone a las teorías económicas y 
 psicológicas tenían un mayor foco en comportamientos puramente egoístas, es decir, 
 comportamientos que buscan maximizar la utilidad individual. Según esta autora, las normas 
 sociales incluyen:
@@ -84,7 +83,7 @@ sociales incluyen:
 \end{enumerate}
 
 Para llevar a cabo este modelado, los autores recuren a un marco de teoría de juegos, los cuales han 
-sido utilizados largamente para capturar comportamiento colaborativo y comportamiento altruista a 
+sido utilizados largamente para capturar comportamiento colaborativo y altruista a 
 partir de la formación de expectativas de los jugadores. El \textit{Juego del Dictador} resulta 
 adecuado para modelar este tipo de comportamiento. Sus reglas básicas son las siguientes:
 
@@ -100,10 +99,10 @@ Según Bechler y otros (\citeyear{BECHLER2015149}), este comportamiento surge de
 tiene la distancia social entre los miembros de este juego.
 
 Finalmente, para encontrar una manera de actualizar las expectativas de los agentes en un juego de
-múltiples rondas los autores recurren al aprendizaje por refuerzo, dada la robustez que provee para 
-predecir comportamiento prosocial en grandes poblaciones. Este artículo replicará en buena medida
-el trabajo realizado por Pereda y otros (\citeyear{pereda2017emergence}) en el cual presenta un modelo 
-basado en agentes gobernados por las expectativas generadas por el Juego del Dictador, en las cuales 
+múltiples rondas, los autores recurren al aprendizaje por refuerzo, dada la robustez que provee para 
+predecir comportamiento prosocial en grandes poblaciones. Este artículo replica en buena medida
+el trabajo realizado por Pereda y otros (\citeyear{pereda2017emergence}), el cual presenta un modelo 
+basado en agentes gobernados por expectativas generadas por el Juego del Dictador. Allí,
 los agentes reaccionan a estímulos empíricos basados en la dinámica de aprendizaje reforzado de 
 Bush-Mosteller (\citeyear{bush1951mathematical}). La diferencia radica en resolver las siguientes 
 limitaciones encontradas al artículo de Pereda y otros:
@@ -149,7 +148,7 @@ Cada dictador comunica honestamente el porcentaje de la dotación $\theta_{j,t}$
 a una cantidad $Q$ de otros dictadores. El parámetro $\theta_{j,t}$ no solo toma en cuenta las
 aspiraciones originales del dictador sino también un parámetro ruido $\delta_{j,t}^nor$ que toma en
 cuenta el efecto de una 'mano temblorosa' a la hora de la comunicación. La donación comunicada tiene
-la siguiente forma:
+la siguiente forma: %explicar más de mano temblorosa
 
 \begin{equation}
 \theta_{j,t} = max(0,min(\phi,a_{j,t} * (1 + \delta_{j,t}^{nor})))
@@ -170,15 +169,14 @@ s_{j,t}^{nor} = \frac{\sum_{m=1}^{Q} I_{m,t}^{nor}}{Q}  = \frac{\sum_{j'}\theta_
 
 De esta forma, se puede destacar varias cuestiones. Primero, que solo el dictador
 que busca consejo actualiza sus aspiraciones en base a la interacción normativa. Segundo,
-que el dictador consultado no actualiza las suyas. Tercer, que la interacción $s_{j,t}^{nor}$ 
+que el dictador consultado no actualiza las suyas. Tercero, que la interacción $s_{j,t}^{nor}$ 
 puede tomar valores entre -1 y 1, siendo positivo cuando la donación comunicada es mayor a la 
 aspiración del dictador, y negativo en el caso contrario.
 
 \subsubsection{Los dictadores actualizan sus aspiraciones}
 
-Tanto la susceptibilidad como las aspiraciones de los dictadores se actualizan en base a la interacción normativa 
-recibida. Primero, la susceptibilidad se actualiza de la siguiente forma:
-
+Tanto la susceptibilidad como las aspiraciones de los dictadores se actualizan en base a la interacción 
+normativa recibida. Primero, la susceptibilidad se actualiza de la siguiente forma:
 % write an if else statement in latex
 \begin{equation}
 l_{j,t}^{nor} = 
@@ -189,9 +187,8 @@ l_{j,t-1}^{nor} * (1+W^{nor,neg} * s_{j,t}^{nor}) & \text{si } s_{j,t}^{nor} < 0
 \end{equation}
 
 siendo $W^{nor,pos}$ y $W^{nor,neg}$ hiperparámetros (entre 0 y 1) representando los pesos 
-asignados a las interacciones normativas positivas y negativas respectivamente.
-
-luego, las aspiraciones se actualizan de la siguiente forma:
+asignados a las interacciones normativas positivas y negativas respectivamente. Luego, se
+actualizan las aspiraciones:
 
 \begin{equation}
 a_{j,t} =
@@ -206,7 +203,7 @@ De estas fórmulas podemos interpretar que el estímulo positivo incrementa la s
 secuencialmente, sus aspiraciones. Por el contrario, un estímulo negativo reduce la susceptibilidad y las
 aspiraciones del agente. Ampliando la interpretación, las interacciones positivas implican que la aspiración
 promedio de otros dictadores es mayor a la del agente, llevando al dictadora a aumentar sus aspiraciones 
-personales. Lo contrario ocurre en el caso de interacciones negativas.
+personales. Lo contrario ocurre en el caso de interacciones negativas. %TODO ampliar
 
 \subsubsection{Los dictadores proceden a donar}
 

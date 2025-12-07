@@ -28,7 +28,7 @@
 \graphicspath{ {../imagenes/} }
 \addbibresource{../bibliography.bib}
 
-\title{Aprendizaje Reforzado: Trabajo final}
+\title{Aprendizaje Reforzado 2025: Trabajo final}
 \author{José Saint Germain}
 
 \begin{document}
@@ -67,14 +67,14 @@ partir de la formación de expectativas de los jugadores. El \textit{Juego del D
 adecuado para modelar este tipo de comportamiento. Sus reglas básicas son las siguientes:
 
 \begin{itemize}
-    \item Dos jugadores: un \textbf{Dictador} y un \textbf{Receptor}.
+    \item Dos jugadores: un \textit{Dictador} y un \textit{Receptor}.
     \item El Dictador recibe una dotación fija y debe decidir qué fracción donar al Receptor.
     \item El Receptor no tiene poder de decisión; simplemente recibe lo que el Dictador decide donar.
 \end{itemize}
 
-Engel (\citeyear{engel2011dictator}) mediante un meta-análisis realizó una revisión literaria 
+Engel (\citeyear{engel2011dictator}), mediante un meta-análisis, realizó una revisión literaria 
 de 129 artículos publicados que contienen 616 tratamientos diferentes del juego, con un total
-de 41.433 observaciones. El estudio utilizó meta-regresión para evaluar el efecto de manipulaciones 
+de 41.433 observaciones. El autor utilizó meta-regresión para evaluar el efecto de manipulaciones 
 individuales, controlando simultáneamente otros factores explicativos que variaban entre experimentos.
 El estudio encontró que, en promedio, los dictadores donan alrededor del 30\% de su dotación.
 Según Bechler y otros (\citeyear{BECHLER2015149}), este comportamiento surge de la influencia que 
@@ -83,17 +83,17 @@ heterogeneidad de las donaciones, dependiendo fuertemente de la situación y la 
 
 Finalmente, para encontrar una manera de actualizar las expectativas de los agentes en un juego de
 múltiples rondas, los autores recurren al aprendizaje por refuerzo, dada la robustez que provee para 
-predecir comportamiento prosocial en grandes poblaciones. Este artículo replica en buena medida
-el trabajo realizado por Pereda y otros (\citeyear{pereda2017emergence}), el cual presenta un modelo 
-basado en agentes gobernados por expectativas generadas por el Juego del Dictador. Allí,
-los agentes reaccionan a estímulos empíricos basados en la dinámica de aprendizaje reforzado de 
-Bush-Mosteller (\citeyear{bush1951mathematical}). Si bien coincide con Engel en que la donación
-media ronda el 30\%, el modelo no logra capturar la heterogeneidad observada en los experimentos
-reales, ni la presencia de agentes no colaborativos. La diferencia con el artículo que analizaremos
-radica en resolver las siguientes limitaciones encontradas al artículo de Pereda y otros:
+predecir comportamiento prosocial en grandes poblaciones. El artículo de Castañón y otros continúa en 
+buena medida el trabajo realizado por Pereda y otros (\citeyear{pereda2017emergence}), el cual presenta un modelo 
+basado en agentes gobernados por expectativas generadas por el Juego del Dictador. Allí, los agentes reaccionan a 
+estímulos empíricos basados en la dinámica de aprendizaje reforzado de  Bush-Mosteller (\citeyear
+{bush1951mathematical}). Si bien coincide con Engel en que la donación media ronda el 30\%, el modelo no logra 
+capturar la heterogeneidad observada en los experimentos reales, ni la presencia de agentes no colaborativos. La 
+diferencia con el artículo que analizaremos radica en resolver las siguientes limitaciones encontradas al artículo 
+de Pereda y otros:
 
 \begin{itemize}
-\item La ausencia de expectativas normativas, los agentes solo reaccionan a estímulos empíricos (como receptores).
+\item La ausencia de expectativas normativas: los agentes solo reaccionan a estímulos empíricos (como receptores).
 \item La falta de variabilidad y de dinámicas en la caracterización de los agentes (la susceptibilidad
 a estímulos, lo cual puede ser interpretado como la tasa de aprendizajes).
 \item El mismo peso asignado a interacciones positivas y negativas.
@@ -115,11 +115,11 @@ visualizar en la figura \ref{fig:juego_dictador} extraída del artículo origina
 Todos los agentes (aun no están divididos en dictadores y receptores) comienzan con los siguientes
 atributos iniciales:
 
-\textbf{1. Aspiración inicial ($a_{i,t=0}$)}: ubicada aleatoriamente en el rango [0,$\phi$], donde $\phi$ es 
+\textit{1. Aspiración inicial ($a_{i,t=0}$)}: ubicada aleatoriamente en el rango [0,$\phi$], donde $\phi$ es 
 la dotación inicial fija que reciben los dictadores en cada ronda del juego. Este atributo refleja
 la cantidad de dinero que esperan obtener en la primera ronda del juego.
 
-\textbf{2. Susceptibilidad ($l_{i,t=0}$)}: representa la sensibilidad del agente a los estímulos sociales. Se 
+\textit{2. Susceptibilidad ($l_{i,t=0}$)}: representa la sensibilidad del agente a los estímulos sociales. Se 
 asigna aleatoriamente en el rango [0,1]. Teóricamente los autores distinguen entre susceptibilidad
 normativa y empírica, pero en esta versión del modelo se utiliza una sola.
 
@@ -467,26 +467,21 @@ proporción a $p$, siendo $b$ un parámetro entre 0 y 1 que representa la
 tasa de aprendizaje, al igual que el parámetro $a$.
 \end{itemize}
 
-Esta arquitectura se asemeja a la utilizada en el capítulo 2 de Sutton y Barto 
-(\citeyear{sutton1998reinforcement}), donde se describe el método de \textit{implementación
-incremental} para estimar el valor esperado de una acción en un problema de
-k-armed bandit.
+El algoritmo guarda un paralelismo con el principio general de \textit{Implementación 
+Incremental} para actualizar las estimaciones de valor de acción, descrito en el Capítulo 2 de 
+Sutton y Barto (\citeyear{sutton1998reinforcement}) (ecuación \ref{eq:incremental_general}), 
+aunque la estructura de actualización lineal del algoritmo Bush-Mosteller difiere de la 
+formulación general incremental de refuerzo, ya que incluye explícitamente términos de 
+incremento ($a(1-p)$) y decremento ($-bp$) del refuerzo, en lugar de depender de una única 
+“señal de error” generada por la diferencia entre el objetivo y la vieja estimación.
 
 \begin{equation}
 \text{Nueva Estimación} \leftarrow \text{Vieja Estimación} + \text{Tamaño del Paso} \cdot [\text{Objetivo} - \text{Vieja Estimación}]
-\label{eq:incremental}
+\label{eq:incremental_general}
 \end{equation}
 
-Adaptando la ecuación \ref{eq:incremental}, la nueva estimación es $Qp$, la vieja estimación es $p$, el tamaño del 
-paso es $a$ o $b$ dependiendo si el refuerzo es positivo o negativo y el error corresponde al término que reduce 
-p ($-bp$).
-
 Retomando el artículo de Castañón y otros, podemos observar que es la actualización en la 
-aspiración de los agentes (ecuaciones \ref{aspiracion_dictador} y \ref{aspiracion_receptor}) la que sigue la lógica 
-del algoritmo de Bush-Mosteller. De esa manera, la probabilidad nueva $Qp$ es representada por la nueva aspiración
-$a_{i,t}$, la probabilidad vieja $p$ por la aspiración previa $a_{i,t-1}$ y el tamaño del paso $a$ o $b$ por la 
-susceptibilidad $l_{i,t}^{nor}$ o $l_{i,t}^{emp}$. De esa manera, con las funciones partidas dependiendo de los
-estímulos normativos y empíricos, la ecuación contempla tanto el término de refuerzo positivo como el negativo.
+aspiración de los agentes (ecuaciones \ref{aspiracion_dictador} y \ref{aspiracion_receptor}) la que sigue la lógica del algoritmo de Bush-Mosteller. De esa manera, la probabilidad nueva $Qp$ es representada por la nueva aspiración $a_{i,t}$, la probabilidad vieja $p$ por la aspiración previa $a_{i,t-1}$ y el tamaño del paso $a$ o $b$ por la susceptibilidad $l_{i,t}^{nor,emp}$, que dependerá del signo del estímulo recibido. De esa manera, con las funciones partidas dependiendo de los estímulos normativos y empíricos, la ecuación contempla tanto el término de refuerzo positivo como el negativo.
 
 \section{Replicación del artículo}
 
@@ -502,37 +497,41 @@ estímulos.
 
 \section{Conclusiones}
 
-En este trabajo se realizó un análisis pormenorizado del artículo \textit{A reinforcement learning approach to explore 
-the role of social expectations in altruistic behavior} (\cite{castanon2023reinforcement}). Se realizó un resumen
-del artículo, enfatizando los trabajos previos y las limitaciones que buscó superar, se describió el algoritmo de aprendizaje
-propuesto para el juego del dictador. Luego se discutió brevemente sobre la teoría en la que se funda el algoritmo y el juego,
-destacando el algoritmo de Bush-Mosteller (\citeyear{bush1951mathematical}) y su contribución en el desarrollo del 
-aprendizaje por refuerzo en áreas como la psicología y la economía. Finalmente, se replicó el experimento computacional
-realizado por los autores, obteniendo resultados coincidentes con los presentados en el artículo original.
+En este trabajo se realizó un análisis pormenorizado del artículo \textit{A reinforcement learning approach to 
+explore the role of social expectations in altruistic behavior} (\cite{castanon2023reinforcement}). Se realizó 
+un resumen del artículo, enfatizando los trabajos previos y las limitaciones que buscó superar y se describió el 
+algoritmo de aprendizaje propuesto para el juego del dictador. Luego se discutió brevemente sobre la teoría en 
+la que se funda el algoritmo y el juego,destacando el algoritmo de Bush-Mosteller (\citeyear
+{bush1951mathematical}) y su contribución en el desarrollo del aprendizaje por refuerzo en áreas como la 
+psicología y la economía. Finalmente, se replicó el experimento computacional realizado por los autores, 
+obteniendo resultados coincidentes con los presentados en el artículo original.
 
-Considero que el artículo fue exitoso en los objetivos que se planteó. En primer lugar, logró superar las limitaciones del
-trabajo de Pereda y otros (\citeyear{pereda2017emergence}) al incorporar expectativas normativas, variabilidad en los 
-perfiles de los agentes y diferenciar el peso de las interacciones positivas y negativas. En segundo lugar, logró capturar 
-los tres comportamientos humanos observados en el juego del dictador en el meta-análisis de Engel (\citeyear{engel2011dictator}): donaciones
-promedio del 30\%, alta heterogeneidad en el perfil de donantes y presencia de agentes no colaborativos. De esta manera,
-el artículo logró diseñar un modelo computacional robusto para estudiar el comportamiento altruista en poblaciones
+El artículo fue exitoso en los objetivos que se planteó. En primer lugar, logró superar las 
+limitaciones del trabajo de Pereda y otros (\citeyear{pereda2017emergence}) al incorporar expectativas 
+normativas y variabilidad en los perfiles de los agentes, así como diferenciar el peso de las interacciones
+positivas y negativas. En la misma línea, logró capturar  los tres comportamientos humanos observados en el 
+juego del dictador en el meta-análisis de Engel (\citeyear{engel2011dictator}): donaciones promedio del 30\%, 
+alta heterogeneidad en el perfil de donantes y presencia de agentes no colaborativos. De esta manera, el 
+artículo logró diseñar un modelo computacional robusto para estudiar el comportamiento altruista en poblaciones 
 humanas.
 
-Adicionalmente, se pueden destacar las siguientes limitaciones e inconsistencias. Por un lado, el éxito del experimento no 
-depende exclusivamente del algoritmo de Bush-Mosteller, sino también de la configuración de hiperparámetros elegida (los pesos W), 
-los cuales deben ser calibrados y alineados a los de la literatura psicológica previa. Por el otro, los mismos autores destacan que
-la heterogeneidad lograda en las donaciones se pierde cuando se deja variar la susceptibilidad normativa y empírica
-de manera independiente, lo cual debilita la coherencia con los resultados experimentales.
+Adicionalmente, se pueden destacar las siguientes limitaciones e inconsistencias. Por un lado, el éxito del 
+experimento no depende exclusivamente del algoritmo de Bush-Mosteller, sino también de la configuración de 
+hiperparámetros elegida (los pesos W), los cuales deben ser calibrados y alineados a los de la literatura 
+psicológica previa. Por el otro, los mismos autores destacan que la heterogeneidad lograda en las donaciones se 
+pierde cuando se deja variar la susceptibilidad normativa y empírica de manera independiente, lo cual debilita 
+la coherencia con los resultados experimentales.
 
-Como líneas futuras de investigación, puesto que el modelo logra replicar los resultados de experimentos previos; se puede
-utilizar para relajar o modificar supuestos del juego del dictador original y explorar sus resultados. El que resulta más 
-evidente explorar es la no alternancia entre dictadores y receptores, sino que los agentes mantengan su rol durante
-todas las rondas. De esta manera, se podría estudiar la evolución de las expectativas y comportamientos en poblaciones con
-roles fijos (los autores etiquetan este cambio como 
-«homofilia», alejándose de una red totalmente conectada). De este cambio se deriva naturalmente el cambio de otros varios
-aspectos del modelo, puesto que en este caso no tendría la susceptibilidad empírica ni la aspiración ajustada de los receptores
-para evitar que las donaciones se concentren en cero. Una segunda línea de investigación puede ser intentar replicar los resultados
-obtenidos por Engel para distintos grupos sociales, ya sean etarios, por género o por nivel de desarrollo económico.
+Como líneas futuras de investigación, puesto que el modelo logra replicar los resultados de experimentos 
+previos, se puede evaluar la posibilidad de relajar o modificar supuestos del juego del dictador original y 
+explorar sus resultados. El que resulta más evidente explorar es la no alternancia entre dictadores y 
+receptores, sino que los agentes mantengan su rol durante todas las rondas. De esta manera, se podría estudiar 
+la evolución de las expectativas y comportamientos en poblaciones con roles fijos (los autores etiquetan este 
+cambio como «homofilia», alejándose de una red totalmente conectada). De este cambio se deriva naturalmente la 
+necesidad de modificar otros aspectos del modelo, puesto que en este caso no tendría la susceptibilidad empírica 
+ni la aspiración ajustada de los receptores para evitar que las donaciones se concentren en cero. Una segunda 
+línea de investigación puede ser intentar replicar los resultados obtenidos por Engel para distintos grupos 
+sociales, ya sean etarios, por género o por nivel de desarrollo económico.
 
 \section{Anexo}
 
